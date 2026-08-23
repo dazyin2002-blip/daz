@@ -1971,7 +1971,7 @@ function screenIntro(){
   </div>`;
 }
 
-function startSetup(){ if(typeof flushResult==='function') flushResult(); newGameCore(); screenName() }
+function startSetup(){ newGameCore(); screenName() }
 
 /* ============ 姓名（item 13）＋ 隨機 MBTI（item 7；改為隨機分配，如同分發學校） ============ */
 const MBTI_AX = [
@@ -3007,13 +3007,7 @@ function goalMet(){
   return false;
 }
 function ending(){
-  // 這一局結束 → 開啟結果回傳，玩家離開時保底送出（就算沒填回饋）
-  FB_STATE.active = true; FB_STATE.sent = false;
-  if(!FB_STATE.bound){
-    window.addEventListener('pagehide', flushResult);
-    window.addEventListener('beforeunload', flushResult);
-    FB_STATE.bound = true;
-  }
+  autoRecordResult();   // 遊戲結束當下就記錄名字＋MBTI＋結果（不必等玩家動作）
   const met = goalMet();
   const g = S.goal;
   let verdict='', body='';
@@ -3102,8 +3096,8 @@ function resultSummary(){
   return `永續人森模擬器 — ${playerRef()}（${S.mbti||'—'}）／${S.startYear} 入學／${S.goal.n} ${goalMet()?'達成':'未達成'}／年薪 ${S.pay} 萬／${S.inESG?LEVELS[S.level].t:'非永續職'}／永續年資 ${S.esgYrs} 年／E${S.E} S${S.S} G${S.G} D${S.D}／SEED ${S.seed.toString(36).toUpperCase()}`;
 }
 /* ===== 結果回傳（item 13, 19）=====
-   玩到結局就記錄名字＋結果；有寫回饋就併著送。每局只送一次（FB_STATE.sent）。 */
-const FB_STATE = { active:false, sent:false, bound:false };
+   玩到結局「當下」就立刻記錄名字＋MBTI＋結果（不必等玩家離開、不必按鈕）。
+   之後玩家若有寫回饋並按送出，才會再送一列含回饋。 */
 function formActionUrl(){ return FEEDBACK_FORM.base.replace('/viewform','/formResponse'); }
 function buildFormBody(includeFb){
   const f=FEEDBACK_FORM.fields, body=new URLSearchParams();
@@ -3119,32 +3113,24 @@ function buildFormBody(includeFb){
   }
   return body;
 }
-/* 玩家沒填回饋就離開 → 保底把名字與結果記下來（用 sendBeacon 確保關分頁也送得出） */
-function flushResult(){
-  if(!FEEDBACK_FORM.CONFIGURED || !FB_STATE.active || FB_STATE.sent) return;
-  FB_STATE.sent=true; FB_STATE.active=false;
-  try{
-    const body=buildFormBody(false).toString();
-    if(navigator.sendBeacon){
-      navigator.sendBeacon(formActionUrl(), new Blob([body],{type:'application/x-www-form-urlencoded;charset=UTF-8'}));
-    } else {
-      fetch(formActionUrl(),{method:'POST',mode:'no-cors',keepalive:true,body:body});
-    }
-  }catch(e){}
+function recordResult(includeFb){
+  if(!FEEDBACK_FORM.CONFIGURED) return Promise.resolve();
+  if(typeof fetch!=='function' || typeof URLSearchParams!=='function') return Promise.resolve();
+  return fetch(formActionUrl(),{method:'POST',mode:'no-cors',keepalive:true,body:buildFormBody(includeFb)}).catch(function(){});
+}
+/* 遊戲結束當下自動記錄結果（每局一次） */
+function autoRecordResult(){
+  if(S._recorded) return; S._recorded = true;
+  recordResult(false);
 }
 function submitFeedback(el){
   const t = (document.getElementById('fbText')||{}).value || '';
   const mail = (document.getElementById('fbMail')||{}).value || '';
   if(FEEDBACK_FORM.CONFIGURED){
-    FB_STATE.sent=true; FB_STATE.active=false;   // 玩家主動送出 → 保底那次就不再重複
     if(el){ el.disabled=true; el.textContent='送出中…'; }
-    fetch(formActionUrl(), {method:'POST', mode:'no-cors', body:buildFormBody(true)})
-      .then(function(){ if(el) el.textContent='已送出，謝謝你！🌱'; })
-      .catch(function(){
-        const txt = resultSummary() + '\n\n回饋：' + t + (mail?('\nEmail：'+mail):'');
-        if(navigator.clipboard) navigator.clipboard.writeText(txt);
-        if(el){ el.disabled=false; el.textContent='送不出，已複製請貼給開發者'; }
-      });
+    // 結果已在結局自動記錄；這裡只在「有寫東西」時補送一列含回饋
+    const p = (t||mail) ? recordResult(true) : Promise.resolve();
+    p.then(function(){ if(el) el.textContent='已送出，謝謝你！🌱'; });
   } else {
     const txt = resultSummary() + '\n\n回饋：' + t + (mail?('\nEmail：'+mail):'');
     if(navigator.clipboard) navigator.clipboard.writeText(txt);
