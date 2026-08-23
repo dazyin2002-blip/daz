@@ -805,11 +805,11 @@ CARDS.push(
  x:'看了半年的房子。<em>頭期款要把存款掏空</em>，之後每個月的貸款會讓你不敢隨便換工作。',
  o:[{l:'買',e:{cash:-110,burn:8},r:'你簽了約。從那天起，要不要離職這個問題變得複雜很多。',trait:'背了房貸'},
     {l:'再等等',e:{cash:5},r:'你沒買。房價後來又漲了一波，但你保留了選擇的自由。'}]},
-{id:'x_ipas',pool:'p',w:8,t:'iPAS 考試',
- cond:function(s){return s.year>=2022&&s.esgYrs<=6},
- x:'報名費一千六，考兩科。<em>群組裡每個人都在問那本五百多頁的書要不要買</em>。',
- o:[{l:'認真準備，考中級',e:{cash:-2,E:5,sp:1,burn:6},r:'你考過了。這張證照沒有讓你加薪，但面試時每個 HR 都看得懂。'},
-    {l:'先考初級試水溫',e:{cash:-2,E:3},r:'你考過了初級。門檻很低，但至少踏出了第一步。'},
+{id:'x_ipas',pool:'p',w:8,t:'iPAS 淨零碳規劃管理師',
+ cond:function(s){return s.year>=2024&&s.esgYrs<=6},
+ x:'經濟部的 iPAS 淨零碳規劃管理師今年（2024）首度開辦初級。<em>群組裡每個人都在問那本五百多頁的書要不要買</em>。',
+ o:[{l:'考初級，卡個官方證照',e:{cash:-2,E:4},r:'你考過了初級。門檻不高，但面試時每個 HR 都看得懂。'},
+    {l:'認真準備，衝更高分',e:{cash:-2,E:5,sp:1,burn:6},r:'你把那本五百多頁的書啃完，考了高分。這張證照沒讓你馬上加薪，但底子是真的。'},
     {l:'不考，把時間拿去做專案',e:{sp:2},r:'你把那三個月拿去把一個專案做完整。履歷上沒有那行字，但有那個案子。'}]},
 {id:'x_en',pool:'p',w:8,t:'英文簡報',
  cond:function(s){return s.year>=2020},
@@ -921,13 +921,13 @@ CARDS.push(
 /* ===== 進修型事件卡：花錢、花時間，換一張帶得走的東西 ===== */
 CARDS.push(
 {id:'c_iso',pool:'p',w:11,t:'主導查證員課程',
- cond:function(s){return s.year>=2021&&s.cash>=8&&s.certs.indexOf('iso14064')<0},
+ cond:function(s){return s.year>=2019&&s.cash>=8&&s.certs.indexOf('iso14064')<0},
  x:'三天課、兩萬八，公司不出錢。<em>上完有證書，而現在市場很吃這張</em>。',
  o:[{l:'自費去上',e:{cash:-3,E:4,burn:4},cert:'iso14064',r:'你請了三天假、刷了卡。回來的第二個月，就有獵頭因為這張證書找上你。'},
     {l:'跟公司爭取補助',e:{relroll:1,E:2},r:'你寫了一份簽呈，說明這張證照對公司的用處。'},
     {l:'錢先留著',e:{cash:1,sp:1},r:'你把課程頁面收進書籤。它在那裡待了很久。'}]},
 {id:'c_gri',pool:'p',w:9,t:'GRI 認證課程',
- cond:function(s){return s.year>=2020&&s.cash>=12&&s.certs.indexOf('gri')<0&&s.D>=15},
+ cond:function(s){return s.year>=2021&&s.cash>=12&&s.certs.indexOf('gri')<0&&s.D>=15},
  x:'四門必修課才解鎖考試，全套下來將近六萬，還有年費。<em>但這是報告書領域最硬的一張</em>。',
  o:[{l:'咬牙上完整套',e:{cash:-6,D:4,burn:6},cert:'gri',r:'你花了半年上完四門課、考過認證。從此你講重大性的時候，沒有人質疑你。'},
     {l:'只上免費的公開資源',e:{D:3,sp:1},r:'你把官網的免費教材全部讀過一遍。學得到知識，拿不到那張紙。'}]},
@@ -942,12 +942,12 @@ CARDS.push(
  o:[{l:'買下來，慢慢上完',e:{cash:-2,S:4,E:2},cert:'s3',r:'你利用通勤和週末上完了。下一次客戶問範疇三，你答得出來的層次不一樣了。'},
     {l:'先靠爬文自學',e:{S:2,burn:5},r:'你把官方指引下載下來自己啃。學得零碎，但也學到了。'}]},
 {id:'c_ifrs',pool:'p',w:10,t:'IFRS S1／S2 導入研習',
- cond:function(s){return s.year>=2025&&s.cash>=6&&s.certs.indexOf('ifrs')<0},
+ cond:function(s){return s.year>=2024&&s.cash>=6&&s.certs.indexOf('ifrs')<0},
  x:'準則要上路了，公司派兩個名額去受訓。<em>去的人回來就是內部的種子講師</em>。',
  o:[{l:'舉手爭取名額',e:{D:3,G:2,rel:2},cert:'ifrs',r:'你去了。回來後你替全公司上了三場課，順便把自己的位子坐穩了。',trait:'內部講師'},
     {l:'讓資深的同事去',e:{sp:1,rel:1},r:'你留守顧著手上的案子。那兩個名額後來成了他們履歷上的亮點。'}]},
 {id:'c_sfi',pool:'p',w:8,t:'永續發展基礎能力測驗',
- cond:function(s){return s.year>=2023&&s.certs.indexOf('sfi')<0&&s.cash>=3},
+ cond:function(s){return s.year>=2024&&s.certs.indexOf('sfi')<0&&s.cash>=3},
  x:'報名費一千二，八十題單選。<em>金融業幾乎人人都考，而且它是進階證照的入場券</em>。',
  o:[{l:'順手考一張',e:{cash:-1,G:2},cert:'sfi',r:'你花了兩個週末讀完，一次就過。門檻不高，但少了它有些門開不了。'},
     {l:'跳過',e:{sp:1},r:'你覺得用不到。兩年後你要報進階課程時，發現它是必要條件。'}]},
@@ -1638,18 +1638,19 @@ CARDS.push(
 
 /* ============ 證照 ============ */
 const CERTS = [
- {id:'ipas',  n:'iPAS 淨零碳規劃管理師（初級）',org:'經濟部',cost:2,tw:1,hard:2,stat:'E',gain:3,pay:.02,d:'台灣官方發證，新鮮人最主流的入門證照。'},
- {id:'sfi',   n:'永續發展基礎能力測驗',org:'證基會',cost:1,tw:1,hard:2,stat:'G',gain:3,pay:.02,d:'金融業近乎必考，也是進階永續金融證照的入場券。'},
- {id:'iso14064',n:'ISO 14064-1 主導查證員',org:'SGS',cost:3,tw:1,hard:3,stat:'E',gain:6,pay:.03,d:'三天課，台灣 ESG 職缺最常見的加分證照。'},
- {id:'cpcs', n:'企業永續管理師 CPCS',org:'TAISE',cost:4,tw:1,hard:2,stat:'D',gain:6,pay:.03,d:'六十四小時、五大模組。報告書職缺辨識度最高的本土證照。效期五年需回訓。'},
- {id:'fsa',  n:'SASB FSA Credential Level I',org:'IFRS Foundation',cost:1,tw:0,hard:3,stat:'D',gain:6,pay:.09,fit:['fin','cons','semi'],d:'US$450。已納入 IFRS 體系，與 ISSB 高度連動。'},
- {id:'cfaesg',n:'CFA ESG 投資證書',org:'CFA Institute',cost:3,tw:0,hard:3,stat:'G',gain:7,pay:.11,fit:['fin'],d:'US$890。金融業 ESG 職缺最具國際辨識度——前提是你在金融業。'},
- {id:'scr',  n:'GARP 永續與氣候風險證照 SCR',org:'GARP',cost:2,tw:0,hard:3,stat:'G',gain:6,pay:.10,fit:['fin','cons'],d:'US$575。氣候風險與情境分析職務的首選。'},
- {id:'gri',  n:'GRI 永續發展專業認證',org:'GRI',cost:6,tw:0,hard:3,stat:'D',gain:7,pay:.08,fit:['cons','semi','elec','fin'],d:'約 €1,600，另有年費。四門必修才解鎖考試。'},
- {id:'ifrs', n:'IFRS S1／S2 導入實務',org:'IFRS Foundation',cost:2,tw:0,hard:3,stat:'D',gain:7,pay:.09,fit:['fin','cons','semi','elec'],d:'台灣 2026 起分階段接軌，需求正在爬升。'},
- {id:'s3',   n:'GHG Protocol 範疇三標準',org:'WRI/WBCSD',cost:2,tw:0,hard:3,stat:'S',gain:6,pay:.07,fit:['elec','semi','text','retail'],d:'US$600。範疇三是供應鏈減碳的核心難點。'},
- {id:'sv1',  n:'社會價值 Level 1 認證',org:'Social Value International',cost:1,tw:0,hard:2,stat:'S',gain:5,pay:.05,fit:['ngo','retail','fin','cons'],d:'約 £195（依所得國家分級可低至 £95）。線上考八大原則，是台灣少數人走的路。'},
- {id:'sv2',  n:'社會價值 Level 2 認證執業師',org:'Social Value International',cost:7,tw:0,hard:4,stat:'S',gain:8,pay:.09,fit:['ngo','retail','fin','cons'],d:'約 £1,800，且須獨立完成一份通過查證的報告。台灣走到這一級的人不到十個。'}
+ /* from = 該證照在台灣「實際可考／課程開辦」的最早年份（已查證，2026-08）。年份門檻依此發放。 */
+ {id:'ipas',  n:'iPAS 淨零碳規劃管理師（初級）',org:'經濟部',from:2024,cost:2,tw:1,hard:2,stat:'E',gain:3,pay:.02,d:'台灣官方發證，新鮮人最主流的入門證照。初級 2024 年首辦。'},
+ {id:'sfi',   n:'永續發展基礎能力測驗',org:'證基會',from:2024,cost:1,tw:1,hard:2,stat:'G',gain:3,pay:.02,d:'金融業近乎必考，也是進階永續金融證照的入場券。2024 年 4 月首次舉辦。'},
+ {id:'iso14064',n:'ISO 14064-1 主導查證員',org:'SGS',from:2015,cost:3,tw:1,hard:3,stat:'E',gain:6,pay:.03,d:'三天課，台灣 ESG 職缺最常見的加分證照。'},
+ {id:'cpcs', n:'企業永續管理師 CPCS',org:'TAISE',from:2017,cost:4,tw:1,hard:2,stat:'D',gain:6,pay:.03,d:'六十四小時、五大模組。報告書職缺辨識度最高的本土證照。效期五年需回訓。'},
+ {id:'fsa',  n:'SASB FSA Credential Level I',org:'IFRS Foundation',from:2015,cost:1,tw:0,hard:3,stat:'D',gain:6,pay:.09,fit:['fin','cons','semi'],d:'US$450。已納入 IFRS 體系，與 ISSB 高度連動。'},
+ {id:'cfaesg',n:'CFA ESG 投資證書',org:'CFA Institute',from:2021,cost:3,tw:0,hard:3,stat:'G',gain:7,pay:.11,fit:['fin'],d:'US$890。金融業 ESG 職缺最具國際辨識度——前提是你在金融業。2021 全球開放。'},
+ {id:'scr',  n:'GARP 永續與氣候風險證照 SCR',org:'GARP',from:2020,cost:2,tw:0,hard:3,stat:'G',gain:6,pay:.10,fit:['fin','cons'],d:'US$575。氣候風險與情境分析職務的首選。2020 年首考。'},
+ {id:'gri',  n:'GRI 永續發展專業認證',org:'GRI',from:2021,cost:6,tw:0,hard:3,stat:'D',gain:7,pay:.08,fit:['cons','semi','elec','fin'],d:'約 €1,600，另有年費。四門必修才解鎖考試。專業認證計畫 2021 年推出。'},
+ {id:'ifrs', n:'IFRS S1／S2 導入實務',org:'IFRS Foundation',from:2024,cost:2,tw:0,hard:3,stat:'D',gain:7,pay:.09,fit:['fin','cons','semi','elec'],d:'準則 2023 發布、2024 生效，台灣課程 2024 起大量開辦。'},
+ {id:'s3',   n:'GHG Protocol 範疇三標準',org:'WRI/WBCSD',from:2011,cost:2,tw:0,hard:3,stat:'S',gain:6,pay:.07,fit:['elec','semi','text','retail'],d:'US$600。標準 2011 年發布，範疇三是供應鏈減碳的核心難點。'},
+ {id:'sv1',  n:'社會價值 Level 1 認證',org:'Social Value International',from:2017,cost:1,tw:0,hard:2,stat:'S',gain:5,pay:.05,fit:['ngo','retail','fin','cons'],d:'約 £195（依所得國家分級可低至 £95）。線上考八大原則，是台灣少數人走的路。'},
+ {id:'sv2',  n:'社會價值 Level 2 認證執業師',org:'Social Value International',from:2017,cost:7,tw:0,hard:4,stat:'S',gain:8,pay:.09,fit:['ngo','retail','fin','cons'],d:'約 £1,800，且須獨立完成一份通過查證的報告。台灣走到這一級的人不到十個。'}
 ];
 
 /* ============ 職級 ============ */
@@ -2096,7 +2097,7 @@ const UNI = [
  {y:2,t:'大二大三',x:'開始有人在談實習、談交換、談未來，你也開始有點焦慮。永續相關的實習不多，投出去的履歷大多沒有回音。',
   o:[{l:'全力投永續實習',e:{intern:1},r:''},
      {l:'去交換一學期',e:{en:4,rel:1,cash:-10,uni:6},r:'你第一次發現世界很大，也第一次發現英文真的要用。'},
-     {l:'考張入門證照',e:{E:3,cash:-2,uni:7},r:'你利用暑假考過了。履歷上多了一行。',cert:'ipas'},
+     {l:'利用暑假修永續／碳管理的課',e:{E:3,cash:-2,uni:7},r:'你利用暑假上完一門課，摸到了碳盤查的門。履歷上多了一行。'},
      {l:'去做和永續無關的實習',e:{dom:4,cash:5,uni:5},r:'你去了一間跟永續毫無關係的公司。後來發現那段經驗很有用。'}]},
  {y:3,t:'大四',x:'畢業在即。同學有人考研、有人簽了工作、有人還在投履歷。',
   o:[{l:'直接就業',e:{grad:'work'},r:''},
@@ -2670,6 +2671,7 @@ function yearEnd(){
   let certOffer=null;
   if(S.workYrs%2===0){
     const avail = CERTS.filter(c=>!S.certs.includes(c.id) && S.cash>=c.cost+3
+      && S.year>=(c.from||0)                            // 證照要到實際開辦年份才會出現（已查證）
       && (c.id!=='sv2' || S.certs.includes('sv1')));   // 社會價值 LV2 要先有 LV1（item 6）
     if(avail.length) certOffer = pick(avail);
   }
