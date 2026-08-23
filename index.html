@@ -1971,7 +1971,7 @@ function screenIntro(){
   </div>`;
 }
 
-function startSetup(){ newGameCore(); screenName() }
+function startSetup(){ if(typeof flushResult==='function') flushResult(); newGameCore(); screenName() }
 
 /* ============ 姓名（item 13）＋ 隨機 MBTI（item 7；改為隨機分配，如同分發學校） ============ */
 const MBTI_AX = [
@@ -3007,6 +3007,13 @@ function goalMet(){
   return false;
 }
 function ending(){
+  // 這一局結束 → 開啟結果回傳，玩家離開時保底送出（就算沒填回饋）
+  FB_STATE.active = true; FB_STATE.sent = false;
+  if(!FB_STATE.bound){
+    window.addEventListener('pagehide', flushResult);
+    window.addEventListener('beforeunload', flushResult);
+    FB_STATE.bound = true;
+  }
   const met = goalMet();
   const g = S.goal;
   let verdict='', body='';
@@ -3080,7 +3087,7 @@ function ending(){
     </div>
     <hr class="rule">
     <span class="eyebrow">留一句話給開發者</span>
-    <p class="note" style="margin:6px 0 0">玩得如何？想吐槽、想許願、想被通知未來更新，都寫在這。按下<b>直接回傳給開發者</b>，不會跳走。留 Email 才收得到通知（可留白）。</p>
+    <p class="note" style="margin:6px 0 0">玩得如何？想吐槽、想許願、想被通知未來更新，都寫在這。留 Email 才收得到通知（可留白）。<br><span style="color:var(--ink-3)">※ 這一局的名字與結果會回傳給開發者做統計與改版參考；寫了回饋按「送出」會一起附上，不寫也沒關係。</span></p>
     <textarea class="fbfield" id="fbText" placeholder="想對開發者說的話……"></textarea>
     <input class="fbfield" id="fbMail" type="email" placeholder="你的 Email（想收到更新通知再填）">
     <div class="opts" style="flex-direction:row;gap:10px;flex-wrap:wrap;margin-top:12px">
@@ -3094,25 +3101,46 @@ function ending(){
 function resultSummary(){
   return `永續人森模擬器 — ${playerRef()}（${S.mbti||'—'}）／${S.startYear} 入學／${S.goal.n} ${goalMet()?'達成':'未達成'}／年薪 ${S.pay} 萬／${S.inESG?LEVELS[S.level].t:'非永續職'}／永續年資 ${S.esgYrs} 年／E${S.E} S${S.S} G${S.G} D${S.D}／SEED ${S.seed.toString(36).toUpperCase()}`;
 }
+/* ===== 結果回傳（item 13, 19）=====
+   玩到結局就記錄名字＋結果；有寫回饋就併著送。每局只送一次（FB_STATE.sent）。 */
+const FB_STATE = { active:false, sent:false, bound:false };
+function formActionUrl(){ return FEEDBACK_FORM.base.replace('/viewform','/formResponse'); }
+function buildFormBody(includeFb){
+  const f=FEEDBACK_FORM.fields, body=new URLSearchParams();
+  if(FEEDBACK_FORM.extra) body.append(FEEDBACK_FORM.extra, '（遊戲自動回傳）');
+  body.append(f.name, playerRef());
+  body.append(f.mbti, S.mbti||'');
+  body.append(f.result, resultSummary());
+  if(includeFb){
+    const t=(document.getElementById('fbText')||{}).value||'';
+    const mail=(document.getElementById('fbMail')||{}).value||'';
+    if(t) body.append(f.feedback, t);
+    if(mail) body.append(f.email, mail);
+  }
+  return body;
+}
+/* 玩家沒填回饋就離開 → 保底把名字與結果記下來（用 sendBeacon 確保關分頁也送得出） */
+function flushResult(){
+  if(!FEEDBACK_FORM.CONFIGURED || !FB_STATE.active || FB_STATE.sent) return;
+  FB_STATE.sent=true; FB_STATE.active=false;
+  try{
+    const body=buildFormBody(false).toString();
+    if(navigator.sendBeacon){
+      navigator.sendBeacon(formActionUrl(), new Blob([body],{type:'application/x-www-form-urlencoded;charset=UTF-8'}));
+    } else {
+      fetch(formActionUrl(),{method:'POST',mode:'no-cors',keepalive:true,body:body});
+    }
+  }catch(e){}
+}
 function submitFeedback(el){
   const t = (document.getElementById('fbText')||{}).value || '';
   const mail = (document.getElementById('fbMail')||{}).value || '';
   if(FEEDBACK_FORM.CONFIGURED){
-    const f=FEEDBACK_FORM.fields;
-    // 直接、安靜地把結果送到 Google 表單的回應端點——不開新分頁、不離開結果畫面
-    const body = new URLSearchParams();
-    if(FEEDBACK_FORM.extra) body.append(FEEDBACK_FORM.extra, '（遊戲自動回傳）'); // 表單若有多餘必填欄位的保險
-    body.append(f.name, playerRef());
-    body.append(f.mbti, S.mbti||'');
-    body.append(f.result, resultSummary());
-    if(t) body.append(f.feedback, t);
-    if(mail) body.append(f.email, mail);
-    const url = FEEDBACK_FORM.base.replace('/viewform','/formResponse');
+    FB_STATE.sent=true; FB_STATE.active=false;   // 玩家主動送出 → 保底那次就不再重複
     if(el){ el.disabled=true; el.textContent='送出中…'; }
-    fetch(url, {method:'POST', mode:'no-cors', body:body})
+    fetch(formActionUrl(), {method:'POST', mode:'no-cors', body:buildFormBody(true)})
       .then(function(){ if(el) el.textContent='已送出，謝謝你！🌱'; })
       .catch(function(){
-        // 極少數情況（離線／被擋）→ 退而求其次複製，請玩家貼給開發者
         const txt = resultSummary() + '\n\n回饋：' + t + (mail?('\nEmail：'+mail):'');
         if(navigator.clipboard) navigator.clipboard.writeText(txt);
         if(el){ el.disabled=false; el.textContent='送不出，已複製請貼給開發者'; }
