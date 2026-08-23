@@ -279,6 +279,7 @@ function pick(arr){return arr[Math.floor(rnd()*arr.length)]}
 const FEEDBACK_FORM = {
   CONFIGURED: true,
   base: 'https://docs.google.com/forms/d/e/1FAIpQLSeYMdLlW-Wfgo7iVLz3L8FPJ5NhmP-0FrzN8xcFI_xrXnvlMw/viewform',
+  extra:    'entry.711076141',     // 表單多出來那個「欄位」題的保險值（刪掉該題後這行可留可拿）
   fields: {
     name:     'entry.381350934',    // 名字
     mbti:     'entry.1570842308',   // MBTI
@@ -3079,7 +3080,7 @@ function ending(){
     </div>
     <hr class="rule">
     <span class="eyebrow">留一句話給開發者</span>
-    <p class="note" style="margin:6px 0 0">玩得如何？想吐槽、想許願、想被通知未來更新，都寫在這。留 Email 才收得到通知（可留白）。</p>
+    <p class="note" style="margin:6px 0 0">玩得如何？想吐槽、想許願、想被通知未來更新，都寫在這。按下<b>直接回傳給開發者</b>，不會跳走。留 Email 才收得到通知（可留白）。</p>
     <textarea class="fbfield" id="fbText" placeholder="想對開發者說的話……"></textarea>
     <input class="fbfield" id="fbMail" type="email" placeholder="你的 Email（想收到更新通知再填）">
     <div class="opts" style="flex-direction:row;gap:10px;flex-wrap:wrap;margin-top:12px">
@@ -3098,17 +3099,25 @@ function submitFeedback(el){
   const mail = (document.getElementById('fbMail')||{}).value || '';
   if(FEEDBACK_FORM.CONFIGURED){
     const f=FEEDBACK_FORM.fields;
-    const q=[];
-    q.push(f.name+'='+encodeURIComponent(playerRef()));
-    q.push(f.mbti+'='+encodeURIComponent(S.mbti||''));
-    q.push(f.result+'='+encodeURIComponent(resultSummary()));
-    q.push(f.feedback+'='+encodeURIComponent(t));
-    if(mail) q.push(f.email+'='+encodeURIComponent(mail));
-    const url = FEEDBACK_FORM.base + '?usp=pp_url&' + q.join('&');
-    window.open(url,'_blank','noopener');
-    if(el) el.textContent='已開啟表單，按送出即可';
+    // 直接、安靜地把結果送到 Google 表單的回應端點——不開新分頁、不離開結果畫面
+    const body = new URLSearchParams();
+    if(FEEDBACK_FORM.extra) body.append(FEEDBACK_FORM.extra, '（遊戲自動回傳）'); // 表單若有多餘必填欄位的保險
+    body.append(f.name, playerRef());
+    body.append(f.mbti, S.mbti||'');
+    body.append(f.result, resultSummary());
+    if(t) body.append(f.feedback, t);
+    if(mail) body.append(f.email, mail);
+    const url = FEEDBACK_FORM.base.replace('/viewform','/formResponse');
+    if(el){ el.disabled=true; el.textContent='送出中…'; }
+    fetch(url, {method:'POST', mode:'no-cors', body:body})
+      .then(function(){ if(el) el.textContent='已送出，謝謝你！🌱'; })
+      .catch(function(){
+        // 極少數情況（離線／被擋）→ 退而求其次複製，請玩家貼給開發者
+        const txt = resultSummary() + '\n\n回饋：' + t + (mail?('\nEmail：'+mail):'');
+        if(navigator.clipboard) navigator.clipboard.writeText(txt);
+        if(el){ el.disabled=false; el.textContent='送不出，已複製請貼給開發者'; }
+      });
   } else {
-    // 表單還沒設定 → 退而求其次：把結果與回饋複製起來，請玩家貼給開發者
     const txt = resultSummary() + '\n\n回饋：' + t + (mail?('\nEmail：'+mail):'');
     if(navigator.clipboard) navigator.clipboard.writeText(txt);
     if(el) el.textContent='已複製回饋，貼給開發者即可';
