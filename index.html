@@ -480,7 +480,7 @@ const EMP = [
  {id:'fab',  n:'南方織造',   ind:'text', tier:'中後段',mult:.88,bar:28,burn:1.1,pre:5,esg0:46,dept:'ehs',req:'Higg 指數、化學品管理、SMETA、EcoVadis 金牌',f:'國際品牌客戶的稽核月月來。薪水不高，實戰經驗全台最扎實。'},
  {id:'fud',  n:'統一帝國食品',ind:'food',tier:'龍頭',mult:1.00,bar:34,burn:.9,pre:7,esg0:51,dept:'office',req:'食安與農產供應鏈、SBTi、CDP',f:'2014 年後最早練報告書的地方，制度成熟。'},
  {id:'shop', n:'團購王流通', ind:'retail',tier:'龍頭',mult:.93,bar:32,burn:1.05,pre:6,esg0:43,dept:'pr',req:'供應商行為準則、包裝減量',f:'S 面向專案豐富。做環境面的預算要用搶的。'},
- {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.85,pre:8,esg0:54,dept:'consult',big4:1,firm:'yellow',f:'四大裡最好進的一間，缺人時大量招募。兩年學五年的東西，只是薪水在四大裡敬陪末座。'},
+ {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:26,burn:1.85,pre:8,esg0:54,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。兩年學五年的東西——只是薪水在四大裡敬陪末座。'},
  {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:.88,bar:26,burn:1.9,pre:8,esg0:55,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
  {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:.90,bar:28,burn:2.05,pre:8,esg0:55,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
  {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:.92,bar:28,burn:1.95,pre:8,esg0:56,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
@@ -498,9 +498,9 @@ const EMP = [
 /* 四大：只以顏色代稱，畫面與程式碼皆不出現任何事務所本名 */
 function isBig4(e){ return !!(e && e.big4) }
 const BIG4 = ['b4y','b4o','b4g','b4b'];
-/* 黃色所最好進 → 出現機率最高 */
+/* 四大四間出現機率相同 */
 function pickBig4(){
-  const w = {b4y:5, b4o:3, b4g:3, b4b:3};
+  const w = {b4y:3, b4o:3, b4g:3, b4b:3};
   const ids = BIG4.slice(); let tot=0; ids.forEach(function(k){ tot+=w[k] });
   let r=rnd()*tot;
   for(const k of ids){ r-=w[k]; if(r<=0) return EMP.find(function(e){ return e.id===k }) }
@@ -1567,7 +1567,7 @@ CARDS.push(
 /* ===== 職場政治與趣味事件（item 5） ===== */
 CARDS.push(
 {id:'f_purge',pool:'p',w:12,t:'部門鬥爭把你逼到牆角',
- cond:function(s){return s.inESG&&s.esgYrs>=3&&!s.freelance},
+ cond:function(s){return s.inESG&&s.esgYrs>=3&&!s.freelance&&!(s.emp&&s.emp.big4)},
  x:'新來的協理帶了自己的人馬。你的提案被一再打回、資源慢慢被抽走、會議越開越邊緣。<em>訊息很清楚：他們希望你自己走</em>。',
  o:[{l:'硬留，把事情做到無可挑剔',e:{G:3,burn:20,rel:-2},r:'你把每件事做到讓他們挑不出毛病。你留下來了，但那一年你瘦了五公斤。',trait:'扛過鬥爭'},
     {l:'體面地談離開',e:{quit:1,cash:10,burn:-15},r:'你談了一個好聚好散，拿了一筆離職金。戰略性撤退，有時候比死守聰明。',trait:'全身而退'},
