@@ -1,0 +1,13 @@
+# 保險用：即使有人手滑，也不會把研究資料推上去
+data/
+*.pdf
+*.docx
+*.xlsx
+[LINE]*
+*逐字稿*
+*薪資大調查*
+
+# 系統檔
+Thumbs.db
+.DS_Store
+desktop.ini
