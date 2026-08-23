@@ -257,11 +257,11 @@ const TREND = {
 2013:'GRI G4 準則發布，導入「重大性」概念。金管會推出強化公司治理藍圖。',
 2014:'★ 食品、化工、金融與資本額百億以上公司強制編製 CSR 報告書。永續職缺第一次真正出現。',
 2015:'★ 聯合國 SDGs 發布、巴黎協定通過。溫室氣體減量及管理法施行。全台出版 384 本報告書。',
-2016:'巴黎協定生效。報告書 458 本。太陽能產業鏈殺價競爭，台廠一家一家倒。',
+2016:'巴黎協定生效。顧問圈開始談 SBT 科學基礎減量目標、赤道原則、CSR 案例——但那時這些都還是少數人在讀的名詞。報告書 458 本。太陽能產業鏈殺價競爭，台廠一家一家倒。',
 2017:'★ TCFD 氣候相關財務揭露建議書發布，把氣候從 CSR 議題變成財務議題。資本額 50–100 億公司納入編製範圍。',
-2018:'IPCC 1.5°C 特別報告引爆全球淨零討論。綠領職缺每月 7,747 個、1,474 家企業在找人。',
-2019:'歐盟綠色政綱發布。綠領職缺破萬，每月 10,538 個。',
-2020:'★ 金管會發布「公司治理 3.0—永續發展藍圖」。疫情推升 ESG 的社會面。綠領職缺 11,131 個。',
+2018:'IPCC 1.5°C 特別報告說 2℃ 已經不夠。台灣永續指數推出，SASB 與 GRI 開始整合，歐盟永續金融行動方案立法。綠領職缺每月 7,747 個、1,474 家企業在找人。',
+2019:'歐盟綠色政綱與永續分類法（Taxonomy）成形，淨零碳資產聯盟成立，投資人開始用 Climate Action 100+ 向企業施壓。「企業存在的目的是什麼」被重新拿出來問。綠領職缺破萬，每月 10,538 個。',
+2020:'★ 金管會發布「公司治理 3.0—永續發展藍圖」，ESG 正式進入監理語彙。疫情把「韌性」與「供應鏈斷鏈」推上檯面；歐盟、日韓、中國接連宣布淨零承諾。CSR 報告書辦法修訂，氣候風險成為必要揭露。綠領職缺 11,131 個。',
 2021:'★ 總統宣示 2050 淨零。COP26 上 IFRS 基金會宣布成立 ISSB；同年 TNFD 自然相關財務揭露工作小組成立——氣候之後，下一個是自然。綠領職缺跳到 15,109 個，一年增三成六。',
 2022:'★★ 金管會發布永續發展路徑圖：2027 全體上市櫃完成溫盤、2029 完成確信。CSR 報告書正式更名永續報告書。ISSB 發布 S1／S2 徵求意見稿，TNFD beta 框架陸續問世。綠領職缺暴增至 22,111 個（＋46%），報告書 777 本。',
 2023:'★★ 準則大爆發的一年：ISSB 六月正式發布 IFRS S1／S2；TNFD 九月發布最終建議 v1.0，把 TCFD 的四支柱從氣候擴大到自然；金管會八月發布我國接軌藍圖，採直接採用。同年氣候變遷因應法施行、環境部升格、CBAM 進入過渡期。報告書首度破千，1,006 本。',
@@ -327,11 +327,17 @@ const GOALS = [
 
 /* ============ 雇主（去識別化，梗名） ============ */
 const IND = {
- semi:{n:'半導體',c:1.49},fin:{n:'金融保險',c:1.63},elec:{n:'電子製造',c:1.04},
- steel:{n:'鋼鐵水泥',c:0.88},chem:{n:'塑化',c:1.04},food:{n:'食品',c:0.84},
- text:{n:'紡織',c:0.77},ship:{n:'航運',c:1.33},retail:{n:'零售',c:0.78},
- green:{n:'綠能環保',c:1.02},cons:{n:'顧問業',c:0.85},pub:{n:'公部門智庫',c:0.88},ngo:{n:'NGO',c:0.72}
+ semi:{n:'半導體',c:1.49,mat:2},   fin:{n:'金融保險',c:1.63,mat:2},  elec:{n:'電子製造',c:1.04,mat:1},
+ steel:{n:'鋼鐵水泥',c:0.88,mat:0},chem:{n:'塑化',c:1.04,mat:0},     food:{n:'食品',c:0.84,mat:0},
+ text:{n:'紡織',c:0.77,mat:1},     ship:{n:'航運',c:1.33,mat:0},     retail:{n:'零售',c:0.78,mat:-1},
+ green:{n:'綠能環保',c:1.02,mat:1},air:{n:'航空',c:1.15,mat:0},      pharma:{n:'製藥生技',c:0.91,mat:-1},
+ build:{n:'建築營造',c:1.06,mat:-2},
+ cons:{n:'顧問業',c:0.85,mat:2},   pub:{n:'公部門智庫',c:0.88,mat:1}, ngo:{n:'NGO',c:0.72,mat:1}
 };
+/* 產業成熟度：電子與金融跑在最前面，營建與零售最慢。
+   影響該產業在某一年的永續職缺深度、團隊規模與議題難度。 */
+function indMat(id){ return (IND[id] && IND[id].mat) || 0 }
+function matYear(id){ return S.year + indMat(id) }   // 該產業「感覺上」的年份
 const EMP = [
  {id:'gg',   n:'積積電子',   ind:'semi', tier:'龍頭',mult:1.35,bar:60,burn:1.3,pre:10,f:'全台最大的那座山。分工細到你三年可能只做同一張表。'},
  {id:'fa',   n:'發哥科技',   ind:'semi', tier:'龍頭',mult:1.28,bar:52,burn:1.25,pre:9,f:'永續團隊小而精，薪水直逼護國群山。'},
@@ -352,7 +358,12 @@ const EMP = [
  {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
  {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
  {id:'ngo',  n:'國際倡議組織',ind:'ngo', tier:'NGO',mult:.75,bar:30,burn:1.0,pre:7,f:'薪水最低，影響力敘事最強。通往國際線的蟲洞。',intl:true},
- {id:'fbrand',n:'外商品牌台灣分部',ind:'retail',tier:'外商',mult:1.25,bar:50,burn:.85,pre:8,f:'薪水高、假多、一人當三人用。策略在總部。',intl:true}
+ {id:'fbrand',n:'外商品牌台灣分部',ind:'retail',tier:'外商',mult:1.25,bar:50,burn:.85,pre:8,f:'薪水高、假多、一人當三人用。策略在總部。',intl:true},
+ {id:'sky',  n:'翱翔航空',     ind:'air',   tier:'龍頭',mult:1.10,bar:42,burn:1.05,pre:7,f:'燃油就是碳排，減碳等於省錢。但要換的是整隊飛機。'},
+ {id:'lowfare',n:'小藍天航空', ind:'air',   tier:'中後段',mult:.92,bar:30,burn:1.15,pre:5,f:'廉航。成本壓到極限，永續預算是最後才排到的那一項。',fortune:'travel'},
+ {id:'pharma_big',n:'保生製藥',ind:'pharma',tier:'龍頭',mult:1.05,bar:38,burn:1.0,pre:7,f:'靠併購長大，十個廠區三個國家，每一家的制度都不一樣。',intl:true},
+ {id:'pharma_sm',n:'新藥小廠', ind:'pharma',tier:'中後段',mult:.88,bar:26,burn:1.1,pre:4,f:'研發燒錢、還沒獲利，但國際品牌客戶已經開始問永續問卷。'},
+ {id:'build',n:'老牌營造廠',   ind:'build', tier:'中後段',mult:.95,bar:30,burn:1.15,pre:5,f:'工地、職安、廢棄物。這裡的永續是很具體的事。'}
 ];
 /* 非永續職缺（繞路入行用） */
 const DETOUR = [
@@ -367,6 +378,8 @@ const FORTUNE = {
  ship:{yrs:[2021,2022],t:'boom',ttl:'運價瘋了',txt:'貨櫃運價一年翻了好幾倍。年終公告貼出來，辦公室有人哭了。',pay:.30,bonus:[20,40],after:{yr:2023,txt:'運價回落，年終縮回三個月。去年跳槽的同事現在是傳說。'}},
  ai:{yrs:[2023,2024],t:'boom',ttl:'AI 伺服器訂單湧進來',txt:'雲端客戶的單接到手軟，順帶把 RE100 與範疇三的要求一起壓下來。永續部門突然變 VIP。',pay:.20,bonus:[8,16]},
  grid:{yrs:[2022,2023,2024],t:'boom',ttl:'五十年老廠變當紅炸子雞',txt:'電網投資加上 AI 用電，變壓器成了全世界的瓶頸。股價翻了一輪又一輪。',pay:.25,bonus:[6,12]},
+ travel:{yrs:[2020,2021],t:'bust',ttl:'客艙空了',txt:'邊境關閉，航班掉到剩下個位數。公司開始放無薪假，永續預算第一個被砍。',pay:-.10,risk:.20,
+   after:{yr:2023,txt:'旅遊報復性反彈，班班客滿。但你記得那兩年辦公室有多安靜。'}},
  solar:{yrs:[2016,2017],t:'bust',ttl:'太陽能殺價殺到見骨',txt:'整條產業鏈流血競爭，同業一家一家合併、一家一家倒。做對的事的公司也會倒。',pay:-.05,risk:.25}
 };
 
@@ -1237,6 +1250,104 @@ CARDS.push(
     {l:'先觀望這個聯盟做得起來嗎',e:{G:3,sp:1},r:'你判斷得沒錯，框架還要好幾年才會定案。只是等它定案時，先做的人已經有五年的案例。'}]}
 );
 
+
+/* ===== 產業別專屬議題 =====
+   每個產業真正在煩惱的事都不一樣。做半導體的煩綠電，做藥的煩冷鏈，
+   做航空的煩那些抵換到底算不算數。 */
+CARDS.push(
+/* ── 半導體 ── */
+{id:'q_semi_re',pool:'p',w:13,t:'綠電要從哪裡來',
+ cond:function(s){return s.emp&&s.emp.ind==='semi'&&s.year>=2021},
+ x:'客戶要求 2030 年百分百再生能源。你算了一下用電量，<em>發現全台灣的綠電加起來都不太夠你們用</em>。',
+ o:[{l:'去簽長期購電合約',e:{E:6,G:4,burn:10},r:'你參與了一個二十年的購電案。價格鎖在那裡，好壞要二十年後才知道。',trait:'簽過長約'},
+    {l:'先買憑證頂著',e:{E:3,co2:-1},r:'數字達標了。但你知道那不等於你們的機台真的用到了綠電。'},
+    {l:'從省電這端下手',e:{E:5,co2:2,burn:8},r:'你跟廠務一起把冰水主機和無塵室的參數重調。省下來的電比買到的綠電還多。',trait:'先省再買'}]},
+{id:'q_semi_water',pool:'p',w:11,t:'又要限水了',
+ cond:function(s){return s.emp&&s.emp.ind==='semi'},
+ x:'水情吃緊，新聞開始報導科學園區的用水量。<em>你們的回收率已經是全球前段，但沒有人在乎那個數字</em>。',
+ o:[{l:'把水足跡揭露做完整',e:{E:5,D:3,G:2},r:'你把取水、耗水、回收的全鏈條數字攤開，附上與同業的比較。輿論沒有變，但主管機關看到了。'},
+    {l:'投資更高階的回收設備',e:{E:6,co2:2,burn:8},r:'回收率再往上推了兩個百分點。成本很高，但缺水那年你們沒有停過線。'}]},
+
+/* ── 金融 ── */
+{id:'q_fin_pcaf',pool:'p',w:13,t:'你們的碳排不在自己身上',
+ cond:function(s){return s.emp&&s.emp.ind==='fin'&&s.year>=2022},
+ x:'銀行自己的用電排碳很少，<em>但放款和投資組合背後的碳排是它的幾百倍</em>。<br><br>要算，就得跟每一個借款戶要資料。',
+ o:[{l:'導入投融資碳排盤查',e:{G:7,E:4,burn:14},r:'你花了一年建立資料庫，把授信部位的碳排算出來。那個數字讓經營層安靜了很久。',trait:'算過投融資碳排'},
+    {l:'先做重點產業就好',e:{G:4,E:2},r:'你先算了電力、鋼鐵、水泥三個產業。是個開始。'},
+    {l:'等主管機關要求再說',e:{sp:1,co2:-1},r:'兩年後永續金融評鑑把它列進去了，你們從零開始追。'}]},
+{id:'q_fin_eval',pool:'p',w:12,t:'永續金融評鑑',
+ cond:function(s){return s.emp&&s.emp.ind==='fin'&&s.year>=2023},
+ x:'金管會的永續金融評鑑結果要公布了。<em>同業都在比排名，而你們去年落在中段</em>。',
+ o:[{l:'照評鑑指標逐項補強',e:{G:6,D:4,burn:12},r:'你把每一個扣分項拆開處理。名次上去了，你也把整套治理架構補完了。'},
+    {l:'挑分數最好拉的補',e:{G:3,D:3,co2:-1},r:'名次進步了五名。真正難的那幾項還留在原地。'}]},
+
+/* ── 航空 ── */
+{id:'q_air_saf',pool:'p',w:13,t:'永續航空燃料貴三倍',
+ cond:function(s){return s.emp&&s.emp.ind==='air'&&s.year>=2022},
+ x:'減碳最有效的方法是換燃料。<em>但永續航空燃料的價格是傳統燃油的三倍，而且供給量遠遠不夠</em>。',
+ o:[{l:'先小量導入並公開揭露比例',e:{E:6,G:3,co2:2,burn:8},r:'你們從百分之一開始摻配，並誠實揭露這個比例。有人笑太少，但那是真的。',trait:'誠實的減碳'},
+    {l:'主打機隊汰換的減碳效益',e:{E:4,D:4},r:'新機的油耗確實低很多。這個故事好講，也是真的——只是換機隊本來就會做。'},
+    {l:'買抵換額度達標就好',e:{D:3,co2:-2,gwrisk:1},r:'碳中和航班上線了。兩年後有媒體開始質疑那些額度的品質。'}]},
+{id:'q_air_corsia',pool:'p',w:11,t:'國際航空的碳抵換機制',
+ cond:function(s){return s.emp&&s.emp.ind==='air'&&s.year>=2023},
+ x:'國際航空的碳抵換機制進入強制階段，<em>超出基準的排放要買額度來抵</em>。財務部問你：一年要花多少錢？',
+ o:[{l:'建立排放預測與成本模型',e:{E:5,G:5,sp:1,burn:10},r:'你做了一份三年的成本推估。經營層第一次把碳當成預算科目來看。',trait:'把碳做成預算'},
+    {l:'等主管機關給指引',e:{sp:1},r:'指引來的時候只剩三個月。那三個月你沒有睡好。'}]},
+
+/* ── 製藥 ── */
+{id:'q_pharma_brand',pool:'p',w:13,t:'品牌客戶的永續承諾落到你身上',
+ cond:function(s){return s.emp&&s.emp.ind==='pharma'&&s.year>=2022},
+ x:'國際品牌藥廠對外宣布了自己的淨零目標。<em>而你們是它的供應鏈</em>。<br><br>問卷來了，要求提供產品層級的碳數據。',
+ o:[{l:'從主力產品開始做碳足跡',e:{E:6,S:3,sp:1,burn:12},r:'你挑了營收前三的品項先做。做完才發現，最大的排放來自原料藥的合成步驟。',trait:'算到產品層級'},
+    {l:'先提供廠級數據交差',e:{E:3,D:3},r:'對方收下了，但註明「未來需提供產品層級數據」。這件事只是延後。'}]},
+{id:'q_pharma_cold',pool:'p',w:11,t:'冷鏈不能停',
+ cond:function(s){return s.emp&&s.emp.ind==='pharma'},
+ x:'減碳要省電，但<em>冷鏈斷一次，整批藥就報廢</em>。品保部門的立場很清楚：不要碰。',
+ o:[{l:'找不影響品質的節能點',e:{E:5,co2:2,rel:2,burn:10},r:'你和品保、廠務一起盤點，最後從冰水主機與空調著手，冷鏈完全沒動。省了一成的電。',trait:'懂得繞路'},
+    {l:'尊重品保，改做別的',e:{E:2,rel:2},r:'你把減碳重心移到包裝與運輸。也是有效的，只是慢一點。'}]},
+{id:'q_pharma_merge',pool:'p',w:12,t:'又併了一家',
+ cond:function(s){return s.emp&&s.emp.ind==='pharma'&&s.emp.tier==='龍頭'},
+ x:'公司今年完成第三件併購。<em>新來的廠區用的是完全不同的制度，有些連用電度數都還在人工抄表</em>。<br><br>而你的合併報表要涵蓋它們。',
+ o:[{l:'在每個廠找一個窗口，慢慢建',e:{S:6,rel:4,en:2,burn:14,intl:1},r:'你開始跑每月的跨國視訊會議。三年後那些窗口成了你在各廠的耳朵。',trait:'培養種子'},
+    {l:'總部訂一套格式強制上繳',e:{G:5,rel:-2,burn:8},r:'格式統一了。但有兩個廠交上來的數字，你到現在還不太敢相信。'},
+    {l:'今年先不納入新併的廠',e:{D:3,co2:-1,gwrisk:1},r:'你在報告書裡註明了邊界。合規，但那兩個廠的排放就這樣消失了一年。'}]},
+
+/* ── 鋼鐵水泥 ── */
+{id:'q_steel_h2',pool:'p',w:12,t:'氫能煉鋼是十年後的事',
+ cond:function(s){return s.emp&&s.emp.ind==='steel'&&s.year>=2023},
+ x:'減碳路徑圖上寫著氫能煉鋼，<em>但那個技術要十年後才成熟，而碳費明年就要繳</em>。',
+ o:[{l:'先做能做的：廢鋼比例與餘熱回收',e:{E:6,co2:3,burn:10},r:'你把眼前能做的全部做完。幅度不大，但每一噸都是真的。',trait:'務實減碳'},
+    {l:'把資源押在長期技術',e:{E:4,G:4,burn:8},r:'你參與了示範計畫。短期看不到成果，但你站進了那個圈子。'}]},
+
+/* ── 紡織 ── */
+{id:'q_text_chem',pool:'p',w:12,t:'化學品清單',
+ cond:function(s){return s.emp&&s.emp.ind==='text'},
+ x:'品牌客戶要求列出染整用的所有化學品，<em>並逐項比對受限物質清單</em>。你們有兩百多種助劑。',
+ o:[{l:'一項一項比對到底',e:{S:6,E:3,burn:16},r:'你花了半年建立化學品資料庫。過程很痛，但後來每一次客戶稽核你都不用重做。',trait:'建過資料庫'},
+    {l:'請供應商自己出具聲明',e:{S:3,rel:1,co2:-1},r:'文件收齊了。有幾家的聲明看起來像是複製貼上的。'}]},
+
+/* ── 食品／零售 ── */
+{id:'q_food_chain',pool:'p',w:11,t:'農產品的碳排怎麼算',
+ cond:function(s){return s.emp&&(s.emp.ind==='food'||s.emp.ind==='retail')},
+ x:'原料來自幾百個小農，<em>沒有人有用電紀錄，更沒有人算過肥料的排放</em>。',
+ o:[{l:'挑一個產區做示範',e:{S:6,co2:2,rel:3,burn:12},r:'你選了一個合作社試辦，做出全台第一份該作物的碳足跡。之後其他產區照著做。',trait:'從一個產區開始'},
+    {l:'用國際資料庫的係數',e:{E:2,D:3,co2:-1},r:'數字有了。但那是國外的耕作條件，跟台灣不太一樣。'}]},
+
+/* ── 營建 ── */
+{id:'q_build_site',pool:'p',w:11,t:'工地的事很具體',
+ cond:function(s){return s.emp&&s.emp.ind==='build'},
+ x:'這裡的永續不是簡報：<em>是廢棄物怎麼分類、是工人有沒有中暑、是鄰居抗議噪音</em>。<br><br>你穿著反光背心站在工地，覺得跟辦公室的世界很遠。',
+ o:[{l:'把職安與環境做成制度',e:{S:7,G:3,co2:1,burn:12},r:'你建立了工地的環安管理程序。那年零重大職災，這個成績比任何報告書都有份量。',trait:'做過第一線'},
+    {l:'先把綠建築認證拿下',e:{E:5,D:4,cash:-3},r:'你們拿到了綠建築標章。行銷部很開心，你知道那跟工地的日常還有距離。'}]},
+
+/* ── 航運 ── */
+{id:'q_ship_imo',pool:'p',w:11,t:'船要換燃料',
+ cond:function(s){return s.emp&&s.emp.ind==='ship'&&s.year>=2023},
+ x:'國際規範要求船舶的碳強度逐年下降。<em>甲醇、氨、生質燃油，每一種都還在賭哪個會成為主流</em>。',
+ o:[{l:'做技術與成本的完整評估',e:{E:6,G:4,sp:1,burn:10},r:'你做了一份三種燃料的比較。決策最後不是你做的，但那份分析被引用了很多次。'},
+    {l:'先從能效與航速優化下手',e:{E:5,co2:2},r:'降速航行加上船身優化，碳強度真的降下來了。沒有換燃料那麼帥，但立刻有效。'}]}
+);
+
 /* ============ 證照 ============ */
 const CERTS = [
  {id:'ipas',  n:'iPAS 淨零碳規劃管理師（初級）',org:'經濟部',cost:2,tw:1,hard:2,stat:'E',gain:3,pay:.02,d:'台灣官方發證，新鮮人最主流的入門證照。'},
@@ -1416,6 +1527,9 @@ const LIFE_ANY = ['x_house','x_life','x_commute','p_fam','x_junior','p_daily','x
 function isFreelance(){ return !!(S.freelance || (S.emp && S.emp.id==='free')) }
 /* 這些事件需要有同事、有主管、有組織 —— 接案者不會遇到 */
 const ORG_ONLY = [
+  'q_semi_re','q_semi_water','q_fin_pcaf','q_fin_eval','q_air_saf','q_air_corsia',
+  'q_pharma_brand','q_pharma_cold','q_pharma_merge','q_steel_h2','q_text_chem',
+  'q_food_chain','q_build_site','q_ship_imo',
   'x_credit','x_alone','x_meet','p_boss','x_side','x_award',
   'x_commute','x_fake','x_deck','p_busy','p_solo','m_teamsplit',
   'm_noconsult','m_seed','m_ceiling','c_sponsor','c_ifrs','h22b',
@@ -1449,6 +1563,37 @@ function checkCross(){
   S.crossTitle=c[0]; S.crossDesc=c[1];
   if(!S.traits.includes(c[0])) S.traits.push(c[0]);
   return c;
+}
+
+
+/* ===== 永續團隊人數 =====
+   由公司層級、產業成熟度與年份共同決定。
+   一人部門什麼都碰但碰不深；大團隊分工細，你只會很懂一塊。 */
+function teamSize(emp){
+  if(!emp) return 0;
+  if(emp.id==='free') return 0;
+  if(emp.ind==='cons') return 30;
+  const my = S.year + indMat(emp.ind);
+  let base = my<2015 ? 0.6 : my<2019 ? 1.2 : my<2022 ? 2.2 : my<2025 ? 4.5 : 6.5;
+  if(emp.tier==='龍頭') base *= 2.4;
+  else if(emp.tier==='外商') base *= 0.8;
+  else if(emp.tier==='中後段') base *= 0.7;
+  else if(emp.tier==='公部門') base *= 2.0;
+  return Math.max(1, Math.round(base));
+}
+function teamWord(n){
+  if(n<=1) return '一人部門';
+  if(n<=3) return String(n)+' 人小組';
+  if(n<=8) return String(n)+' 人團隊';
+  if(n<=20) return String(n)+' 人部門';
+  return String(n)+' 人以上';
+}
+function teamNote(n){
+  if(n<=1) return '整件事都是你的。沒有人可以問，也沒有人跟你搶。';
+  if(n<=3) return '三個人分掉所有的事。你什麼都碰得到，但沒有一項碰得夠深。';
+  if(n<=8) return '開始有分工了。你負責的那一塊會越做越熟。';
+  if(n<=20) return '分工很細。你很懂自己那一塊，但公司的全貌只有主管看得到。';
+  return '大到你不會認識所有同事。要出頭得先在內部被看見。';
 }
 
 /* ============ 畫面 ============ */
@@ -1750,6 +1895,8 @@ function doHunt(i){
   const emp = of.emp;
   S.emp=emp; S.inESG=true; S.domName=IND[emp.ind].n; S.dom+=3;
   S.pay = Math.round(calcPay(emp,0) * (of.k==='intern'?0.95:1));
+  const tz = teamSize(emp);
+  const teamLine = tz ? '<br><br>永續團隊 <strong>'+teamWord(tz)+'</strong>。'+teamNote(tz) : '';
   const note = of.k==='intern' ? '實習轉正。免了面試，也免了比較。'
     : emp.id==='big4' ? '你進了四大。同期二十個人，五年後剩三個。'
     : emp.id==='ngo'  ? '薪水低到你沒好意思跟家裡講。但你每天起床都知道自己在幹嘛。'
@@ -1757,7 +1904,7 @@ function doHunt(i){
     : '你拿到了 offer。';
   S.ledger.push({y:S.year,t:'入職 '+emp.n+'・'+LEVELS[0].t,p:S.pay,mark:1});
   showOutcome('<strong>'+emp.n+'</strong>（'+IND[emp.ind].n+'・'+emp.tier+'）<br>'+emp.f
-    + '<br><br>'+note+'年薪 <strong>'+S.pay+' 萬</strong>。',
+    + teamLine + '<br><br>'+note+'年薪 <strong>'+S.pay+' 萬</strong>。',
     [['年薪',S.pay]], function(){ S.phase='career'; yearStart() });
 }
 
@@ -2053,6 +2200,7 @@ function midYear(){
 }
 function projPick(i){
   const p=PROJ[i], out={};
+  const tsz = teamSize(S.emp);
   if(p.k==='D') S.stamps.report=1;
   if(p.k==='E') S.stamps.ghg=1;
   if(p.k==='S') S.stamps.social=1;
@@ -2060,6 +2208,16 @@ function projPick(i){
     if(S.selfYrs>=3 && !S.traits.includes('圈子裡的人')) S.traits.push('圈子裡的人'); }
   const e=Object.assign({},p.e);
   if(S.rel>=12){ e.sp=(e.sp||0)-1; if(e.co2) e.co2=0 }
+  /* 一人部門什麼都要碰：主力少一點，但其他三項各長一點
+     大團隊分工細：主力多一點，其他不長 */
+  if(p.g==='專業' && tsz>0){
+    if(tsz<=2){
+      if(e[p.k]) e[p.k] = Math.max(1, e[p.k]-2);
+      ['E','S','G','D'].forEach(function(k){ if(k!==p.k) e[k]=(e[k]||0)+2 });
+    } else if(tsz>=8){
+      if(e[p.k]) e[p.k] += 3;
+    }
+  }
   apply(e,out);
   S.projNote = `這一年你壓在<strong>${p.l}</strong>上。` +
     (S.rel>=12 ? '不過你有一半時間在外面跑，實作的時間被吃掉了。' : '');
