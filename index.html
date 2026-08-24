@@ -2539,7 +2539,7 @@ function sidebar(){
 }
 
 function shell(main){
-  app.innerHTML = `<div class="stage"><div>${main}</div><div>${sidebar()}</div></div>`;
+  app.innerHTML = localizeHTML(`<div class="stage"><div>${main}</div><div>${sidebar()}</div></div>`);
   window.scrollTo({top:0,behavior:'instant'});
 }
 
@@ -2589,6 +2589,32 @@ function applyLangChrome(){
   try{ document.title = t('title') }catch(e){}
 }
 try{ const sv=localStorage.getItem('sustalent_lang'); if(sv) LANG=sv }catch(e){}
+
+
+/* ============ 完整英文版：翻譯字典與渲染攔截 ============
+   TR 以「中文原文 → 英文」對照。渲染時在唯一的出口統一替換，
+   沒有翻到的字串會原樣保留（fallback 中文），因此可以分批補譯而不會壞掉。
+   台灣在地梗保留原味，必要時在英文裡加一句括號說明。 */
+const TR = {};
+let TR_KEYS = [];
+function trRegister(map){
+  Object.keys(map).forEach(function(k){ TR[k] = map[k] });
+  TR_KEYS = Object.keys(TR).sort(function(a,b){ return b.length - a.length });   // 長字串優先，避免部分覆蓋
+}
+function tr(str){
+  if(LANG!=='en' || !str) return str;
+  return TR[str] || str;
+}
+/* 把整段 HTML 裡已知的中文片語換成英文（長的先換） */
+function localizeHTML(html){
+  if(LANG!=='en' || !html || !TR_KEYS.length) return html;
+  let out = html;
+  for(let i=0;i<TR_KEYS.length;i++){
+    const k = TR_KEYS[i];
+    if(out.indexOf(k) >= 0) out = out.split(k).join(TR[k]);
+  }
+  return out;
+}
 
 function screenIntro(){
   applyLangChrome();
