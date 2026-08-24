@@ -541,6 +541,24 @@ const EMP = [
  {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg:{e:50,s:52,g:58},csa:1,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
  {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,esg:{e:58,s:60,g:62},csa:-1,dept:'office',f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
  {id:'usr',  n:'大學永續辦公室',ind:'pub', tier:'學校',mult:.68,bar:26,burn:.75,pre:6,esg:{e:58,s:74,g:60},csa:-1,dept:'office',req:'USR 計畫申請與結案、大學社會責任報告書、跨系所協調',f:'留在校園做大學社會責任（USR）。薪水是這一行最低的一群，但你認識整個地方的人——地方創生、社區、學生、教授、公部門，全在你的通訊錄裡。'},
+ {id:'semi3', n:'封測老大哥', ind:'semi', tier:'中後段',mult:1.06,bar:40,burn:1.15,pre:7,esg:{e:70,s:66,g:70},csa:1,dept:'ehs',req:'ISO 14064-1 盤查、廢水與化學品管理、客戶稽核、RE 使用率',f:'封裝測試的規模全球數一數二。製程用水用電都兇，減碳的每一步都很具體。'},
+ {id:'semi4', n:'矽晶圓廠',   ind:'semi', tier:'中後段',mult:1.00,bar:36,burn:1.1,pre:6,esg:{e:60,s:54,g:58},csa:1,dept:'ehs',req:'能源管理、產品碳足跡、客戶問卷',f:'上游材料廠。景氣循環很兇，好的時候賺翻、壞的時候整年放無薪假。'},
+ {id:'elec10',n:'伺服器新貴', ind:'elec', tier:'中後段',mult:1.02,bar:38,burn:1.3,pre:6,esg:{e:52,s:44,g:48},csa:1,dept:'office',req:'AI 伺服器能效、液冷方案、客戶 RE 要求、範疇三',f:'AI 伺服器訂單接到手軟，公司一年長一倍。永續制度還在追人力的成長速度。',fortune:'ai'},
+ {id:'elec11',n:'面板雙雄之一',ind:'elec',tier:'中後段',mult:.94,bar:36,burn:1.15,pre:6,esg:{e:66,s:58,g:62},csa:1,dept:'ehs',req:'ISO 50001、水回收率、產品碳足跡、CDP',f:'面板廠。用水用電是出了名的兇，但也因此把節能做得很深。'},
+ {id:'fin4',  n:'外商銀行台灣分行',ind:'fin',tier:'外商',mult:1.30,bar:52,burn:1.05,pre:8,esg:{e:76,s:74,g:84},csa:1,dept:'risk',req:'總部氣候風險框架、TCFD、赤道原則、英文精通',intl:true,f:'總部的永續政策直接套用，標準比在地銀行高一截。薪水好，但你只是執行總部決定的事。'},
+ {id:'fin5',  n:'投信龍頭',   ind:'fin',  tier:'中後段',mult:1.12,bar:44,burn:1.0,pre:7,esg:{e:64,s:64,g:76},csa:1,dept:'risk',req:'ESG 基金揭露、盡職治理、責任投資、投票權行使',f:'管的是別人的錢。ESG 基金要怎麼分類、怎麼揭露、會不會被說漂綠，全是你的事。'},
+ {id:'steel3',n:'螺絲扣件廠', ind:'steel',tier:'中後段',mult:.84,bar:26,burn:1.0,pre:4,esg:{e:36,s:34,g:34},csa:0,dept:'ehs',req:'CBAM 申報、客戶碳數據要求',f:'隱形冠軍型的傳產。外銷歐洲，CBAM 一來整個慌了——而全公司只有你懂那是什麼。'},
+ {id:'ship3', n:'散裝航運',   ind:'ship', tier:'中後段',mult:1.00,bar:34,burn:.9,pre:5,esg:{e:46,s:48,g:50},csa:0,dept:'office',req:'IMO 碳強度指標、船隊能效',f:'載的是原物料。運價比貨櫃更看天吃飯，永續預算跟著景氣上下。'},
+ {id:'text3', n:'製鞋代工廠', ind:'text', tier:'中後段',mult:.90,bar:30,burn:1.2,pre:5,esg:{e:56,s:52,g:54},csa:1,dept:'ehs',req:'品牌客戶行為準則、移工權益、化學品管理、越南／印尼廠稽核',intl:true,f:'國際運動品牌的代工廠，廠區在東南亞。客戶的稽核比政府還嚴，尤其是勞動條件那一段。'},
+ {id:'food3', n:'冷凍食品廠', ind:'food', tier:'中後段',mult:.86,bar:28,burn:1.0,pre:5,esg:{e:40,s:38,g:38},csa:0,dept:'ehs',req:'冷鏈能耗、食安、包材減量',f:'冷凍櫃二十四小時不能停。省電和食安中間那條線，你要自己找。'},
+ {id:'retail3',n:'電商平台',  ind:'retail',tier:'中後段',mult:1.04,bar:38,burn:1.2,pre:6,esg:{e:48,s:46,g:52},csa:0,dept:'pr',req:'物流碳排、包材減量、賣家永續規範',f:'一天幾十萬個包裹。減碳的戰場在最後一哩路和那些紙箱裡。'},
+ {id:'build3',n:'公共工程統包',ind:'build',tier:'中後段',mult:1.00,bar:34,burn:1.2,pre:6,esg:{e:44,s:46,g:48},csa:1,dept:'ehs',req:'綠建築標章、工地環安、生態檢核、公共工程履約',f:'蓋捷運、蓋橋、蓋公共建築。生態檢核和工地環安是硬要求，做的是很具體的事。'},
+ {id:'green3',n:'儲能系統商', ind:'green',tier:'中後段',mult:.96,bar:32,burn:1.15,pre:5,esg:{e:66,s:56,g:58},csa:0,dept:'office',req:'電池碳足跡、電網服務、消防與安全',f:'綠電的最後一塊拼圖。產業很新、規則還在寫，你等於在幫整個市場定義什麼叫永續。'},
+ {id:'util3', n:'水務工程公司',ind:'util', tier:'中後段',mult:.92,bar:30,burn:1.0,pre:5,esg:{e:58,s:56,g:52},csa:0,dept:'ehs',req:'再生水、污泥處理、ISO 14064-1',f:'做再生水與污水處理。缺水的年代，這是被低估的關鍵基礎設施。'},
+ {id:'ngo2',  n:'在地環保團體',ind:'ngo', tier:'NGO',mult:.62,bar:20,burn:1.1,pre:5,esg:{e:70,s:78,g:64},csa:-1,dept:'office',req:'議題倡議、政策研究、社區溝通、募款',f:'薪水低到不好意思講，做的事卻常常改變政策。你會站在企業的對面——那個位置看到的東西不一樣。'},
+ {id:'pub3',  n:'地方政府環保局',ind:'pub',tier:'公部門',mult:.86,bar:32,burn:.95,pre:6,esg:{e:62,s:60,g:60},csa:-1,dept:'ehs',req:'地方溫室氣體管制執行方案、稽查、公民溝通',f:'第一線的稽查與地方減碳。公文很多、資源很少，但你的一個決定會影響一整個縣市。'},
+ {id:'sys1',  n:'永續系統商', ind:'cons', tier:'新創',mult:1.00,bar:34,burn:1.25,pre:6,esg:{e:58,s:52,g:56},csa:0,dept:'consult',req:'碳管理系統導入、資料架構、客戶教育訓練',f:'賣的是碳管理與 ESG 資料系統。你同時要懂準則和產品——這是這幾年才長出來的職涯。'},
+ {id:'carbon1',n:'碳權開發商',ind:'cons', tier:'新創',mult:.94,bar:32,burn:1.3,pre:5,esg:{e:64,s:54,g:52},csa:-1,dept:'consult',req:'方法學、外加性論證、查驗機構溝通、專案開發',f:'開發自願減量專案、跑方法學、賣額度。前沿、刺激，也非常看市場臉色。'},
  {id:'ngo',  n:'國際倡議組織',ind:'ngo', tier:'NGO',mult:.75,bar:30,burn:1.0,pre:7,esg:{e:64,s:70,g:66},csa:-1,dept:'office',intl:true,f:'薪水最低，影響力敘事最強。通往國際線的蟲洞。'},
  {id:'fbrand',n:'外商品牌台灣分部',ind:'retail',tier:'外商',mult:1.25,bar:50,burn:.85,pre:8,esg:{e:78,s:76,g:80},csa:1,dept:'gm',req:'EcoVadis 金牌、SBTi、總部行為準則、CDP、英文精通',intl:true,f:'薪水高、假多、一人當三人用。策略在總部。'},
  {id:'sky',  n:'翱翔航空',     ind:'air',   tier:'龍頭',mult:1.10,bar:42,burn:1.05,pre:7,esg:{e:88,s:88,g:92},csa:1,dept:'office',req:'SAF 摻配、CORSIA、CDP、DJSI 成分股維持、英文精通',f:'燃油就是碳排，減碳等於省錢。但要換的是整隊飛機。'},
@@ -1582,7 +1600,9 @@ CARDS.push(
 {id:'b_reqscout',pool:'p',w:11,t:'把各家的門檻打聽清楚',
  cond:function(s){return s.rel>=8},
  x:'靠著這些年累積的人脈，你把幾家公司「徵永續人到底要什麼」的真實門檻問清楚了。<em>職缺公告上不會寫的那些</em>。',
- o:[{l:'整理成一張「哪家要什麼」的對照表',e:{reveal:1,rel:1,sp:1},r:'你做了一張對照表。下次要跳槽，每一扇門背後的條件你都心裡有數。',trait:'情報靈通'}]},
+ o:[{l:'整理成一張「哪家要什麼」的對照表',e:{reveal:1,rel:1,sp:1},r:'你做了一張對照表。下次要跳槽，每一扇門背後的條件你都心裡有數。',trait:'情報靈通'},
+    {l:'順手分享給正在找工作的後輩',e:{reveal:1,rel:3,adv:3,soc:1},r:'你把整理好的東西丟進社群，還補了一段「這些門檻背後在意的其實是什麼」。轉發量比你想像的多——很多人根本不知道可以這樣問。',trait:'把情報變公共財'},
+    {l:'留著自己用就好',e:{reveal:1,sp:2},r:'你把它存進自己的筆記。資訊不對稱本來就是優勢，你決定先顧好自己這一局。'}]},
 {id:'b_brandpush',pool:'p',w:12,t:'指標品牌把整個產業往上推',
  cond:function(s){return s.inESG&&s.emp&&s.emp.req&&s.year>=2022},
  x:'你們最大的品牌客戶宣布：明年起供應商一律要 EcoVadis 銀牌、要上 CDP、要有 SBTi 目標。<em>一家龍頭的要求，變成整個產業的門檻</em>。',
@@ -1998,8 +2018,127 @@ const TECHBREAK = [
 ];
 CARDS.push(
 {id:'tech_break',pool:'h',yr:[2031,2032,2033,2034,2035],w:14,plan:1,t:'技術突破',
- x:'',   // 由 showCard 前置換成隨機一則
- o:[]}
+ x:'一項關鍵技術突然成熟，整條減碳路徑要重算。',   // showCard 會換成隨機一則
+ o:[{l:'跟上這波技術轉折',e:{E:7,G:3,co2:2,burn:8},r:'你把新技術納入規劃，減碳路徑整個重排。',trait:'趕上技術轉折'},
+    {l:'先觀望，等它真的穩定',e:{sp:2,co2:1},r:'你判斷得謹慎。技術確實還要一段時間才穩。'}]}
+);
+
+
+/* ===== 突發併購（使用者需求）=====
+   併購是台灣企業最常見的劇變之一：制度要整併、文化要磨合、你的位子可能消失，也可能被放大。 */
+CARDS.push(
+{id:'ma_acquired',pool:'p',w:14,plan:1,t:'公司被併購了',
+ cond:function(s){return s.inESG&&!s.freelance&&s.esgYrs>=2&&s.emp&&s.emp.tier!=='龍頭'},
+ x:'消息是從新聞跑出來的，不是從公司內部：<em>你們被更大的集團買走了</em>。<br><br>接下來幾個月，每個人的位子都要重新排。永續部門通常不是最先被保的那一個。',
+ o:[{l:'主動出擊：做一份「兩家制度整併建議」給新東家',e:{G:7,D:4,rel:3,burn:14},r:'你沒有等別人決定你的去留，直接把兩邊的盤查邊界、報告書範圍、評比參與狀況攤開，寫成一份整併建議。新集團的永續長看完，把你留了下來——還升了半階。',trait:'併購裡活下來'},
+    {l:'低調觀望，先把手上的事做完',e:{sp:2,burn:8,risk:.12},r:'你不表態，安靜把年度報告書交完。有人被留、有人被請走，而你的名字在名單邊緣。'},
+    {l:'趁亂先找下一份',e:{leave:1,burn:6},r:'你判斷併購後的組織會亂上兩年，決定先走。這不是逃，是止損。'}]},
+{id:'ma_acquire',pool:'p',w:13,plan:1,t:'我們買了一家公司',
+ cond:function(s){return s.inESG&&!s.freelance&&s.esgYrs>=3&&s.emp&&(s.emp.tier==='龍頭'||s.emp.tier==='外商')},
+ x:'集團完成了一樁併購。新來的那家公司<em>沒有做過盤查、沒有報告書、連環安衛紀錄都不齊</em>——而從今年起，它的排放要算進你的合併報表。',
+ o:[{l:'派人進駐，從頭建一套',e:{E:6,G:5,S:3,esg:4,burn:16},r:'你在新廠區駐點了三個月，從電費單教到查證。累到不行，但你把一家從零的公司帶到及格線——這是最扎實的一種成就感。',trait:'併購整併專家'},
+    {l:'先用推估值納入，明年再實測',e:{D:4,co2:-1,gwrisk:1},r:'合併報表如期出來了。那間廠的數字是推估的，你在附註裡寫了一行說明。'},
+    {l:'爭取先不納入邊界',e:{G:2,co2:-2,gwrisk:1},r:'你把它列為「建置中」。合規，但明年要納進來的時候，成長率會很難看。'}]},
+{id:'ma_merge_team',pool:'p',w:11,t:'兩個永續團隊，只留一個',
+ cond:function(s){return s.inESG&&!s.freelance&&s.level>=2&&s.esgYrs>=5},
+ x:'併購後的組織整併：兩家公司各有一個永續團隊，<em>合併後只需要一個主管</em>。<br><br>對方那位比你資深三年，但你比他懂這個集團的業務。',
+ o:[{l:'爭取，把自己的價值講清楚',e:{G:5,rel:2,burn:12,relroll:1},r:'你準備了一份「我能為新集團做什麼」的簡報，直接找上決策者。'},
+    {l:'提議兩人分工，不搶那個位子',e:{S:4,soc:2,G:3,rel:3},r:'你提了一個雙軌方案：他管制度與揭露，你管業務端整合。上面採納了——有時候不爭反而拿得多。',trait:'不爭而得'},
+    {l:'接受調任，去帶新併的廠區',e:{dom:6,E:4,burn:8},r:'你去了新廠區。離總部遠了，但你手上第一次有完整的一塊地盤。',trait:'外放歷練'}]}
+);
+
+
+/* ===== 永續獎項生態（使用者需求 item 7）=====
+   取材自台灣四大永續獎的真實運作與 2026 年 NGO 稽核報告：
+   報名要錢、評審看自我揭露、沒有重大污染或職災的排除機制。 */
+CARDS.push(
+{id:'aw_apply',pool:'p',w:13,plan:1,t:'今年要不要報獎',
+ cond:function(s){return s.inESG&&!s.freelance&&s.esgYrs>=2&&s.year>=2018},
+ x:'報名表攤在桌上：綜合績效、報告書獎、單項績效，<em>報一個類別要幾萬塊，全報下來六、七萬跑不掉</em>。<br><br>老闆很想要那座獎盃擺大廳。而你知道，評審主要看的是你「寫了什麼」，不是你「做了什麼」。',
+ o:[{l:'報，而且把準備過程當成內部盤點',e:{D:5,G:4,rel:2,esg:3,cash:-3,burn:10},r:'你把報獎當作一次體檢：為了填那些欄位，你逼公司把散落各處的數據補齊。獎有沒有得到是其次，那份盤點才是真的收穫。',trait:'把報獎變體檢'},
+    {l:'報，衝著獎盃去，能拿分的都寫',e:{D:4,rel:3,cash:-3,co2:-1},r:'你們拿到了一座獎。新聞稿發了、大廳擺了。三個月後有人問你那個獎怎麼評的，你講不太出來。'},
+    {l:'建議不要報，把錢花在實質專案',e:{G:5,co2:1,rel:-2,cash:2},r:'你在會議上說：這筆錢拿去做減量，比買一座獎盃實在。主管臉色不好看，但隔年那筆預算真的挪去做事了。',trait:'不玩虛的'}]},
+{id:'aw_audit',pool:'h',yr:[2026,2027],w:12,t:'得獎名單被打臉了',
+ x:'環團發布稽核報告：<em>去年的永續獎得主裡，超過一半有環保或勞動違規紀錄</em>——有的污染超標被罰、有的出過職災死亡案例，照樣站上台領獎。<br><br>報告點名：評審只看自我揭露，沒有任何排除機制。<br><br>而你們公司，也在那份得獎名單上。',
+ o:[{l:'把違規紀錄攤開，訂內部排除標準',e:{G:7,soc:2,co2:1,rel:-3,burn:12},r:'你主張：有重大違規的那一年就不該去領獎。你替公司訂了自我約束的標準——有人說你自斷手腳，但這件事讓永續部門第一次有了「說不」的權力。',trait:'訂得出紅線'},
+    {l:'先把被點名的違規真的修好',e:{E:4,S:4,co2:2,burn:12},r:'你不辯解，直接去處理那幾件違規。隔年報告再出來時，你們不在名單上了。',trait:'默默把事修好'},
+    {l:'這是環團的立場，公關去處理',e:{rel:1,co2:-2,gwrisk:1},r:'公關發了聲明。獎照領、報照報。那份報告在你的抽屜裡，你偶爾會想起來。'}]},
+{id:'aw_biodiv',pool:'p',w:12,boon:'sci',t:'生物多樣性獎',
+ cond:function(s){return s.year>=2023&&s.inESG},
+ x:'有個新的獎項專門獎勵<em>生物多樣性</em>——而且要求你同時揭露對自然的「衝擊」與「依賴」，架構跟 TNFD 對得上。<br><br>公司有一塊閒置土地，也有人建議乾脆認養一片林地。',
+ o:[{l:'跟林業單位與在地社區合作做復育',e:{E:7,S:5,soc:3,co2:2,burn:14},r:'你們認養了一塊火燒跡地，找了大學、林業單位和在地部落一起做六年復育。兩年後調查記錄到七十幾種原生植物、還拍到穿山甲——<em>這是你做過最不像永續工作、卻最像在做永續的一件事</em>。',trait:'做過復育'},
+    {l:'種樹拍照，做碳匯宣傳',e:{D:4,co2:-1,rel:1,gwrisk:1},r:'你們辦了植樹活動，照片很好看。三年後有人去看，發現存活率不到四成。'},
+    {l:'先做一份自然衝擊與依賴的盤點',e:{E:5,G:3,sp:2},r:'你把廠區疊上生態敏感區圖層，做了 TNFD 式的初步盤點。沒有獎，但你知道下一步該往哪走。',trait:'自然議題先行者'}]}
+);
+
+/* ===== 產業真實新聞改寫（使用者需求 item 8，全部去識別化）===== */
+CARDS.push(
+{id:'nw_ccus',pool:'p',w:12,t:'水泥廠的最後一哩：碳捕捉',
+ cond:function(s){return s.emp&&s.emp.ind==='steel'&&s.year>=2024},
+ x:'董事長在會議上說了一句讓你記很久的話：<em>「就算給我百分之百的綠電，水泥還是會排碳——因為碳是從石灰石燒出來的。」</em><br><br>公司試了十幾年的碳捕捉，現在要在產線上蓋一條年捕十萬噸的示範線。',
+ o:[{l:'投入示範線，把技術路徑走完',e:{E:8,G:4,co2:3,dom:4,burn:14},r:'你參與了整條示範線的規劃。它只佔淨零路徑的一小塊，而且貴得嚇人——但製程排放這件事，沒有捷徑。',trait:'啃過製程排放'},
+    {l:'主張先改配方與替代燃料',e:{E:7,co2:3,burn:10},r:'你把重心放在低碳配方與廢棄物替代燃料。比捕捉便宜、比較快見效，也比較不會變成拖延的藉口。',trait:'務實減碳'}]},
+{id:'nw_methanol',pool:'p',w:12,t:'新船要押哪一種燃料',
+ cond:function(s){return s.emp&&s.emp.ind==='ship'&&s.year>=2024},
+ x:'公司要訂一批新船。甲醇雙燃料？LNG 雙燃料？還是先做「可改裝」的設計，等技術定了再說？<br><br><em>而國際上的淨零框架投票又被延後了</em>，你押的每一種燃料都可能變成擱淺資產。',
+ o:[{l:'押甲醇雙燃料，賭它成為主流',e:{E:7,G:4,burn:10},r:'你們訂了一批甲醇雙燃料船。這是二十年的賭注，而你在會議紀錄上簽了名。',trait:'押過燃料'},
+    {l:'做「可改裝」設計，保留彈性',e:{E:5,G:5,sp:2},r:'主機預留改裝空間，先配高效螺槳與節能舵。不帥，但在規範未定的年代，彈性本身就是價值。',trait:'留了後路'},
+    {l:'先做能效與航速優化',e:{E:5,co2:2},r:'降速航行加上船身優化，碳強度真的降下來了。立刻有效，只是撐不了太久。'}]},
+{id:'nw_coalexit',pool:'p',w:12,t:'要不要宣布退煤',
+ cond:function(s){return s.emp&&s.emp.ind==='fin'&&s.year>=2023},
+ x:'投融資組合裡還有燃煤部位。有人提議宣布<em>全面退煤時程</em>——這在亞洲的銀行裡沒幾家做過。<br><br>業務單位跳腳：那些是穩定的客戶。',
+ o:[{l:'訂出明確的退煤年限並對外承諾',e:{G:8,co2:3,rel:-2,burn:12},r:'你把煤炭收入占比的門檻一階一階訂下去，寫進政策、對外公告。業務單位恨你半年，國際評比給了你們最好的一次分數。',trait:'推動過退煤'},
+    {l:'先訂內部門檻，不對外承諾',e:{G:4,co2:1},r:'你們默默調整了授信標準。做了，但沒有說——在這個年代，這其實是常態。'},
+    {l:'維持現狀，先做揭露就好',e:{D:3,co2:-2},r:'你把部位揭露出來。數字攤在陽光下，然後就沒有然後了。'}]},
+{id:'nw_saf',pool:'p',w:11,t:'本土的永續航空燃料',
+ cond:function(s){return s.emp&&s.emp.ind==='air'&&s.year>=2025},
+ x:'國內煉油廠開始用<em>廢食用油</em>做永續航空燃料，來談長約。量不大——摻配比例大概只有百分之二。<br><br>有人說這只是作秀，也有人說總得從第一批開始。',
+ o:[{l:'簽下來，並誠實揭露摻配比例',e:{E:6,G:3,co2:2,burn:8},r:'你們簽了五年的量，並在報告書上老實寫出「百分之二」。有人笑太少，但那是真的，而且是台灣自己做的。',trait:'誠實的減碳'},
+    {l:'等國際供應鏈成熟再大量採購',e:{sp:2,G:2},r:'你判斷現在的量太小、價格太高。合理，但你們也錯過了跟本土供應鏈一起長大的機會。'}]},
+{id:'nw_t2t',pool:'p',w:11,t:'把舊衣變成新衣',
+ cond:function(s){return s.emp&&s.emp.ind==='text'&&s.year>=2024},
+ x:'紡織業今年在拚<em>「衣到衣」的循環</em>——不是把寶特瓶做成衣服，是把舊衣服真的做回新纖維。<br><br>但便宜的境外再生料一直進來，而且有人開始質疑：瓶子做成衣服，反而害瓶子回不去做瓶子。',
+ o:[{l:'投資分子級再生技術與回收體系',e:{E:7,S:4,co2:3,cash:-4,burn:12},r:'你推動公司投資新技術，也去談本地的回收體系。慢、貴，但這是唯一走得下去的路。',trait:'做過真循環'},
+    {l:'先用境外再生料衝比例達標',e:{D:4,co2:-1,gwrisk:1},r:'再生料比例達標了，客戶問卷過關了。你知道那個數字背後的循環其實沒有真的閉合。'}]},
+{id:'nw_scope3food',pool:'p',w:11,t:'八成的碳不在你的工廠裡',
+ cond:function(s){return s.emp&&(s.emp.ind==='food'||s.emp.ind==='retail')&&s.year>=2023},
+ x:'你算完才發現：公司的排放<em>八成在原料與包裝，只有兩成在自己的工廠</em>。<br><br>而你去年做的所有減碳專案，都在那兩成裡面。',
+ o:[{l:'從原料端做起，跟農民一起做低碳產品',e:{S:7,E:4,soc:3,co2:3,burn:15},r:'你跟產銷單位合作，做出第一個低碳原料的商品上架。從產地到貨架，你第一次看見整條鏈。',trait:'從產地做起'},
+    {l:'先把包裝減量做到位',e:{E:5,co2:2,D:3,burn:8},r:'包材減量、材質單一化、rPET 導入。務實的一步，而且消費者看得見。'},
+    {l:'繼續做那兩成，比較好控制',e:{E:3,co2:-1},r:'你把工廠的能源效率再往上推一點。數字漂亮，但那八成還在那裡。'}]},
+{id:'nw_datacenter',pool:'p',w:11,t:'資料中心變成減碳的門面',
+ cond:function(s){return s.emp&&s.emp.ind==='telco'&&s.year>=2025},
+ x:'公司決定把資料中心做成減碳的招牌：<em>百分之百綠電、AI 控管電源、PUE 一路壓低</em>，還要拿它去幫企業客戶談減碳。<br><br>問題是，綠電要從哪裡來。',
+ o:[{l:'簽長期綠電轉供，把二十年的量鎖住',e:{E:8,G:4,co2:3,burn:12},r:'你參與了一紙二十年的綠電轉供合約。量鎖住了，資料中心成了公司對外最好的名片。',trait:'鎖到長期綠電'},
+    {l:'先把 PUE 與 AI 電源管理做到最好',e:{E:6,co2:2,sp:2,burn:9},r:'你從能效端下手，把每一度電的效益拉到極限。買不到綠電的年代，這是最實在的一手。',trait:'能效派'}]}
+);
+
+/* ===== 公正轉型（使用者需求 item 11）=====
+   十二項關鍵戰略的第十二項——排在最後那一項，本身就是一種隱喻。 */
+CARDS.push(
+{id:'jt_intro',pool:'h',yr:[2023,2024,2025],w:12,boon:'soc',t:'第十二項戰略',
+ x:'淨零十二項關鍵戰略裡，前十一項都在講技術：風光電、氫能、儲能、碳捕捉、運具電動化⋯⋯<br><br><em>第十二項叫「公正轉型」，排在最後一個</em>。它講的是：那些因為轉型而失去工作的人，怎麼辦。<br><br>氣候法把它寫進條文了，但沒有專款的基金。',
+ o:[{l:'把受影響的人先盤出來',e:{S:7,soc:4,G:3,burn:11},r:'你把公司裡可能受衝擊的職務、廠區、承攬商一項一項列出來——燃煤、製程、運輸。清單比想像中長，而這是所有討論的起點。',trait:'把人盤出來'},
+    {l:'先做技術減碳，人的事以後再說',e:{E:5,co2:2,soc:-2},r:'你把力氣放在看得見成果的地方。很合理——大部分公司也是這樣做的。'},
+    {l:'去讀國際上怎麼做',e:{G:4,en:2,sp:2},r:'你翻了國際勞工組織的指引和歐盟的轉型基金。台灣有原則、有法條，就是沒有那筆錢——這個落差你記下來了。'}]},
+{id:'jt_coal',pool:'p',w:12,boon:'soc',t:'電廠要除役了，那些人呢',
+ cond:function(s){return s.year>=2024&&s.emp&&(s.emp.ind==='util'||s.emp.ind==='steel'||s.emp.ind==='chem')},
+ x:'燃煤機組的除役時程確定了。地方政府要更快、公司說會停電、環團說跳票——<em>而最少被問到的，是那些在裡面工作了二十年的人</em>。<br><br>還有周邊那些靠電廠吃飯的承攬商、便當店、宿舍。',
+ o:[{l:'做一份轉職與再培訓的完整計畫',e:{S:8,soc:5,G:3,burn:16},r:'你跟人資、工會、地方政府一起，替受影響的員工排了轉職路徑與再培訓。有人轉去了新的燃氣機組，有人去了光電維運。<em>沒有人上新聞，但每個人都有下一步。</em>',trait:'讓人有下一步'},
+    {l:'照法規給資遣費就好',e:{D:3,soc:-3,co2:-1},r:'該給的都給了，合法合規。幾個月後你在新聞上看到熟悉的名字，在抗議現場。'},
+    {l:'爭取讓工會加入減量計畫的討論',e:{S:6,soc:4,G:4,rel:-2,burn:12},r:'你主張自主減量計畫應該有勞資協商——「沒有勞資協商，就沒有自主減量」。管理層很不習慣，但這是台灣最少被討論、卻最關鍵的一環。',trait:'把工會拉進來'}]},
+{id:'jt_fisher',pool:'p',w:11,boon:'soc',t:'漁民說：我們不要補償',
+ cond:function(s){return s.year>=2023&&s.emp&&(s.emp.ind==='green'||s.emp.ind==='util')},
+ x:'離岸風場的海域，本來是漁場。補償金談了幾輪，有漁民在協調會上說了一句：<em>「把風機撤掉，我們不要錢。」</em><br><br>那不是在喊價。那是在說：錢買不回那片海。',
+ o:[{l:'重新設計共存方案，不只是發錢',e:{S:8,soc:5,rel:3,co2:1,burn:15},r:'你推動了長期的共存機制：漁場影響監測、漁民參與的巡檢工作、在地就業。慢得要命，但你不再只是那個來發錢的人。',trait:'不只是發錢'},
+    {l:'照基準把補償金發完',e:{D:3,soc:-2,rel:-1},r:'補償照基準發了，程序完備。抗議的船還是出海了。'},
+    {l:'去跟漁民一起出海一趟',e:{S:6,soc:3,rel:2,sp:2},r:'你上了船，看了一整天他們怎麼工作。回來後你寫的那份報告，跟之前所有版本都不一樣。',trait:'上過那條船'}]},
+{id:'jt_south',pool:'p',w:11,boon:'soc',t:'空氣是南部的，電是北部用的',
+ cond:function(s){return s.year>=2024&&(s.region==='高雄'||s.region==='台中'||s.emp&&(s.emp.ind==='util'||s.emp.ind==='chem'||s.emp.ind==='steel'))},
+ x:'地方議員在質詢台上問：<em>「發電的空污我們扛了幾十年，電價憑什麼跟北部一樣？」</em><br><br>台電說電網是一整張、電流方向一直在變。兩邊講的都是事實，而住在煙囪旁邊的人，只想知道自己承擔的那一份要怎麼算。',
+ o:[{l:'把區域承擔的成本算出來，寫進揭露',e:{G:6,S:5,soc:4,burn:12},r:'你做了一份區域環境負擔的分析，寫進報告書。沒有人要求你做，但這是「公正」兩個字第一次在你們公司變成數字。',trait:'把不公平算出來'},
+    {l:'加碼在地投資與健康照顧',e:{S:6,soc:4,cash:-3,rel:2},r:'你推動了在地的健康篩檢與社區投資。不能解決結構問題，但對住在那裡的人是真的。'},
+    {l:'這是能源政策的事，不是我們的事',e:{sp:1,soc:-2},r:'你把它歸類成政策問題。技術上沒錯——只是那個煙囪就在你們廠區裡。'}]}
 );
 
 /* ============ 證照 ============ */
@@ -2542,7 +2681,7 @@ function newGameCore(){
      traits:[], certs:[], ledger:[], used:{}, hunt:0, quitFlag:0, joinFlag:0, foundFlag:0,
      intlFlag:0, health:0, riskAcc:0, school:null, major:null, goal:null, phase:'setup', jobless:0, freelance:0, freeYrs:0, uniScore:0, prevJob:'', carried:0, projNote:'', evOut:null, crossTitle:'', crossDesc:'', cardsLeft:0, adriftSeen:0, stamps:{}, ceilingSeen:0, yearUsed:{}, studied:0,
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
-     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}};
+     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -2858,7 +2997,8 @@ function showOutcome(text, deltas, next, extra){
 /* ============ 求職 ============ */
 
 /* ===== 業界頂尖：不是有能力就進得去 ===== */
-const ELITE = ['gg','fa','tree','fbrand'];
+/* 頂尖企業：履歷硬還不夠，要有人內推、市場很熱、或實習卡位（使用者需求 item 4） */
+const ELITE = ['gg','fa','tree','fbrand','saus','telco1','telco2','sky','retail2','fin4','cem','stl'];
 function resumeScore(){ return cw() + (S.uniScore||0) + Math.floor(S.luck*0.4) }
 function gradHard(){ const f=S.gradField&&(gradFieldById(S.gradField)||gradOverseasById(S.gradField)); return f?(f.hard||0):0 }
 function canReachEmp(e, m){
@@ -3444,6 +3584,8 @@ function applyProject(p, e, resultNote, trait){
       if(dk){ const b=S.esgBoostDim[id]||(S.esgBoostDim[id]={}); b[dk]=Math.min(20,(b[dk]||0)+gain*0.8) }
     }
     S.esgLift=(S.esgLift||0)+gain;
+    /* 年復一年真的在做減量 → 累積實質減碳（讓「真正減下碳」這個目標有機會達成）*/
+    if(p.k==='E' && so.q>=1){ S.co2 += 1; }
   }
   const chips=(out.d||[]);
   S.projNote = (resultNote ? resultNote+' ' : `這一年你壓在<strong>${p.l}</strong>上。`)
@@ -3456,6 +3598,8 @@ function applyProject(p, e, resultNote, trait){
 function yearEnd(){
   // 年資
   S.workYrs++; if(S.inESG) S.esgYrs++; if(S.freelance) S.freeYrs++;
+  /* 國際資歷：待在外商／國際組織或在海外工作的年數 */
+  if((S.emp && S.emp.intl) || S.abroad) S.intlYrs = (S.intlYrs||0) + 1;
   if(S.bond>0) S.bond--;
   if(S.cash<0){                                   // 負債：有利息、有壓力，但不會無限滾大
     S.cash = Math.max(-180, Math.round(S.cash*1.02));
@@ -3944,10 +4088,11 @@ function goalMet(){
   const g=S.goal.id;
   if(g==='cso') return S.level>=4;
   if(g==='money') return S.pay>=200;
-  if(g==='impact') return S.co2>=7;
+  if(g==='impact') return S.co2>=6;
   if(g==='found') return !!(S.foundFlag || (S.freelance && S.freeYrs>=3));
   if(g==='human') return S.burn<=28 && S.pay>=110 && !S.health;
-  if(g==='intl') return !!(S.intlFlag || (S.emp&&S.emp.intl) || (S.en>=14&&S.traits.includes('海外碩士')));
+  if(g==='intl') return !!(S.intlFlag || (S.emp&&S.emp.intl) || (S.intlYrs||0)>=3
+      || (S.abroadYrs||0)>=2 || (S.en>=14&&S.traits.includes('海外碩士')&&(S.intlYrs||0)>=1));
   return false;
 }
 
