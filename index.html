@@ -296,18 +296,18 @@ const MARKET = {
  2010:[800,5,'拓荒期'],2011:[950,6,'拓荒期'],2012:[1200,8,'拓荒期'],2013:[1600,10,'拓荒期'],
  2014:[2800,18,'法遵啟動'],2015:[3800,24,'法遵啟動'],2016:[4800,29,'法遵啟動'],2017:[6200,34,'法遵啟動'],
  2018:[7747,38,'法遵啟動'],2019:[10538,44,'治理擴散'],2020:[11131,47,'治理擴散'],2021:[15109,56,'治理擴散'],
- 2022:[22111,72,'淨零狂飆'],2023:[23703,78,'淨零狂飆'],2024:[25310,84,'淨零狂飆'],2025:[29305,90,'淨零狂飆'],
- 2026:[29733,92,'碳有價'],2027:[31500,93,'碳有價'],2028:[33000,92,'碳有價'],2029:[34000,90,'碳有價'],
- 2030:[33000,80,'AI擠壓'],2031:[32000,74,'AI擠壓'],2032:[32500,73,'AI擠壓'],2033:[33500,74,'轉型金融'],
- 2034:[34500,76,'轉型金融'],2035:[36000,78,'轉型金融'],2036:[36500,78,'調適韌性'],2037:[37000,78,'調適韌性'],
+ 2022:[22111,72,'淨零狂飆'],2023:[23703,80,'淨零狂飆'],2024:[25310,86,'淨零狂飆'],2025:[29305,90,'淨零狂飆'],
+ 2026:[29733,84,'逆風初起'],2027:[30500,74,'逆風退潮'],2028:[30000,66,'逆風退潮'],2029:[28500,60,'泡沫消風'],
+ 2030:[27500,54,'AI重塑'],2031:[28000,56,'AI重塑'],2032:[29500,62,'AI重塑'],2033:[31500,68,'轉型金融'],
+ 2034:[33000,74,'轉型金融'],2035:[35000,76,'調適韌性'],2036:[36000,78,'調適韌性'],2037:[37000,78,'調適韌性'],
  2038:[37500,79,'調適韌性'],2039:[38000,79,'調適韌性'],2040:[38500,80,'調適韌性'],2041:[39000,80,'調適韌性'],2042:[39500,80,'調適韌性']
 };
 const mk = y => MARKET[Math.min(2042,Math.max(2010,y))];
 
 /* ===== 年度趨勢：每一行都對應本專案 data/ 內的公開資料 ===== */
 const TREND = {
-2010:'台灣還沒有「永續」這個職稱。ISO 26000 社會責任指引今年發布，但那是指引，不是規定。',
-2011:'CSR 報告書仍是自願性的。整年出版約 150 本，多數是大型集團的形象刊物。',
+2010:'這一年，台灣還沒有「永續」這個詞。想做這行的人，履歷上寫的是<em>環工、環安衛，或企業社會責任（CSR）</em>。ISO 26000 社會責任指引今年發布，但那是指引，不是規定，也沒有人靠它找到工作。',
+2011:'CSR 報告書仍是自願性的，整年約 150 本，多數是大型集團的形象刊物。<em>那時的職稱叫「CSR 專員」，多半掛在公關部底下，做的是企業形象</em>——沒有人叫它永續。',
 2012:'環保署依空氣污染防制法公告第一批應「申報」溫室氣體排放量的固定污染源，以高排放製造業為主。台灣碳盤查的起點——真正的「應盤查登錄」制度要到 2016 年才依溫管法上路。',
 2013:'GRI G4 準則發布，導入「重大性」概念。金管會推出強化公司治理藍圖。',
 2014:'★ 食品、化工、金融與資本額百億以上公司強制編製 CSR 報告書。永續職缺第一次真正出現。',
@@ -344,7 +344,7 @@ const AI_ERA = {
 2027:{lvl:6,n:'企業在會議上開口問：那我們還需要這麼多初階永續人力嗎？AI 代理人已經能自己跑完一整輪盤查資料勾稽。'},
 2028:{lvl:7,n:'初階永續職缺明顯減少，新鮮人投履歷的回覆率掉了一半。留下來的人，做的是 AI 不敢簽名負責的那部分。'},
 2029:{lvl:8,n:'揭露型工作幾乎全面自動化。查核、談判、決策、以及「為這個數字負責」——這些還是人的事。'},
-2030:{lvl:9,n:'初階職缺塌陷。這個行業的入口，比十年前窄得多。會用 AI 不再是加分，是門檻。'},
+2030:{lvl:9,n:'AI 開始重塑整個永續產業：盤查、揭露、評比大量自動化，永續團隊變小、變資深。一個人加一組代理人，抵得上過去一個部門。'},
 2031:{lvl:9,n:'永續團隊變小、變資深。一個人加一組 AI 代理人，做的是以前一整個部門的量。'},
 2032:{lvl:9,n:'AI 能生成、能勾稽、能預測，但簽字的還是人。這個行業最後值錢的，是判斷與承擔。'}
 };
@@ -943,7 +943,7 @@ CARDS.push(
     {l:'留下來，但換個做法',e:{sp:2,co2:1,burn:-10},r:'你把手上最無聊的那個例行專案砍掉，換成一個自己真的想做的。'},
     {l:'什麼都不做',e:{burn:6},r:'你把訊息滑過去，繼續做手上的事。'}]},
 {id:'m_coffee_dry',pool:'p',w:14,t:'沒有人來問了',
- cond:function(s){return s.year>=2025&&s.esgYrs>=4},
+ cond:function(s){return s.year>=2026&&s.esgYrs>=4},
  x:'你突然想起來：<em>已經好幾個月沒有陌生訊息問你怎麼進永續了</em>。<br><br>前幾年一週一個。這是個很小、但很真實的指標。',
  o:[{l:'寫一篇文章講這個現象',e:{rel:4,sp:-1},r:'那篇文章被轉了很多次。原來大家都有同樣的感覺，只是沒人先說。',trait:'說出大家在想的'},
     {l:'去把自己的定位想清楚',e:{sp:2,G:3},r:'你花了一個週末寫下自己會什麼、想做什麼。清單比你以為的短，也比你以為的具體。'}]},
@@ -1600,13 +1600,13 @@ CARDS.push(
  o:[{l:'把省下的力氣投到真正的減碳',e:{E:5,co2:2,G:2},r:'既然揭露鬆綁，你把資源挪去做實質減量。這是這個行業少數的好消息。',trait:'把力氣花在對的地方'},
     {l:'趁機說服高層：可以不做了',e:{burn:-6,co2:-1,rel:1},r:'你替公司省了成本，高層很滿意。只是你心裡清楚，鬆綁不等於問題消失。'}]},
 {id:'o_freeze',pool:'p',w:12,t:'職缺凍結',
- cond:function(s){return s.year>=2025&&s.esgYrs>=2},
+ cond:function(s){return s.year>=2026&&s.esgYrs>=2},
  x:'全球反 ESG 加上 Omnibus，市場轉成「低招募、低解僱」。<em>你認識的人裡，有人的永續職位被凍結、有人整組被併進法遵</em>。',
  o:[{l:'把自己變成裁不掉的人',e:{G:4,dom:3,sp:1,burn:6},r:'你把手上最不可取代的那塊做深。風向會轉，你要撐到那時候。',trait:'裁不掉的人'},
     {l:'先卡一個穩的位子過冬',e:{hunt:1},r:'你判斷寒冬還沒到底，先找個安穩的地方。'},
     {l:'什麼都不做，繼續把事做完',e:{burn:5,co2:1},r:'你把新聞滑過去，繼續做手上的事。有時候這也是一種策略。'}]},
 {id:'o_greenhush',pool:'p',w:10,t:'做，但不要說',
- cond:function(s){return s.year>=2025&&s.inESG},
+ cond:function(s){return s.year>=2026&&s.inESG},
  x:'反 ESG 的風吹到台灣，高層下令：<em>永續照做，但對外全部低調</em>。連得獎都不要發新聞稿。做的事沒少，只是不敢掛名了。',
  o:[{l:'守住法定該揭露的底線',e:{G:5,D:3,rel:-1},r:'你堅持法規要求的一定要揭露，其餘讓步。這是你能拿到最好的結果。',trait:'守得住底線'},
     {l:'樂得輕鬆，少了一半對外工作',e:{burn:-8,co2:-1,rel:1},r:'今年的對外溝通少了一半。你有更多時間做實質的事——如果你真的拿去做的話。'}]}
@@ -1899,6 +1899,16 @@ CARDS.push(
  x:'你讀到一篇同行寫的文章，標題是<em>「先顧好自己，才能發揮影響力」</em>。裡面講顧問團隊加班是常態、企業裡一人當十人用——<em>做永續的工作，本身卻很不永續</em>。<br><br>你一邊點頭，一邊還在回加班的訊息。',
  o:[{l:'認真替自己畫一條線',e:{burn:-18,rel:-1,sp:1},r:'你開始拒絕一些事、把下班時間要回來。世界沒有塌，你的產出反而更穩。',trait:'替自己畫線'},
     {l:'現在還不行，等這波過去',e:{burn:10,D:2},r:'你告訴自己再撐一下。這句話你已經對自己說了兩年。'}]}
+);
+
+
+/* ===== AI 重塑產業（使用者需求：2030 大量席捲）===== */
+CARDS.push(
+{id:'ai_reshape',pool:'h',yr:[2030,2031,2032],w:12,plan:1,t:'這個行業被重新洗牌了',
+ x:'AI 代理人已經能自己跑完盤查、對照準則、生成報告與評比回覆。<em>永續團隊從十個人縮到三個，剩下的是最資深的那幾個</em>。<br><br>整個行業從「寫報告書」變成「管風險、拿市場門票」。你站在哪一邊？',
+ o:[{l:'成為那個指揮 AI、對結果簽字的人',e:{G:7,sp:2,adv:2,burn:6},r:'你帶著一組 AI 代理人，做的是判斷、談判與承擔——這些 AI 簽不了名。位子不但穩，還更關鍵了。',trait:'AI 時代的資深者'},
+    {l:'轉去做 AI 做不到的實體減碳與現場',e:{E:7,co2:3,dom:3,burn:10},r:'你離開辦公室，走進工廠與供應鏈。機器能生成報告，但擰不動一條真的產線。',trait:'走回實體'},
+    {l:'還想守著原本熟悉的揭露工作',e:{D:2,pay:-.06,risk:.2},r:'你熟練、可靠，但你做的事 AI 三小時就能做完。明年的組織圖上，你的職位被畫上了問號。'}]}
 );
 
 /* ============ 證照 ============ */
@@ -2491,6 +2501,55 @@ const GRAD_FIELDS = [
   d:'政大傳播碩士學程、台大新聞所。「寫作與編輯」其實是台灣 ESG 職務硬技能的第一名。',
   m:'報告書本質是溝通產品，而多數寫得極差。反漂綠、危機溝通、讓工廠主管願意配合——全是你的事。<em>但你最容易被歸類成公關，排除在策略與數據之外。</em>'}
 ];
+
+/* ===== 海外研究所（item 2）：國外選項多、科系雜、英文與國際線是硬優勢，
+   但學費貴、回台要重接人脈。destination 決定風味。 ===== */
+const GRAD_OVERSEAS = [
+ {id:'o_uk_env', n:'英國・環境政策', dest:'英國', axis:'制度', s:{G:7,S:2}, en:6, uni:14, hard:0, dom:0, cost:95,
+  d:'牛津／LSE 一年制。歐盟是環境法規的源頭，在現場待一年，你對法規往哪走的直覺會贏過讀二手摘要的人。',
+  m:'你帶回一套對國際法規的敏感度，和一張很好用的英文學歷。<em>回台後最順的路是外商與國際顧問。</em>'},
+ {id:'o_uk_biz', n:'英國・永續商業', dest:'英國', axis:'制度', s:{G:6,D:3}, en:6, uni:14, hard:-1, dom:1, cost:98,
+  d:'里茲／愛丁堡的 Sustainability & Business。把永續放回商業模式裡談，適合想走策略與永續長路線的人。',
+  m:'你會用商業語言講永續，這在董事會裡很值錢。<em>但技術細節你還是得回來補。</em>'},
+ {id:'o_nl_gov',n:'荷蘭・永續治理轉型', dest:'荷蘭', axis:'制度', s:{G:5,S:4}, en:5, uni:15, hard:0, dom:1, cost:70,
+  d:'瓦赫寧恩（Wageningen）——全球農食與環境研究龍頭。學費比英美低、英語授課、就在歐盟法規現場。',
+  m:'你懂系統怎麼轉型，也懂農食供應鏈。<em>CP 值最高的一條國際路。</em>'},
+ {id:'o_nl_econ',n:'荷蘭・永續經濟學', dest:'荷蘭', axis:'制度', s:{G:5,D:3}, en:5, uni:15, hard:0, dom:1, cost:72,
+  d:'烏特勒支／瓦赫寧恩，兩年制。把環境外部性、碳定價、綠色金融用經濟學的語言拆開。',
+  m:'你能把環境問題翻譯成錢的問題——這正是最缺的翻譯。'},
+ {id:'o_nordic_env',n:'北歐・環境管理與政策', dest:'北歐', axis:'技術', s:{E:6,G:3}, en:5, uni:15, hard:1, dom:1, cost:60,
+  d:'隆德大學 IIIEE——循環經濟與生產者責任的重鎮。學費低、社會福利好、離永續最前沿最近。',
+  m:'循環經濟、生產者延伸責任、生命週期，你是少數真的懂的人。<em>台灣才剛開始要這些。</em>'},
+ {id:'o_nordic_energy',n:'北歐・能源系統', dest:'北歐', axis:'技術', s:{E:8}, en:5, uni:14, hard:2, dom:3, cost:62,
+  d:'DTU／KTH 的能源工程。風電、電網、儲能、氫能——北歐是能源轉型的實驗場。',
+  m:'你會的是真本事，薪水也可能高過顧問業。<em>但你其實比較像能源工程師，不是 ESG 人。</em>'},
+ {id:'o_us_climate',n:'美國・氣候學院', dest:'美國', axis:'制度', s:{G:6,E:2}, en:7, uni:16, hard:1, dom:0, cost:200,
+  d:'哥倫比亞 Climate School／SIPA。品牌最強、學費最貴、簽證最不確定，政策＋金融兼修。',
+  m:'招牌很亮，人脈很國際。<em>但兩百萬學費買的是機會、不是薪水——回台這個天花板打不破。</em>'},
+ {id:'o_us_env',n:'美國・環境管理', dest:'美國', axis:'技術', s:{E:6,S:3}, en:7, uni:16, hard:1, dom:1, cost:185,
+  d:'耶魯 YSE／密西根 SEAS。理論與實作都硬，環境與社會面並重。',
+  m:'你受的是世界頂尖的環境訓練。<em>回台灣做的第一件事，卻可能是核對供應商的電費單。</em>'},
+ {id:'o_us_finmba',n:'美國・永續金融 MBA', dest:'美國', axis:'制度', s:{G:5,D:4}, en:7, uni:15, hard:0, dom:1, cost:210,
+  d:'杜克／密西根 Ross 的 MBA＋永續。影響力投資、ESG 整合、企業轉型金融。',
+  m:'走外商金融與影響力投資最順的一張門票。<em>貴，但如果你的雇主是外國人，這筆很划算。</em>'},
+ {id:'o_jp_env',n:'日本・環境學', dest:'日本', axis:'技術', s:{E:5,G:3}, en:3, uni:14, hard:1, dom:2, cost:70,
+  d:'東大／京大環境學研究科。成本低、對想做日商供應鏈的人有獨特價值。日文是另一道門。',
+  m:'你打開的是日商這條線——很多台廠的最終客戶就是日本品牌。<em>英文優勢比較小，換的是日文與亞洲人脈。</em>'},
+ {id:'o_intdev',n:'國際發展 / 人權', dest:'英國', axis:'人', s:{S:8}, en:6, uni:12, hard:4, dom:0, cost:95, rare:1,
+  d:'LSE／SOAS 的 Development。走向國際 NGO、多邊機構、公正轉型與人權盡職調查。',
+  m:'你走的是影響力與國際組織這條線。<em>在台灣企業端很難變現，但 TISFD、人權、公正轉型來的時候，會的人只有你。</em>'},
+ {id:'o_circular',n:'循環經濟（跨國學程）', dest:'歐洲', axis:'技術', s:{E:5,S:3}, en:6, uni:14, hard:2, dom:1, cost:80,
+  d:'Erasmus Mundus 之類的跨國學程，在三四個歐洲國家輪流上課。把廢棄物變材料的整套邏輯。',
+  m:'你在好幾個國家待過、看過不同的制度。<em>視野是真的寬，但回台灣要自己找到落地的題目。</em>'},
+ {id:'o_marine',n:'海洋 / 自然保育', dest:'澳洲', axis:'技術', s:{E:7,S:1}, en:5, uni:12, hard:3, dom:0, cost:110, rare:1,
+  d:'澳洲的海洋與保育科學。藍碳、生態調查、TNFD 的棲地評估——碳排顧問完全不會的技能。',
+  m:'TNFD 來的時候，全公司只有你講得出「生態系服務」。<em>但這條路在台灣的職缺總量很小。</em>'},
+ {id:'o_futures',n:'策略遠見 / 未來學', dest:'歐洲', axis:'制度', s:{G:6,D:2}, en:6, uni:12, hard:4, dom:0, cost:88, rare:1,
+  d:'歐洲少數的 Futures Studies 學程。情境規劃、回溯推演，正對應 TCFD／IFRS S2 最弱的一環。',
+  m:'你能把不確定性做成一套方法。<em>只是「首席未來學家」這種職位，台灣還沒發明出來。</em>'}
+];
+function gradOverseasById(id){ for(const f of GRAD_OVERSEAS) if(f.id===id) return f; return null }
+
 function gradFieldById(id){ for(const f of GRAD_FIELDS) if(f.id===id) return f; return null }
 
 /* ============ 大學 ============ */
@@ -2552,49 +2611,54 @@ function uniPick(y,i){
 /* ============ 研究所科系選擇（item 1, 2）============ */
 function screenGradField(kind){
   const ovs = kind==='ovs';
-  const cards = GRAD_FIELDS.map(function(f,i){
+  const list = ovs ? GRAD_OVERSEAS : GRAD_FIELDS;
+  const cards = list.map(function(f,i){
     return '<button class="pick" onclick="pickGradField('+i+','+(ovs?1:0)+')">'
-      + '<span class="t">'+f.n+(f.rare?' <span class="tag">窄門</span>':'')+'</span>'
+      + '<span class="t">'+(ovs?'<span style="color:var(--accent)">'+f.dest+'</span>　':'')+f.n+(f.rare?' <span class="tag">窄門</span>':'')+'</span>'
       + '<span class="d">'+f.d+'</span>'
       + '<span class="m">'+f.axis+'軸　'
       + Object.keys(f.s).map(function(k){ return ({E:'環境',S:'社會',G:'治理',D:'揭露'})[k]+' +'+f.s[k] }).join('　')
+      + (ovs?'　英文 +'+f.en+'　學費約 '+f.cost+' 萬':'')
       + (f.hard>=3?'　<span style="color:var(--warn)">第一份工作難找</span>':(f.hard<=-4?'　<span style="color:var(--good)">好找工作</span>':''))
       + '</span></button>';
   }).join('');
   shell('<div class="panel panel-pad fade">'
-    + '<span class="eyebrow">'+(ovs?'出國念一年碩士':'念研究所（兩年）')+' ・ 你要念什麼？</span>'
-    + '<h2 class="card-title">選一個題目，鑽兩年。</h2>'
+    + '<span class="eyebrow">'+(ovs?'出國念碩士 ・ 去哪、念什麼？':'念研究所（兩年）・ 你要念什麼？')+'</span>'
+    + '<h2 class="card-title">'+(ovs?'世界很大，選一個地方鑽進去。':'選一個題目，鑽兩年。')+'</h2>'
     + '<div class="card-body" style="font-size:15px">這一行對科系「幾乎不設限」，但對你帶進來的<em>視角</em>很挑。'
     + '<br><span style="color:var(--ink-3)">技術軸（算得出來）、制度軸（講得成合規與財務）、人的洞察（處理得了人）——'
     + '只有一軸的人會卡在天花板。冷門科系不是比較弱，是<em>起步慢、後期解鎖別人碰不到的題目</em>。</span>'
-    + (ovs?'<br><br><span style="color:var(--ink-3)">出國的版本：英文與國際視野是硬優勢，但你會少掉兩年台灣的人脈與實習——這一行的圈子很小。</span>':'')
+    + (ovs?'<br><br><span style="color:var(--ink-3)">出國：英文與國際視野是硬優勢，回台後最順的是外商與國際線；但你會少掉兩年台灣的人脈與實習，而這一行的圈子很小。學費與生活費是真的貴。</span>':'')
     + '</div>'
     + '<div class="grid">'+cards+'</div></div>');
 }
 function pickGradField(i, ovsFlag){
   const kind = ovsFlag ? 'ovs' : 'grad';
-  const f = GRAD_FIELDS[i];
+  const f = (kind==='ovs' ? GRAD_OVERSEAS : GRAD_FIELDS)[i];
   S.gradField = f.id; S.gradFieldName = f.n;
   Object.keys(f.s).forEach(function(k){ S[k]+=f.s[k] });
   S.dom += (f.dom||0);
   S.uniScore = (S.uniScore||0) + (f.uni||0);
   if(!S.traits.includes(f.n)) S.traits.push(f.n);
-  let txt;
+  let txt, d;
   if(kind==='ovs'){
-    S.year+=1; S.age+=1; S.en+=5; S.cash-=60; S.uniScore=(S.uniScore||0)+4; S.rel-=1;
+    const enGain=f.en||5, cost=f.cost||90;
+    S.year+=1; S.age+=1; S.en+=enGain; S.cash-=cost; S.uniScore=(S.uniScore||0)+4; S.rel=Math.max(0,S.rel-2);   // 海外碩士本身不算「站上國際舞台」，要真的外派/外商/國際組織才算
     if(!S.traits.includes('海外碩士')) S.traits.push('海外碩士');
-    S.ledger.push({y:S.year,t:'海外碩士（'+f.n+'）回國',p:'',mark:1});
-    txt = '你飛出去念了一年<strong>'+f.n+'</strong>。<br><br>'+f.m
-        + '<br><br>英文變好了、看事情的角度變寬了，存款也見底了。'
+    if(!S.traits.includes('國際線')) S.traits.push('國際線');
+    S.ledger.push({y:S.year,t:'海外碩士（'+f.dest+'・'+f.n+'）回國',p:'',mark:1});
+    txt = '你飛到<strong>'+f.dest+'</strong>念了<strong>'+f.n+'</strong>。<br><br>'+f.m
+        + '<br><br>英文變好了、看事情的角度變寬了，存款也見底了（學費加生活費約 '+cost+' 萬）。'
         + '<em>但台灣這兩年的法規和人脈都往前跑了，回來你得重新排隊。</em>';
+    d = Object.keys(f.s).map(function(k){ return [({E:'環境力',S:'社會力',G:'治理力',D:'揭露力'})[k], f.s[k]] });
+    d.push(['英文',enGain],['存款',-cost]);
   } else {
     S.year+=2; S.age+=2; S.rel+=2; S.uniScore=(S.uniScore||0)+8;
     S.ledger.push({y:S.year,t:'研究所畢業（'+f.n+'）',p:'',mark:1});
     txt = '兩年後，你從<strong>'+f.n+'</strong>畢業。<br><br>'+f.m
         + '<br><br>同學和指導教授成了你在這一行的第一批人脈——在台灣，這個網絡的價值常常被低估。';
+    d = Object.keys(f.s).map(function(k){ return [({E:'環境力',S:'社會力',G:'治理力',D:'揭露力'})[k], f.s[k]] });
   }
-  const d = Object.keys(f.s).map(function(k){ return [({E:'環境力',S:'社會力',G:'治理力',D:'揭露力'})[k], f.s[k]] });
-  if(kind==='ovs') d.push(['英文',5],['存款',-60]);
   showOutcome(txt, d, function(){ screenJobHunt() });
 }
 
@@ -2618,7 +2682,7 @@ function showOutcome(text, deltas, next, extra){
 /* ===== 業界頂尖：不是有能力就進得去 ===== */
 const ELITE = ['gg','fa','tree','fbrand'];
 function resumeScore(){ return cw() + (S.uniScore||0) + Math.floor(S.luck*0.4) }
-function gradHard(){ const f=S.gradField&&gradFieldById(S.gradField); return f?(f.hard||0):0 }
+function gradHard(){ const f=S.gradField&&(gradFieldById(S.gradField)||gradOverseasById(S.gradField)); return f?(f.hard||0):0 }
 function canReachEmp(e, m){
   const r = resumeScore();
   const bar = e.bar + deptBarMod(e) + gradHard();
@@ -2718,7 +2782,7 @@ function doHunt(i){
 }
 
 function jobFlavor(m){
-  if(m<20) return '你在 104 上搜「永續」，跳出來的多半是清潔隊和資源回收。<em>這個行業還沒開始</em>。有幾間大公司在找「CSR 專員」，掛在公關部底下。';
+  if(m<20) return '你在 104 上搜「永續」，幾乎搜不到——因為這個字還沒被發明成職稱。<em>這個行業還沒開始</em>。跳出來的是環安衛、環工，還有幾間大公司掛在公關部底下的「CSR 專員」。你想做的那件事，現在還沒有名字。';
   if(m<40) return '報告書的需求撐起了第一批職缺。多數是「CSR 專員」，工作內容寫得含糊，面試官自己也說不太清楚要你做什麼。';
   if(m<60) return '職缺開始正式化了，「永續專員」「ESG 專員」的職稱出現在標題上。金融業也開始找人。';
   if(m<85) return '每個月有兩萬多個綠領職缺。<em>只要會做溫盤，履歷丟出去就有回音</em>。你的同學有人一年跳兩次。';
@@ -2933,7 +2997,10 @@ function cardPick(id,i){
   let boonNote = '';
   const GRAD_BOON = {g_env:'env',g_acc:'acc',g_mba:'biz',g_law:'law',g_fin:'acc',
     g_gender:'soc',g_anthro:'soc',g_sts:'soc',g_pa:'soc',g_comm:'com',
-    g_eco:'sci',g_atmos:'sci',g_urban:'sci',g_sust:'biz',g_energy:'env',g_data:'acc',g_future:'biz'};
+    g_eco:'sci',g_atmos:'sci',g_urban:'sci',g_sust:'biz',g_energy:'env',g_data:'acc',g_future:'biz',
+    o_uk_env:'law',o_uk_biz:'biz',o_nl_gov:'soc',o_nl_econ:'acc',o_nordic_env:'env',o_nordic_energy:'env',
+    o_us_climate:'biz',o_us_env:'sci',o_us_finmba:'acc',o_jp_env:'env',o_intdev:'soc',o_circular:'sci',
+    o_marine:'sci',o_futures:'biz'};
   const gradBoon = S.gradField && GRAD_BOON[S.gradField];
   if(c.boon && ((S.major && S.major.id===c.boon) || gradBoon===c.boon)){
     ['E','S','G','D'].forEach(function(k){ if(e[k]>0) e[k]+=2 });
@@ -3002,6 +3069,68 @@ function fortunePick(leave){
   }
 }
 
+
+/* ===== 時間壓在哪 → 對應類別的隨機情境（使用者需求：全力推動 vs 偷懶交差）=====
+   選了某個專業方向，就從那個類別抽一張當年的實際任務，做不同投入程度的抉擇。 */
+const FOCUS_CARDS = {
+ E:[
+  {t:'冷媒與鍋爐的數字對不起來',x:'盤查到一半，你發現冷媒填充紀錄和鍋爐燃料用量兜不攏，<em>差了大概百分之五</em>。',
+   o:[{l:'全力追到底，把每個數字的來源釐清',e:{E:8,co2:1,burn:8},r:'你熬了兩週把每一筆對回原始單據。查證那天，老師只問了三個問題。',trait:'數據潔癖'},
+      {l:'先用推估值頂著，交出去再說',e:{E:3,co2:-1,gwrisk:1},r:'報告如期交出。你祈禱查證老師不要問得太細。'}]},
+  {t:'綠電要從哪裡來',x:'客戶要求用再生能源。你算了用電量，發現<em>市場上的綠電根本不夠、憑證早被大廠包走</em>。',
+   o:[{l:'簽長約，也從省電這端下手',e:{E:9,co2:2,burn:10},r:'你參與了長期購電案，也跟廠務把冰水主機重調——省下來的電比買到的還多。',trait:'先省再買'},
+      {l:'先買憑證達標就好',e:{E:3,co2:-1},r:'數字達標了。但你知道那不等於你們的機台真的用到了綠電。'}]},
+  {t:'範疇三這面牆',x:'品牌客戶要供應鏈碳數據。你的三百家供應商裡，<em>有兩百家連電費單都找不齊</em>。',
+   o:[{l:'辦說明會，一家家帶著做',e:{E:7,S:3,co2:3,burn:16},r:'半年後八成供應商交出了第一份盤查表。這是你最有成就感的一年。',trait:'把供應商帶起來'},
+      {l:'用產業係數推估交差',e:{E:2,D:3,co2:-1,gwrisk:1},r:'數字補齊了。你知道那不是真的，客戶大概也知道。'}]},
+  {t:'今年要不要訂一個硬的減量目標',x:'主管問你：<em>要訂一個 SBTi 等級、外部會盯的目標，還是訂一個穩穩達得到的？</em>',
+   o:[{l:'訂科學基礎的硬目標',e:{E:8,G:3,co2:2,burn:9},r:'你送了 SBT 申請，審了十四個月才過。從此每一年的減量都有人在看。',trait:'訂了硬目標'},
+      {l:'訂一個容易達成的',e:{E:3,D:2,co2:-1},r:'目標很漂亮、每年都達標。只是那個達標，本來就不需要你做什麼。'}]}
+ ],
+ D:[
+  {t:'報告書又要改版了',x:'今年準則更新、版面也要重做。<em>是認真重寫，還是沿用去年的架構改一改？</em>',
+   o:[{l:'從重大性重新盤，整本重寫',e:{D:9,G:2,burn:10},r:'你把每一章的邏輯重新推過。這本報告書第一次讓你自己願意放進作品集。',trait:'寫得出真東西'},
+      {l:'沿用舊版，換數字就好',e:{D:3,gwrisk:1},r:'今年準時出版。查證那天有人問：你們的重大性議題怎麼一年沒變過？'}]},
+  {t:'重大性分析怎麼做',x:'報告書的第一步是找出重大議題。<em>是真的去訪談利害關係人，還是內部開會拍板？</em>',
+   o:[{l:'做利害關係人訪談與問卷',e:{D:7,S:4,rel:2,burn:9},r:'你訪了客戶、員工、供應商、在地社區。有些答案跟高層想的完全不一樣——那才是重點。',trait:'問過真的人'},
+      {l:'內部主管開會決定',e:{D:3,co2:-1},r:'一個下午就定了。議題很好看，也很安全，跟去年一模一樣。'}]},
+  {t:'國際評比的問卷來了',x:'CDP、DJSI 的問卷一題一題問下來，<em>每一題都要附證據。你可以逐題補，也可以挑好拿分的填</em>。',
+   o:[{l:'逐題補齊證據',e:{D:8,G:3,esg:4,burn:12},r:'你把能拿的分一分不漏地拿。分數公布那天，這是你今年最有份量的成果。',trait:'評比補得徹底'},
+      {l:'挑分數最好拉的填',e:{D:3,esg:1,co2:-1},r:'分數進步了一點。真正難的那幾題，你留白了。'}]},
+  {t:'AI 幫你寫了一整章',x:'你讓 AI 產出報告書的一個章節，<em>三十秒，比你的初稿還順</em>。但它引用了一個不存在的條號。',
+   o:[{l:'建立 AI 產出的查核流程',e:{D:6,G:4,sp:1,burn:5},r:'你寫了一份查核清單，讓 AI 加速、但每個字仍有人負責。這套流程後來變成部門標準。',trait:'駕馭工具的人'},
+      {l:'覺得不放心，退回手寫',e:{D:4,burn:8},r:'你關掉視窗自己寫。慢，但你確定每個字都是你能負責的。'}]}
+ ],
+ S:[
+  {t:'公司今年推志工假制度',x:'公司要推<em>員工志工假</em>——每人每年幾天有薪假去做志工。你負責落地。<br><br>母公司好推，但集團下面十幾家子公司各有各的算盤。',
+   o:[{l:'全力推，連子公司一起拉進來',e:{S:8,soc:4,adv:2,rel:2,burn:14},r:'你跑遍每一家子公司談、排替代人力、做成效追蹤。第一年就有兩千人請了志工假——這件事後來被寫進報告書的封面故事。',trait:'把制度推到底'},
+      {l:'先做母公司，交得出數字就好',e:{S:3,soc:1,co2:-1},r:'母公司辦得漂亮、照片很好看。子公司那邊，制度發了公文就沒有下文了。'}]},
+  {t:'供應商稽核',x:'品牌客戶要求你們稽核二階供應商的勞動條件。<em>是實地去看，還是收書面聲明？</em>',
+   o:[{l:'排實地稽核，一家家去現場',e:{S:8,soc:3,co2:1,burn:15},r:'你去了工廠、看了宿舍、跟移工談過。有幾件事帳面上永遠看不到——你要求他們限期改善。',trait:'去現場看過'},
+      {l:'請供應商自己出具聲明',e:{S:3,co2:-1,gwrisk:1},r:'文件收齊了。有幾家的聲明看起來像是同一個範本複製貼上的。'}]},
+  {t:'人權盡職調查要開始了',x:'國際客戶的問卷新增一整段：<em>你們供應鏈的勞動條件、申訴管道、移工居住</em>。環境面你們準備了五年，這段是空白的。',
+   o:[{l:'從自家查起，再往供應鏈延伸',e:{S:8,soc:3,G:2,burn:13},r:'你先查自己公司，發現派遣同仁的申訴管道形同虛設。修好那件事花了半年，但你補上了最該補的洞。',trait:'從自己查起'},
+      {l:'照抄同業的寫法',e:{D:3,co2:-2,gwrisk:1},r:'你拼出一份看起來完整的回覆。裡面有幾個承諾，公司其實還沒有能力做到。'}]},
+  {t:'社會影響力要怎麼量',x:'主管說：年底報告書要有社會面的數字。<em>「社區關係改善了多少」要怎麼寫成一個數字？</em>',
+   o:[{l:'認真設計影響力衡量（SROI）',e:{S:7,soc:4,G:3,burn:12},r:'你找了三個利害關係人團體一起訂指標。過程很慢，但那些數字是有人認可的。',trait:'量得出影響力'},
+      {l:'用捐了多少、辦了幾場交差',e:{S:2,soc:1,co2:-1},r:'數字很漂亮：捐款、場次、人次。跟「改變了什麼」沒有關係。'}]}
+ ],
+ G:[
+  {t:'董事會只給你五分鐘',x:'一整年的永續成果，要濃縮成五分鐘，<em>而且前面的議程一定會超時</em>。',
+   o:[{l:'砍到只剩三頁：花多少、省多少、明年做什麼',e:{G:8,rel:3,burn:6},r:'董事長點了頭，還追問了一個問題。你第一次覺得自己講的話有進到決策裡。',trait:'講得清楚'},
+      {l:'該講的都要講，準備二十頁',e:{G:3,rel:-1,burn:5},r:'你講到第八頁被打斷。散會後主管說：下次講重點就好。'}]},
+  {t:'漂綠風險，每個數字都要交代基期',x:'內稽進來了，會計師開始查你的永續數字。<em>成長了百分之十？基期是什麼？怎麼算的？</em>',
+   o:[{l:'替每個對外數字建立完整軌跡',e:{G:8,D:3,burn:11},r:'你替每個數字都留了計算底稿與出處。三年後有人來查舊帳，你三分鐘就調得出來。',trait:'留得住底稿'},
+      {l:'先把今年的交出去',e:{G:3,co2:-1,gwrisk:1},r:'今年過關了。明年換人接手時，那些數字沒人說得清楚怎麼來的。'}]},
+  {t:'永續金融評鑑要公布了',x:'金管會的評鑑結果快公布，<em>同業都在比排名，你們去年落在中段</em>。',
+   o:[{l:'照指標逐項補強',e:{G:8,D:4,esg:3,burn:12},r:'你把每一個扣分項拆開處理。名次上去了，你也把整套治理架構補完了。',trait:'評鑑打底'},
+      {l:'挑分數最好拉的補',e:{G:3,D:2,esg:1,co2:-1},r:'名次進步了幾名。真正難的那幾項還留在原地。'}]},
+  {t:'高層想把兩間高排放子公司排除在盤查邊界外',x:'<em>技術上，第一年確實可以說「在建置中」</em>。但那兩間正是排放最高的。',
+   o:[{l:'堅持全納，數字難看也認',e:{G:7,E:3,co2:2,rel:-2,burn:10},r:'數字很難看，但那是真的。隔年減量目標訂下來時，基準是對的。',trait:'守得住邊界'},
+      {l:'先不納，明年再說',e:{G:2,co2:-2,gwrisk:1},r:'今年的數字漂亮多了。明年要納進來時，成長率會很難解釋。'}]}
+ ]
+};
+
 /* ============ 年中：主力專案 ============ */
 const PROJ = [
  {k:'E',g:'專業',l:'碳盤查與減量專案',h:'技術含量高，AI 最難取代',e:{E:7,co2:1}},
@@ -3054,16 +3183,38 @@ function midYear(){
   </div>`);
 }
 function projPick(i){
-  const p=PROJ[i], out={};
-  const tsz = teamSize(S.emp);
+  const p=PROJ[i];
+  S._focusP = p;
+  if(p.g==='專業' && FOCUS_CARDS[p.k] && FOCUS_CARDS[p.k].length){
+    const pool = FOCUS_CARDS[p.k].filter(function(c){ return !c.cond || c.cond(S) });
+    const use = pool.length ? pool : FOCUS_CARDS[p.k];
+    S._focusCard = use[Math.floor(rnd()*use.length)];
+    return renderFocusCard();
+  }
+  applyProject(p, Object.assign({},p.e), '', null);   // 經營自己：維持即時處理
+}
+function renderFocusCard(){
+  const c=S._focusCard, p=S._focusP, pb=pendingBlock();
+  shell(header()+`<div class="panel panel-pad fade">
+    ${pb}<span class="eyebrow">${p.l} ・ 今年實際落到你手上的事</span>
+    <h2 class="card-title">${c.t}</h2>
+    <div class="card-body">${c.x}</div>
+    <div class="opts">${c.o.map(function(o,idx){ return `<button class="opt" onclick="focusPick(${idx})"><span class="lab">${o.l}</span>${o.h?`<span class="hint">${o.h}</span>`:''}</button>` }).join('')}</div>
+  </div>`);
+}
+function focusPick(oi){
+  const c=S._focusCard, p=S._focusP, o=c.o[oi];
+  applyProject(p, Object.assign({},o.e), o.r||'', o.trait);
+}
+/* 把「今年壓在哪」的選擇，走完能力／團隊／技能成敗／公司 ESG 的完整流程 */
+function applyProject(p, e, resultNote, trait){
+  const out={}; const tsz = teamSize(S.emp);
   if(p.k==='D') S.stamps.report=1;
   if(p.k==='E') S.stamps.ghg=1;
   if(p.k==='S') S.stamps.social=1;
   if(p.g==='經營自己'){ S.selfYrs=(S.selfYrs||0)+1;
     if(S.selfYrs>=3 && !S.traits.includes('圈子裡的人')) S.traits.push('圈子裡的人'); }
-  const e=Object.assign({},p.e);
   if(S.rel>=12){ e.sp=(e.sp||0)-1; if(e.co2) e.co2=0 }
-  /* 開始經營社群帳號 → 這個類別從此不再出現，但解鎖創作者專屬事件（item 7）*/
   if(p.k==='R3' && !S.selfBrand){
     S.selfBrand=1;
     if(!S.traits.includes('開始寫了')) S.traits.push('開始寫了');
@@ -3071,8 +3222,6 @@ function projPick(i){
   const so = skillOutcome(p);
   if(so.q!==1){ ['E','S','G','D'].forEach(function(k){ if(e[k]) e[k]=Math.max(1,Math.round(e[k]*so.q)) }); }
   S.projCount[p.k]=(S.projCount[p.k]||0)+1;
-  /* 一人部門什麼都要碰：主力少一點，但其他三項各長一點
-     大團隊分工細：主力多一點，其他不長 */
   if(p.g==='專業' && tsz>0){
     if(tsz<=2){
       if(e[p.k]) e[p.k] = Math.max(1, e[p.k]-2);
@@ -3081,28 +3230,26 @@ function projPick(i){
       if(e[p.k]) e[p.k] += 3;
     }
   }
+  if(trait && !S.traits.includes(trait)) S.traits.push(trait);
   apply(e,out);
-  /* 永續部門隸屬：所屬單位吃哪一項能力，每年小幅被動累積（item 11） */
   const dp = deptOf(S.emp);
   if(dp && !isFreelance()){ S[dp.tilt]=(S[dp.tilt]||0)+1; if(dp.board && S.level>=1) S.G+=1; }
-  /* 你做的事會讓公司的 ESG 分數往上走（item 2）。
-     分數低的公司基期低、補一項就跳一階；高分公司再進步一分要花一年。 */
   if(S.emp && S.emp.esg && !isFreelance()){
     const id=S.emp.id, cur=companyESG(S.emp,S.year);
     let gain = p.g==='專業' ? 1.1 : 0.4;
     if(cur!==null){ gain *= cur<45 ? 1.9 : cur<60 ? 1.3 : cur<75 ? 0.8 : 0.45 }
-    if(so.q<1) gain *= 0.5;                      // 學不精，公司也跟著沒進展
+    if(so.q<1) gain *= 0.5;
     S.esgBoost[id]=Math.min(22,(S.esgBoost[id]||0)+gain);
-    // 你負責的那一面向長得最快
     if(p.g==='專業'){
-      const dimOf={E:'e',S:'s',G:'g',D:'g'};
-      const dk=dimOf[p.k];
+      const dimOf={E:'e',S:'s',G:'g',D:'g'}, dk=dimOf[p.k];
       if(dk){ const b=S.esgBoostDim[id]||(S.esgBoostDim[id]={}); b[dk]=Math.min(20,(b[dk]||0)+gain*0.8) }
     }
-    S.esgLift=(S.esgLift||0)+gain;               // 你這輩子替公司拉起來的總分
+    S.esgLift=(S.esgLift||0)+gain;
   }
-  S.projNote = `這一年你壓在<strong>${p.l}</strong>上。` + (so.note ? so.note : '') +
-    (S.rel>=12 ? '不過你有一半時間在外面跑，實作的時間被吃掉了。' : '');
+  const chips=(out.d||[]);
+  S.projNote = (resultNote ? resultNote+' ' : `這一年你壓在<strong>${p.l}</strong>上。`)
+    + (so.note ? so.note : '')
+    + (S.rel>=12 ? '不過你有一半時間在外面跑，實作的時間被吃掉了。' : '');
   yearEnd();
 }
 
@@ -3138,6 +3285,16 @@ function yearEnd(){
     }
   }
   if(S.aifill && S.inESG){ S.burn = Math.max(0, S.burn-5); S.D += 1; S.G += 1; }
+  /* 2026 起，會不會用 AI 做應用拉出差別：用的人省時、產能高、被看見；不用的人在 AI 成熟後被稀釋 */
+  if(S.inESG && !isFreelance() && aiLv(S.year)>=5){
+    if(S.aifill){
+      S.aiEdge=(S.aiEdge||0)+1;
+      if(S.aiEdge===2 && !S.traits.includes('AI 加成的人')) S.traits.push('AI 加成的人');
+    } else if(aiLv(S.year)>=6 && S.D > cw()*0.40){
+      events.push('會議上有人問：這些報告書的活，AI 不是都能做了嗎？<em>你開始感覺到自己被稀釋。</em>');
+      S.burn=Math.min(100,S.burn+3);
+    }
+  }
   /* 帳號會自己長：能見度與號召力持續累積，但也持續吃掉一點體力（item 7）*/
   if(S.selfBrand){ S.rel=Math.min(20,S.rel+1); S.adv=(S.adv||0)+1; S.burn=Math.min(100,S.burn+2); }  // AI 填答系統：省時、順便長揭露與治理
   /* ===== 過勞崩潰（item 7：做永續，人生也要永續）=====
@@ -3165,17 +3322,20 @@ function yearEnd(){
   }
   else if(S.inESG){
     const damp = S.pay>=260 ? 0.35 : S.pay>=180 ? 0.6 : 1;   // 越接近天花板，調薪越小
-    const mNow = mk(S.year)[1];
+    const mNow = mk(S.year)[1], mLabel = mk(S.year)[2];
+    const cooling = (mLabel==='逆風初起'||mLabel==='逆風退潮'||mLabel==='泡沫消風'||mLabel==='AI擠壓');
     /* 時代紅利／寒冬（item 11）：狂飆年代加薪快，逆風年代凍薪甚至減薪 */
-    const era = mNow>=84 ? 1.8 : mNow>=60 ? 1.2 : mNow>=40 ? 1.0 : 0.5;
+    let era = mNow>=84 ? 1.7 : mNow>=68 ? 1.15 : mNow>=56 ? 0.85 : 0.55;
+    if(cooling) era = Math.min(era, 0.8);       // 逆風／泡沫／AI：加薪幅度被壓住
     let inc=1+(0.013+rnd()*0.013+S.luck*0.0005)*damp*era;
-    if(mNow<45 && rnd()<0.25){ inc = 0.985; }   // 寒冬年代：可能被砍薪
+    if(cooling && rnd()<0.22){ inc = 0.985; }   // 消風年代：預算縮手，可能被凍薪甚至微減
     /* 把公司 ESG 分數拉起來的人，加薪談得比較動（item 2）——
        尤其在原本分數難看的公司，進步幅度是最好講的故事。 */
     const lift = (S.emp && S.esgBoost && S.esgBoost[S.emp.id]) || 0;
     if(lift>=6) inc += 0.012;
     if(lift>=12) inc += 0.012;
-    if(aiLv(S.year)>=5 && S.D>cw()*0.42 && !S.traits.includes('駕馭工具的人')) inc-=0.016;
+    if(aiLv(S.year)>=5 && S.D>cw()*0.42 && !S.traits.includes('駕馭工具的人') && !S.aifill) inc-=0.022;   // AI 成熟＋純揭露＋不用工具 → 加薪被壓
+    if(aiLv(S.year)>=5 && (S.aifill || S.traits.includes('駕馭工具的人'))) inc+=0.014;                      // 會用 AI 做應用的人 → 加薪較好
     S.pay=Math.round(S.pay*Math.max(1,inc)) }
   else { S.pay=Math.round(S.pay*(1+0.012+rnd()*0.013)) }
   clampPay();   // 薪資天花板：擋住跳槽複利失控
@@ -3220,11 +3380,13 @@ function yearEnd(){
 /* 時代感（item 11）：讓玩家「感覺到」現在是紅利年代還是寒冬 */
 function eraWord(){
   if(!S.inESG) return '';
-  const m = mk(S.year)[1];
+  const cell = mk(S.year), m = cell[1], label = cell[2];
+  if(label==='逆風初起') return '<em>逆風開始吹了</em>——歐盟 Omnibus 大砍、美國退群，反 ESG 成了顯學。泡沫還沒破，但你聞得到味道：獵頭的電話少了，加薪的幅度縮了，大家開始不敢張揚。<br>';
+  if(label==='逆風退潮'||label==='泡沫消風') return '<em>泡沫正在消風</em>——職缺數字看起來還在，但每一個都更難拿。預算縮手、專案暫停、greenhushing 盛行。<em>低招募、低解僱</em>，卡在位子上的人不敢動，想進來的人進不來。<br>';
+  if(label==='AI擠壓'||label==='AI重塑') return '<em>AI 重塑了整個行業</em>——盤查、揭露、評比幾乎全自動化，一個人加一組 AI 代理人做的是以前一整個部門的量。這一行從「報告書產業」變成「風險治理與市場准入產業」；會用 AI 只是門檻，能簽字負責才是價值。<br>';
   if(m>=84) return '<em>這是永續最好賺的年代</em>——職缺多到獵頭追著人跑，會寫「ESG」兩個字母就有面試。你知道這不會永遠持續。<br>';
-  if(m>=60) return '市場還在成長，機會比人多。<br>';
-  if(m>=45) return '市場熱度普通，好位子要靠實力和人脈搶。<br>';
-  return '<em>泡沫之後的年代</em>——職缺凍結、預算被砍，投十封履歷回一封。留下來的人做的是真本事。<br>';
+  if(m>=68) return '市場還在成長，機會比人多。<br>';
+  return '市場熱度回穩，好位子要靠實力和人脈搶。<br>';
 }
 function burnWord(){
   if(S.burn>=90) return '你的身體已經在抗議了，只是你還沒聽。';
