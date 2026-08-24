@@ -249,6 +249,7 @@ textarea.fbfield{min-height:80px; resize:vertical; line-height:1.6}
     <span class="sub">Sustalent</span>
     <a class="lin" href="https://www.linkedin.com/in/dazyin/" target="_blank" rel="noopener">開發者 LinkedIn ↗</a>
     <span class="seed mono" id="seedBox"></span>
+    <button class="restart" id="langBtn" onclick="toggleLang()" title="Switch language">EN</button>
     <button class="restart" id="restartBtn" onclick="askRestart()" title="重新開始一局">重新開始</button>
   </div>
   <div id="app"></div>
@@ -532,13 +533,14 @@ const EMP = [
  {id:'fab',  n:'南方織造',   ind:'text', tier:'中後段',mult:.88,bar:28,burn:1.1,pre:5,esg:{e:70,s:66,g:68},csa:1,dept:'ehs',req:'Higg 指數、化學品管理、品牌客戶驗廠、FSC／GRS／OCS 認證、英文精通',f:'國際品牌客戶的稽核月月來。薪水不高，實戰經驗全台最扎實。'},
  {id:'fud',  n:'統一帝國食品',ind:'food',tier:'龍頭',mult:1.00,bar:34,burn:.9,pre:7,esg:{e:36,s:34,g:35},csa:0,dept:'office',req:'食安與農產供應鏈、報告書（評比參與度低，制度待建）',f:'2014 年後最早練報告書的地方，制度成熟。'},
  {id:'shop', n:'團購王流通', ind:'retail',tier:'龍頭',mult:.93,bar:32,burn:1.05,pre:6,esg:{e:44,s:42,g:44},csa:0,dept:'pr',req:'供應商行為準則、包裝減量、報告書',f:'S 面向專案豐富。做環境面的預算要用搶的。'},
- {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:26,burn:1.85,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。兩年學五年的東西——只是薪水在四大裡敬陪末座。'},
+ {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:26,burn:1.85,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。案子什麼產業都碰得到，兩年學五年的東西。'},
  {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:.88,bar:26,burn:1.9,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
  {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:.90,bar:28,burn:2.05,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
  {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:.92,bar:28,burn:1.95,pre:8,esg:{e:56,s:58,g:64},csa:1,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
  {id:'bout', n:'小而美顧問', ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.4,pre:5,esg:{e:46,s:48,g:50},csa:-1,dept:'consult',f:'什麼案子都接、什麼都要會。學得廣，名片不夠亮。'},
  {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg:{e:50,s:52,g:58},csa:1,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
  {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,esg:{e:58,s:60,g:62},csa:-1,dept:'office',f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
+ {id:'usr',  n:'大學永續辦公室',ind:'pub', tier:'學校',mult:.68,bar:26,burn:.75,pre:6,esg:{e:58,s:74,g:60},csa:-1,dept:'office',req:'USR 計畫申請與結案、大學社會責任報告書、跨系所協調',f:'留在校園做大學社會責任（USR）。薪水是這一行最低的一群，但你認識整個地方的人——地方創生、社區、學生、教授、公部門，全在你的通訊錄裡。'},
  {id:'ngo',  n:'國際倡議組織',ind:'ngo', tier:'NGO',mult:.75,bar:30,burn:1.0,pre:7,esg:{e:64,s:70,g:66},csa:-1,dept:'office',intl:true,f:'薪水最低，影響力敘事最強。通往國際線的蟲洞。'},
  {id:'fbrand',n:'外商品牌台灣分部',ind:'retail',tier:'外商',mult:1.25,bar:50,burn:.85,pre:8,esg:{e:78,s:76,g:80},csa:1,dept:'gm',req:'EcoVadis 金牌、SBTi、總部行為準則、CDP、英文精通',intl:true,f:'薪水高、假多、一人當三人用。策略在總部。'},
  {id:'sky',  n:'翱翔航空',     ind:'air',   tier:'龍頭',mult:1.10,bar:42,burn:1.05,pre:7,esg:{e:88,s:88,g:92},csa:1,dept:'office',req:'SAF 摻配、CORSIA、CDP、DJSI 成分股維持、英文精通',f:'燃油就是碳排，減碳等於省錢。但要換的是整隊飛機。'},
@@ -1006,10 +1008,10 @@ CARDS.push(
  x:'兩萬八報名費，全英文，六個月內要考完。<em>在金融業，這張很有份量；不在金融業，它可能一輩子用不上</em>。',
  o:[{l:'報名，賭一把',e:{cash:-3,G:3,en:2,burn:6},cert:'cfaesg',r:'你考過了。這張證書值不值錢，完全看你接下來坐在哪個位子上。'},
     {l:'先確認自己要不要走金融線',e:{sp:2,G:1},r:'你花了一個晚上想清楚自己的方向。省下了兩萬八，也省下六個月。'}]},
-{id:'c_s3',pool:'p',w:9,t:'範疇三標準線上課程',
- cond:function(s){return s.year>=2022&&s.cash>=8&&s.certs.indexOf('s3')<0&&s.E>=14},
- x:'國際機構開的線上課，兩萬出頭，可以分段上完。<em>範疇三是供應鏈減碳最難的那一塊</em>。',
- o:[{l:'買下來，慢慢上完',e:{cash:-2,S:4,E:2},cert:'s3',r:'你利用通勤和週末上完了。下一次客戶問範疇三，你答得出來的層次不一樣了。'},
+{id:'c_s3',pool:'p',w:9,t:'範疇三的線上課程',
+ cond:function(s){return s.year>=2022&&s.cash>=8&&s.E>=14},
+ x:'國際機構開的線上課，兩萬出頭，可以分段上完。<em>範疇三是供應鏈減碳最難的那一塊</em>——沒有證照可以考，只有把方法學讀熟這條路。',
+ o:[{l:'買下來，慢慢上完',e:{cash:-2,S:5,E:2},r:'你利用通勤和週末上完了。沒有一張紙可以掛在履歷上，但下一次客戶問範疇三，你答得出來的層次不一樣了。',trait:'範疇三讀得通'},
     {l:'先靠爬文自學',e:{S:2,burn:5},r:'你把官方指引下載下來自己啃。學得零碎，但也學到了。'}]},
 {id:'c_ifrs',pool:'p',w:10,t:'IFRS S1／S2 導入研習',
  cond:function(s){return s.year>=2024&&s.cash>=6&&s.certs.indexOf('ifrs')<0},
@@ -1206,7 +1208,7 @@ CARDS.push(
     {l:'先把 TCFD 的架構補完',e:{E:4,D:3},r:'你把 TCFD 四支柱做扎實。這不算白費——S2 本來就是從那裡長出來的。'},
     {l:'反正 2026 才適用',e:{sp:1},r:'你判斷得沒錯，時間確實還早。但到了 2026 年，會的人已經有人排在你前面。'}]},
 
-{id:'i_tnfd10',pool:'h',yr:[2023,2024],w:11,t:'TNFD v1.0 發布',
+{id:'i_tnfd10',pool:'h',yr:[2023,2024,2025],w:16,t:'TNFD v1.0 發布',
  boon:'sci',
  x:'九月，TNFD 發布最終建議。架構跟 TCFD 幾乎一樣，但把「氣候」換成「自然」，還多了一個 TCFD 沒有的東西：<em>依賴</em>。<br><br>方法叫 LEAP：定位、評估、鑑別、準備。',
  o:[{l:'投入研究，當公司的第一人',e:{E:6,sp:2,burn:8},r:'你成了少數講得出「生態系服務」的人。這個領域沒人跟你搶——因為也還沒人覺得該搶。',trait:'自然議題先行者'},
@@ -1238,17 +1240,17 @@ CARDS.push(
     {l:'留在大公司做深',e:{D:4,G:3,sp:2},r:'你們早就做完了，現在做的是優化。安穩，但你的履歷停在同一個故事。'},
     {l:'出去開課、當顧問',e:{rel:5,cash:8,burn:8},r:'你把導入經驗做成教材，接了幾場內訓。第一次有人叫你老師。'}]},
 
-{id:'i_tnfd_ask',pool:'p',w:11,t:'客戶問起 TNFD',
+{id:'i_tnfd_ask',pool:'p',w:16,t:'客戶問起 TNFD',
  boon:'sci',
- cond:function(s){return s.year>=2024},
+ cond:function(s){return s.year>=2024&&s.inESG},
  x:'國際客戶的問卷多了一個欄位：<em>你們有沒有評估過對自然的依賴與衝擊？</em><br><br>公司沒有人做過。你連要從哪裡定位營運據點都不確定。',
  o:[{l:'用 LEAP 走一遍，先做定位',e:{E:6,sp:2,burn:10},r:'你把所有廠區疊上生態敏感區圖層，發現有兩個廠就坐在集水區旁邊。這件事以前沒有人講過。',trait:'自然議題先行者'},
     {l:'先誠實回答尚未評估',e:{G:3},r:'你照實填了。客戶回信說沒關係，但明年會再問一次。'},
     {l:'找顧問來做',e:{cash:-5,E:2,rel:1},r:'顧問交了一份報告。你看得懂結論，但說不出過程。'}]},
 
-{id:'i_biodiv_gap',pool:'p',w:10,t:'沒有人會這個',
+{id:'i_biodiv_gap',pool:'p',w:15,t:'沒有人會這個',
  boon:'sci',
- cond:function(s){return s.year>=2025&&s.E>=14},
+ cond:function(s){return s.year>=2025&&s.E>=10},
  x:'公司要做生物多樣性揭露，人資找了三個月<em>找不到人</em>。台灣沒有官方證照、沒有標準課程，會的人多半在學術界。',
  o:[{l:'自己補起來，當內部唯一',e:{E:7,sp:2,burn:12},r:'你讀了半年的文獻與案例。這個技能沒有證照可以證明，但公司離不開你。',trait:'不可取代'},
     {l:'去找學界合作',e:{rel:4,E:4,cash:-3},r:'你聯絡了兩位研究生態的老師，談成了一個小型合作案。專業補上了，人脈也補上了。'},
@@ -1961,6 +1963,45 @@ CARDS.push(
     {l:'誰知道下次又怎樣，做好自己的',e:{co2:1,sp:1},r:'你不賭風向。你只知道，減下來的碳不會因為誰當選就變回去。'}]}
 );
 
+
+/* ===== AI 用電與缺電（使用者需求 item 10）===== */
+CARDS.push(
+{id:'p_aipower',pool:'h',yr:[2027,2028,2029],w:13,plan:1,t:'AI 把電吃光了',
+ x:'資料中心一座一座蓋，用電需求曲線整個往上翹。<em>你排隊要買的綠電，被 AI 產業用更高的價錢標走了</em>；同時電網吃緊，限電的新聞又開始出現。<br><br>減碳目標沒有變，但分母一直在長。',
+ o:[{l:'把重心改成能效與需量管理',e:{E:7,co2:3,dom:3,burn:10},r:'買不到綠電，那就少用一點。你把最耗電的環節重做一遍——這一年省下的度數，比你談到的綠電還多。',trait:'能效派'},
+    {l:'去搶長期購電合約，價格再高也要鎖',e:{E:5,G:4,burn:8,cash:-4},r:'你趕在漲勢前鎖了一批。財務部念了你很久，兩年後他們不念了。',trait:'搶到綠電'},
+    {l:'誠實把目標往後調',e:{G:5,co2:1,rel:-2},r:'你在董事會上說：以現在的供給，2030 百分百是做不到的。有人不高興，但你不想再簽一個做不到的承諾。',trait:'說得出做不到'}]},
+{id:'p_dc_esg',pool:'p',w:11,t:'公司要蓋 AI 資料中心',
+ cond:function(s){return s.year>=2026&&s.emp&&(s.emp.ind==='semi'||s.emp.ind==='elec'||s.emp.ind==='telco'||s.emp.ind==='fin')},
+ x:'公司決定投資 AI 資料中心。<em>用電量是現有廠區的好幾倍，冷卻還要大量的水</em>。永續部門被叫去「確認這件事說得過去」。',
+ o:[{l:'從設計端就要求綠電與液冷',e:{E:7,G:4,co2:2,burn:12},r:'你在動土前就把再生能源比例、廢熱回收與液冷寫進規格。後來這座資料中心成了對外最好的案例。',trait:'從設計就介入'},
+    {l:'先蓋，減碳之後再想辦法',e:{D:3,co2:-2,gwrisk:1},r:'進度優先。三年後你要為那條陡升的用電曲線，在報告書裡寫一段很長的說明。'}]}
+);
+
+/* ===== 203X 隨機科技突破（使用者需求 item 9）===== */
+const TECHBREAK = [
+ {t:'鈣鈦礦疊層電池量產了',x:'轉換效率一舉拉高、成本掉下來。<em>綠電的供給曲線，第一次真的往下彎</em>。',
+  o:[{l:'重算全公司的減碳路徑',e:{E:8,co2:3,G:3,burn:8},r:'你把原本卡住的目標整個重排——技術突破讓不可能變成可能。這種年份，職涯上不會遇到幾次。',trait:'趕上技術轉折'},
+     {l:'先觀望，等它真的穩定',e:{sp:2,co2:1},r:'你判斷得謹慎。技術確實還要兩年才穩，但先跳的人已經卡到位子了。'}]},
+ {t:'長時儲能便宜到可以做基載',x:'新的儲能技術把成本壓垮，<em>再生能源的間歇性問題第一次有解</em>。電網的算法整個要重寫。',
+  o:[{l:'投入電網級的減碳規劃',e:{E:7,G:5,dom:3,burn:9},r:'你成了公司裡唯一講得清楚「儲能怎麼改變我們用電結構」的人。',trait:'儲能行家'},
+     {l:'把省下的成本轉成減量預算',e:{E:5,co2:3},r:'你把電費省下來的錢，直接編成下一年的減碳專案。務實而漂亮的一手。'}]},
+ {t:'碳捕捉的成本掉了一半',x:'新材料讓捕捉每噸的成本大幅下降。<em>那些「技術上不可能減」的製程排放，突然有了選項</em>。',
+  o:[{l:'替難減排的製程做導入評估',e:{E:8,G:4,co2:3,burn:11},r:'你做了完整的技術與成本評估。水泥、鋼鐵這些卡了十年的排放，終於看得到路。',trait:'啃硬骨頭'},
+     {l:'質疑它會變成拖延減碳的藉口',e:{G:5,co2:1,rel:-1},r:'你在會議上提醒：有了捕捉，不代表可以少減。這句話不討喜，但需要有人說。',trait:'守住優先序'}]},
+ {t:'AI 把材料研發的時間壓縮成十分之一',x:'新的催化劑、新的替代材料一個接一個被算出來。<em>過去要十年的實驗，現在幾個月</em>。',
+  o:[{l:'把 AI 導入自家的減碳技術開發',e:{E:6,G:5,sp:2,burn:8},r:'你促成研發與永續合作，用 AI 篩選低碳配方。這是你職涯裡最像在做未來的一年。',trait:'技術加速者'},
+     {l:'專心把既有的減量做完',e:{E:5,co2:2},r:'你不追新技術，把手上能減的先減完。不性感，但每一噸都是真的。'}]},
+ {t:'氫能的成本終於跨過門檻',x:'綠氫價格掉到可以商用。<em>鋼鐵、化工那些非電力的排放，開始有第二條路</em>。',
+  o:[{l:'投入氫能轉換的規劃',e:{E:8,dom:4,G:3,burn:10},r:'你參與了第一批示範。十年前寫在路徑圖上那句「氫能煉鋼」，你活著看到它落地。',trait:'等到氫能那天'},
+     {l:'先評估成本，不急著跳',e:{G:4,sp:2},r:'你做了審慎的評估。技術可行不等於財務可行——這個判斷後來被證明是對的。'}]}
+];
+CARDS.push(
+{id:'tech_break',pool:'h',yr:[2031,2032,2033,2034,2035],w:14,plan:1,t:'技術突破',
+ x:'',   // 由 showCard 前置換成隨機一則
+ o:[]}
+);
+
 /* ============ 證照 ============ */
 const CERTS = [
  /* from = 該證照在台灣「實際可考／課程開辦」的最早年份（已查證，2026-08）。年份門檻依此發放。 */
@@ -1973,7 +2014,6 @@ const CERTS = [
  {id:'scr',  n:'GARP 永續與氣候風險證照 SCR',org:'GARP',from:2020,cost:2,tw:0,hard:3,stat:'G',gain:6,pay:.10,fit:['fin','cons'],d:'US$575。氣候風險與情境分析職務的首選。2020 年首考。'},
  {id:'gri',  n:'GRI 永續發展專業認證',org:'GRI',from:2021,cost:6,tw:0,hard:3,stat:'D',gain:7,pay:.08,fit:['cons','semi','elec','fin'],d:'約 €1,600，另有年費。四門必修才解鎖考試。專業認證計畫 2021 年推出。'},
  {id:'ifrs', n:'IFRS S1／S2 導入實務',org:'IFRS Foundation',from:2024,cost:2,tw:0,hard:3,stat:'D',gain:7,pay:.09,fit:['fin','cons','semi','elec'],d:'準則 2023 發布、2024 生效，台灣課程 2024 起大量開辦。'},
- {id:'s3',   n:'GHG Protocol 範疇三標準',org:'WRI/WBCSD',from:2011,cost:2,tw:0,hard:3,stat:'S',gain:6,pay:.07,fit:['elec','semi','text','retail'],d:'US$600。標準 2011 年發布，範疇三是供應鏈減碳的核心難點。'},
  {id:'sv1',  n:'社會價值 Level 1 認證',org:'Social Value International',from:2017,cost:1,tw:0,hard:2,stat:'S',gain:5,pay:.05,fit:['ngo','retail','fin','cons'],d:'約 £195（依所得國家分級可低至 £95）。線上考八大原則，是台灣少數人走的路。'},
  {id:'sv2',  n:'社會價值 Level 2 認證執業師',org:'Social Value International',from:2017,cost:7,tw:0,hard:4,stat:'S',gain:8,pay:.09,fit:['ngo','retail','fin','cons'],d:'約 £1,800，且須獨立完成一份通過查證的報告。台灣走到這一級的人不到十個。'}
 ];
@@ -2354,7 +2394,55 @@ function shell(main){
 }
 
 /* ============ 開場 ============ */
+
+/* ============ 語言切換（item 1）============
+   事件卡的敘事是這款遊戲的靈魂，全部翻譯會失去語感，
+   因此英文版翻譯的是「介面與說明」，卡片內文保留中文並加註說明。 */
+let LANG = 'zh';
+const T = {
+  title:      {zh:'永續人森模擬器', en:'Sustalent: A Sustainability Career Simulator'},
+  restart:    {zh:'重新開始', en:'Restart'},
+  devlink:    {zh:'開發者 LinkedIn ↗', en:'Developer LinkedIn ↗'},
+  eyebrowIntro:{zh:'台灣永續職涯模擬', en:'A Taiwan Sustainability Career Simulator'},
+  introH:     {zh:'你十八歲，剛考上大學。', en:'You are 18, and you just got into university.'},
+  introBody:  {zh:'', en:'This is a life simulator about building a sustainability career in Taiwan, built on <em>real statistics and public data</em>.<br>'
+    + 'The regulatory timeline, the monthly green-collar job counts, salary bands by industry, each company\'s ESG score, and the AI adoption curve all follow public sources; '
+    + 'most of what happens each year actually happened that year — from Taiwan\'s carbon fee and IFRS S adoption to the EU Omnibus rollback and the anti-ESG backlash.<br><br>'
+    + 'Your enrolment year lands somewhere between <strong>2010 and 2020</strong> — eleven years that span the whole cycle: '
+    + 'from nobody having heard of it, to regulation forcing the pace, to everyone piling in, to the first real downturn.<br><br>'
+    + '<em>You do not get to choose which year you start.</em> And that year changes everything that follows.'},
+  start:      {zh:'開始', en:'Start'},
+  introNote:  {zh:'', en:'One run takes 10–15 minutes. Regulatory timelines, job counts and salary bands are calibrated against public data '
+    + '(FSC sustainability roadmap, Ministry of Environment green-collar reports, listed-company pay disclosures, S&P Global CSA scores, real job postings). '
+    + 'Company names, characters and storylines are fictional.'},
+  cardNote:   {zh:'', en:'Note: the event cards are written in Traditional Chinese — their voice is the heart of this game and does not survive translation. The interface is in English.'},
+  nameEyebrow:{zh:'開局 ・ 先替主角取個名字', en:'Setup · Name your character'},
+  nameH:      {zh:'這一生，是誰的一生？', en:'Whose life is this?'},
+  namePh:     {zh:'輸入名字（最多 12 字，可留白）', en:'Your name (up to 12 characters, optional)'},
+  nameGo:     {zh:'抽出這一生', en:'Draw this life'},
+  nameNote:   {zh:'留白也可以，名字會用「你」代替。MBTI 會在放榜時一起揭曉。', en:'You can leave it blank — you will simply be called "you". Your MBTI is assigned at random and revealed with your exam results.'}
+};
+function t(k){ const e=T[k]; if(!e) return ''; return (LANG==='en' && e.en) ? e.en : e.zh }
+function toggleLang(){
+  LANG = (LANG==='en') ? 'zh' : 'en';
+  try{ localStorage.setItem('sustalent_lang', LANG) }catch(e){}
+  applyLangChrome();
+  // 重新繪製目前畫面（回開場最安全，遊戲中則只換介面文字）
+  if(!S || S.phase==='setup'){ screenIntro() }
+}
+function applyLangChrome(){
+  const en = (LANG==='en');
+  const b=document.getElementById('langBtn'); if(b) b.textContent = en ? '中文' : 'EN';
+  const h=document.querySelector('.mast h1'); if(h) h.textContent = t('title');
+  const a=document.querySelector('.mast a.lin'); if(a) a.textContent = t('devlink');
+  const r=document.getElementById('restartBtn'); if(r) r.textContent = t('restart');
+  try{ document.title = t('title') }catch(e){}
+}
+try{ const sv=localStorage.getItem('sustalent_lang'); if(sv) LANG=sv }catch(e){}
+
 function screenIntro(){
+  applyLangChrome();
+  if(LANG==='en') return screenIntroEN();
   app.innerHTML = `<div class="panel panel-pad fade" style="max-width:720px">
     <span class="eyebrow">台灣永續職涯模擬</span>
     <h2 class="card-title" style="font-size:27px">你十八歲，剛考上大學。</h2>
@@ -2372,6 +2460,17 @@ function screenIntro(){
   </div>`;
 }
 
+function screenIntroEN(){
+  app.innerHTML = '<div class="panel panel-pad fade" style="max-width:720px">'
+    + '<span class="eyebrow">'+t('eyebrowIntro')+'</span>'
+    + '<h2 class="card-title" style="font-size:27px">'+t('introH')+'</h2>'
+    + '<div class="card-body">'+t('introBody')+'</div>'
+    + '<div class="opts"><button class="btn" onclick="startSetup()">'+t('start')+'</button></div>'
+    + '<hr class="rule">'
+    + '<p class="note">'+t('introNote')+'</p>'
+    + '<p class="note" style="margin-top:8px;color:var(--accent)">'+t('cardNote')+'</p>'
+    + '</div>';
+}
 function startSetup(){ newGameCore(); screenName() }
 
 /* ============ 姓名（item 13）＋ 隨機 MBTI（item 7；改為隨機分配，如同分發學校） ============ */
@@ -2390,6 +2489,23 @@ const MBTI_DESC = {
 function mbtiHas(ax){ return S.mbti && S.mbti.indexOf(ax)>=0 }
 function mbtiLine(){ return S.mbti.split('').map(function(l){ return MBTI_DESC[l] }).join('；'); }
 function screenName(){
+  applyLangChrome();
+  if(LANG==='en'){
+    app.innerHTML = '<div class="panel panel-pad fade" style="max-width:720px">'
+      + '<span class="eyebrow">'+t('nameEyebrow')+'</span>'
+      + '<h2 class="card-title" style="font-size:24px">'+t('nameH')+'</h2>'
+      + '<div class="card-body" style="font-size:15px">Name your character for this run. '
+      + '<span style="color:var(--ink-3)">Your personality (MBTI) is dealt to you at random — like the university you get into, and how lucky you are. '
+      + 'It will not decide whether you succeed, but it quietly shapes how certain cards play out.</span></div>'
+      + '<div style="margin-top:16px"><input id="pname" maxlength="12" placeholder="'+t('namePh')+'" '
+      + 'style="width:100%;margin-top:7px;padding:11px 13px;font:inherit;font-size:15px;color:var(--ink);'
+      + 'background:var(--surface-2);border:1px solid var(--line-2);border-radius:3px"></div>'
+      + '<div class="opts"><button class="btn" id="nameGo" onclick="nameGo()">'+t('nameGo')+'</button></div>'
+      + '<p class="note" style="margin-top:10px">'+t('nameNote')+'</p>'
+      + '<p class="note" style="margin-top:8px;color:var(--accent)">'+t('cardNote')+'</p>'
+      + '</div>';
+    return;
+  }
   app.innerHTML = '<div class="panel panel-pad fade" style="max-width:720px">'
     + '<span class="eyebrow">開局 ・ 先替主角取個名字</span>'
     + '<h2 class="card-title" style="font-size:24px">這一生，是誰的一生？</h2>'
@@ -2616,6 +2732,7 @@ const UNI = [
      {l:'去做和永續無關的實習',e:{dom:4,cash:5,uni:5},r:'你去了一間跟永續毫無關係的公司。後來發現那段經驗很有用。'}]},
  {y:3,t:'大四',x:'畢業在即。同學有人考研、有人簽了工作、有人還在投履歷。',
   o:[{l:'直接就業',e:{grad:'work'},r:''},
+     {l:'留在學校做 USR 計畫助理',e:{grad:'usr'},r:''},
      {l:'念研究所（兩年）',e:{grad:'grad'},r:''},
      {l:'出國念一年碩士',e:{grad:'ovs'},r:''}]}
 ];
@@ -2651,6 +2768,17 @@ function uniPick(y,i){
   if(o.e.grad){
     S.gradPath=o.e.grad;
     if(o.e.grad==='work'){ showOutcome(r||'你做了決定。', d, ()=>screenJobHunt(), out.extra); return; }
+    if(o.e.grad==='usr'){
+      const emp = EMP.find(function(e){ return e.id==='usr' });
+      S.emp=emp; S.inESG=true; S.domName='學校'; S.dom+=2; S.rel=Math.min(20,S.rel+5); S.S+=4; S.soc=(S.soc||0)+2;
+      S.pay = Math.round(calcPay(emp,0));
+      if(!S.traits.includes('從 USR 出發')) S.traits.push('從 USR 出發');
+      S.ledger.push({y:S.year,t:'留在學校做 USR 計畫',p:S.pay,mark:1});
+      return showOutcome('你留在學校，接了<strong>大學社會責任（USR）</strong>計畫的助理。<br><br>'
+        + '帶學生下鄉、陪社區開會、跑地方創生、寫計畫結案報告。<em>年薪 '+S.pay+' 萬——這一行最低的一群</em>。<br><br>'
+        + '但你認識了整個地方：里長、小農、returning 青年、公部門承辦、還有一群願意為了一件事熬夜的學生。<em>這些人脈之後會用很久。</em>',
+        [['年薪',S.pay],['關係力',5],['社會力',4]], function(){ S.phase='career'; yearStart() });
+    }
     // 念研究所（不論國內外）→ 先決定要念什麼（item 1）
     showOutcome(r||'你決定繼續念。', d, ()=>screenGradField(o.e.grad), out.extra);
     return;
@@ -2899,6 +3027,11 @@ function header(){
   </div>`;
 }
 function showCard(c){
+  /* 203X 科技突破：每次抽到隨機挑一則（使用者需求 item 9） */
+  if(c.id==='tech_break'){
+    const tb = TECHBREAK[Math.floor(rnd()*TECHBREAK.length)];
+    c.t = tb.t; c.x = tb.x; c.o = tb.o;
+  }
   const pb=pendingBlock();
   const showTrend = (S.cardsLeft===(bigYear(S.year)?2:1)) && trendOf(S.year);
   shell(header()
@@ -3817,6 +3950,43 @@ function goalMet(){
   if(g==='intl') return !!(S.intlFlag || (S.emp&&S.emp.intl) || (S.en>=14&&S.traits.includes('海外碩士')));
   return false;
 }
+
+/* ===== 結語：這世界因為你而改變了多少（使用者需求 item 6）=====
+   把三個影響力指標（實質減碳 co2／社會影響力 soc／號召 adv）＋公司 ESG 拉抬（esgLift）
+   收斂成一段有理想性的結語。刻意不用分數呈現——這一段講的是意義，不是績效。 */
+function legacyBlock(){
+  const co2=S.co2||0, soc=S.soc||0, adv=S.adv||0, lift=Math.round(S.esgLift||0);
+  const score = co2*2 + soc*1.5 + adv*1.5 + lift*0.6;
+  const lines=[];
+
+  if(co2>=8) lines.push('你真的把碳減下來了。不是報告書上的數字，是實際少排出去的那些——沒有人幫你辦頒獎典禮，但那些噸數是真的。');
+  else if(co2>=4) lines.push('你減下了一些碳。不多，但每一噸都經得起查。');
+  else if(co2<=-3) lines.push('回頭看，你有幾次把數字弄得比實際好看。沒有一次違法，每一次都有說得過去的理由——只是加起來，你自己知道那是什麼。');
+  else lines.push('你在這個行業做了很多事。認真算的話，實際減下來的碳沒有你當初想像的多——這不完全是你的錯，這個行業有很長一段時間，要的就是把數字寫好看。');
+
+  if(soc>=8) lines.push('你把「人」放回了這件事的中心：供應鏈裡的移工、被裁掉的同事、說不出話的社區。這些沒有指標可以量，但有人的生活因此不一樣。');
+  else if(soc>=4) lines.push('你在社會面留下了一些東西——一套制度、一次稽核、一個真的被修好的申訴管道。');
+
+  if(adv>=10) lines.push('而你帶進來的人，比你自己做的還多。你寫的東西、你回過的訊息、你陪著走過的後輩——<em>這個行業的下一棒，有一部分是你遞出去的</em>。');
+  else if(adv>=5) lines.push('你影響了一些人。有人因為你的一句話轉了行，有人因為你的文章知道這條路存在。');
+
+  if(lift>=12) lines.push('你待過的公司，因為你在裡面，評分和制度都往上走了一階。那不是你的名字，但那是你的手筆。');
+
+  const verdict = score>=34
+    ? '如果把你這二十二年攤開來看：<strong>這個世界因為你，確實有一點點不一樣了。</strong><br>不是因為你拿了什麼獎，是因為那些數字、那些人、那些制度，真的動了。'
+    : score>=16
+    ? '如果把你這二十二年攤開來看：<strong>你推動的事情不算驚天動地，但它們是真的。</strong><br>這個行業大部分的進展，本來就是靠這樣一點一點累積起來的。'
+    : '如果把你這二十二年攤開來看：<strong>你留下的痕跡沒有你希望的那麼深。</strong><br>但你走過了——很多人連走都沒走。';
+
+  return '<hr class="rule"><span class="eyebrow">這個世界，因為你改變了多少</span>'
+    + '<div class="outcome" style="margin-top:12px">'
+    + lines.map(function(x){ return '<p style="margin:0 0 10px">'+x+'</p>' }).join('')
+    + '<p style="margin:14px 0 0">'+verdict+'</p>'
+    + '<p style="margin:14px 0 0;color:var(--ink-3);font-size:14.5px">'
+    + '這一行從來不是靠一個人改變世界的。它靠的是<em>很多個在四十歲那年還沒放棄的人</em>——而你是其中一個。</p>'
+    + '</div>';
+}
+
 function ending(){
   autoRecordResult();   // 遊戲結束當下就記錄名字＋MBTI＋結果（不必等玩家動作）
   const met = goalMet();
@@ -3890,6 +4060,7 @@ function ending(){
       ${statBar(S.E,'環境 E',60)}${statBar(S.S,'社會 S',60)}${statBar(S.G,'治理 G',60)}${statBar(S.D,'揭露 D',60)}
     </div>
     ${S.traits.length?`<hr class="rule"><span class="eyebrow">你成為了什麼樣的人</span><div class="traits">${S.traits.map(x=>`<span class="trait">${x}</span>`).join('')}</div>`:''}
+    ${legacyBlock()}
     <hr class="rule">
     <span class="eyebrow">職涯總帳 ・ ${S.startYear}–${S.year}</span>
     <div class="ledger" style="max-height:none;margin-top:8px">
