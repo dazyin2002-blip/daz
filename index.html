@@ -3221,6 +3221,11 @@ function applyProject(p, e, resultNote, trait){
   }
   const so = skillOutcome(p);
   if(so.q!==1){ ['E','S','G','D'].forEach(function(k){ if(e[k]) e[k]=Math.max(1,Math.round(e[k]*so.q)) }); }
+  /* 邊際遞減：同一項能力越高，再往上長越慢（你已經是專家，多做一年學不到多少新的）*/
+  ['E','S','G','D'].forEach(function(k){
+    if(e[k]>0){ const cur=S[k]||0; const f = cur>=120?0.25 : cur>=95?0.45 : cur>=75?0.65 : cur>=55?0.85 : 1;
+      e[k]=Math.max(1, Math.round(e[k]*f)); }
+  });
   S.projCount[p.k]=(S.projCount[p.k]||0)+1;
   if(p.g==='專業' && tsz>0){
     if(tsz<=2){
