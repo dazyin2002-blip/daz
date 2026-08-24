@@ -389,6 +389,7 @@ const IND = {
  text:{n:'紡織',c:0.77,mat:1},     ship:{n:'航運',c:1.33,mat:0},     retail:{n:'零售',c:0.78,mat:-1},
  green:{n:'綠能環保',c:1.02,mat:1},air:{n:'航空',c:1.15,mat:0},      pharma:{n:'製藥生技',c:0.91,mat:-1},
  build:{n:'建築營造',c:1.06,mat:-2},
+ telco:{n:'電信',c:1.28,mat:2},      util:{n:'公用事業',c:1.12,mat:1},
  cons:{n:'顧問業',c:0.85,mat:2},   pub:{n:'公部門智庫',c:0.88,mat:1}, ngo:{n:'NGO',c:0.72,mat:1}
 };
 /* 產業成熟度：電子與金融跑在最前面，營建與零售最慢。
@@ -510,7 +511,11 @@ const EMP = [
  {id:'pharma3',n:'學名藥老牌',  ind:'pharma',tier:'中後段',mult:.90,bar:28,burn:.95,pre:5,esg0:36,dept:'ehs',req:'品牌客戶問卷、廢水管理',f:'做藥五十年，最近才聽說 ESG。你會是第一個專職的人。'},
  {id:'air3',  n:'貨運航空',     ind:'air',  tier:'中後段',mult:1.00,bar:34,burn:1.1,pre:5,esg0:37,dept:'office',req:'SAF 評估、CORSIA',f:'電商把貨機塞滿。飛得越多賺得越多，碳也排得越多。'},
  {id:'chem1', n:'塑化集團',     ind:'chem', tier:'龍頭',mult:1.08,bar:42,burn:1.05,pre:7,esg0:39,dept:'ehs',req:'CBAM、循環塑膠、碳費大戶',f:'全台繳碳費最多的集團之一。轉型的錢有，決心看年份。'},
- {id:'elec9', n:'連接器隱形冠軍',ind:'elec',tier:'中後段',mult:.95,bar:32,burn:1.05,pre:5,esg0:41,dept:'ehs',req:'品牌客戶問卷、RE100',f:'你沒聽過它，但全球一半的手機裡有它的零件。品牌客戶的要求一層層壓下來。'}
+ {id:'elec9', n:'連接器隱形冠軍',ind:'elec',tier:'中後段',mult:.95,bar:32,burn:1.05,pre:5,esg0:41,dept:'ehs',req:'品牌客戶問卷、RE100',f:'你沒聽過它，但全球一半的手機裡有它的零件。品牌客戶的要求一層層壓下來。'},
+ {id:'telco1',n:'大哥大電信',   ind:'telco',tier:'龍頭',mult:1.22,bar:46,burn:.95,pre:8,esg0:66,dept:'office',req:'RE100、基站節能、CDP A 級、DJSI 成分股',f:'基地台是吃電怪獸，但這裡的永續做得早、做得深，評鑑年年拿獎。福利好，位子難空。'},
+ {id:'telco2',n:'老電信巨人',   ind:'telco',tier:'龍頭',mult:1.15,bar:44,burn:.85,pre:8,esg0:63,dept:'office',req:'RE100、綠色資料中心、TCFD',leanTeam:0,f:'國營色彩濃，制度完整、步調慢。你會學到最扎實的治理流程，也會學到什麼叫跑公文。'},
+ {id:'util1', n:'國營電力公司', ind:'util', tier:'公部門',mult:1.05,bar:42,burn:1.0,pre:8,esg0:44,dept:'ehs',req:'電力排放係數、能源轉型路徑、公正轉型',f:'全台碳排最大的單一機構，也是能源轉型的執行者。你做的每個決定都會上新聞。'},
+ {id:'util2', n:'自來水／廢水處理',ind:'util',tier:'公部門',mult:.92,bar:32,burn:.85,pre:6,esg0:41,dept:'ehs',req:'水資源管理、污泥處理、碳盤查',f:'水、污泥、能耗。沒有人覺得性感，但缺水那年全台灣都在看你們。'}
 ];
 /* 四大：只以顏色代稱，畫面與程式碼皆不出現任何事務所本名 */
 function isBig4(e){ return !!(e && e.big4) }
@@ -1730,6 +1735,36 @@ CARDS.push(
     {l:'接受流動，做好交接文件',e:{D:4,G:2},r:'你建了一套完整的交接制度。人還是會走，至少事情不會斷。'}]}
 );
 
+
+/* ===== 地域（item 9）：南北的永續現場長得不一樣 =====
+   台中一帶傳產多，很多不在強制編報告書的名單上，但品牌客戶壓著要 SBTi 與碳數據；
+   高雄的中小企業多半不想養專職永續，整包丟給事務所，窗口常常是董事長特助。 */
+CARDS.push(
+{id:'r_move',pool:'p',w:15,t:'所裡要開中南部分點',
+ cond:function(s){return s.emp&&s.emp.big4&&s.esgYrs>=2&&s.region==='台北'},
+ x:'所裡宣布要在<em>台中與高雄各開一個據點</em>，就近服務中南部客戶。<br><br>主管問你要不要去——去的人少，位子空得快。',
+ o:[{l:'去台中：傳產的大本營',e:{dom:6,E:4,rel:2,burn:6,region:'台中'},r:'你搬到台中。這裡的客戶多半不在強制編報告書的名單上，<em>但品牌客戶壓著要 SBTi 目標與產品碳足跡</em>——沒有報告書要寫，卻有更硬的東西要交。',trait:'中部戰場'},
+    {l:'去高雄：整包接下來',e:{D:5,G:4,rel:3,burn:8,region:'高雄'},r:'你搬到高雄。這裡的中小企業<em>多半不想養專職永續</em>，索性把整包業務丟給事務所。你一個人同時是五家公司的永續部門。',trait:'南部戰場'},
+    {l:'留在台北',e:{sp:2,rel:1},r:'你留下來。總部的案子比較大、比較亮，也比較擠。'}]},
+{id:'r_tc_sbti',pool:'p',w:14,t:'不用寫報告書，但要交 SBTi',
+ cond:function(s){return s.region==='台中'&&s.year>=2023},
+ x:'客戶是個做扣件的隱形冠軍，<em>資本額不到二十億，根本不在強制編報告書的名單上</em>。<br><br>但歐洲品牌客戶來信：明年起供應商要提出科學基礎減量目標，否則訂單重新評估。',
+ o:[{l:'從盤查開始，一步步帶他們設目標',e:{E:7,co2:2,dom:4,burn:12},r:'你花了一年，帶著一間從沒做過永續的工廠交出第一份 SBT 承諾書。老闆說：本來以為是被逼的，做完發現電費真的降了。',trait:'帶傳產入門'},
+    {l:'先幫他們把客戶問卷應付過去',e:{D:4,rel:2,co2:-1},r:'問卷交了、訂單保住了。但明年客戶要看的是進度，不是承諾。'}]},
+{id:'r_ks_all',pool:'p',w:14,t:'董事長特助什麼都不懂',
+ cond:function(s){return s.region==='高雄'},
+ x:'客戶的窗口是<em>董事長特助</em>——本業是幫老闆管行程，永續是「順便」交給他的。<br><br>他很客氣地問你：「所以那個⋯⋯碳，是要怎麼算？」',
+ o:[{l:'把他教會，當成長期投資',e:{S:5,soc:2,rel:4,adv:2,burn:10},r:'你花了三個月，把他從什麼都不懂帶到能自己看懂盤查表。兩年後他成了那家公司第一位永續主管，第一個找的顧問是你。',trait:'教會了客戶'},
+    {l:'不指望他，自己全包做完',e:{D:5,cash:3,burn:14,soc:-1},r:'你把所有事都自己做完，交出漂亮的成果。明年他還是什麼都不懂，你還是要再做一次。'},
+    {l:'請他把懂製程的廠長找來',e:{E:5,rel:2,sp:2},r:'你堅持要見真正管產線的人。廠長一開口，你三十分鐘就問到了特助三個月給不出的數字。',trait:'找對人'}]},
+{id:'r_south_life',pool:'p',w:11,rep:1,t:'南部的生活',
+ cond:function(s){return s.region!=='台北'},
+ x:'房租是台北的一半，通勤十五分鐘，中午能回家吃飯。<em>但圈子裡的活動、講座、飯局，九成都在台北</em>。',
+ o:[{l:'享受生活，人脈靠線上維持',e:{burn:-12,rel:-2,sp:1},r:'你過得比台北的同業好太多。只是每次北上開會，都感覺自己離核心遠了一點。',trait:'南部生活'},
+    {l:'每個月固定北上跑活動',e:{rel:3,cash:-2,burn:8},r:'你買了高鐵回數票。累，但你在台北的位子沒有消失。'},
+    {l:'乾脆在南部辦自己的聚會',e:{rel:4,adv:3,soc:2,burn:6},r:'你揪了南部的永續工作者辦第一場聚會，來了二十幾個人——原來大家都在等有人先開口。',trait:'南部揪團'}]}
+);
+
 /* ============ 證照 ============ */
 const CERTS = [
  /* from = 該證照在台灣「實際可考／課程開辦」的最早年份（已查證，2026-08）。年份門檻依此發放。 */
@@ -1746,6 +1781,34 @@ const CERTS = [
  {id:'sv1',  n:'社會價值 Level 1 認證',org:'Social Value International',from:2017,cost:1,tw:0,hard:2,stat:'S',gain:5,pay:.05,fit:['ngo','retail','fin','cons'],d:'約 £195（依所得國家分級可低至 £95）。線上考八大原則，是台灣少數人走的路。'},
  {id:'sv2',  n:'社會價值 Level 2 認證執業師',org:'Social Value International',from:2017,cost:7,tw:0,hard:4,stat:'S',gain:8,pay:.09,fit:['ngo','retail','fin','cons'],d:'約 £1,800，且須獨立完成一份通過查證的報告。台灣走到這一級的人不到十個。'}
 ];
+
+/* ===== 真實薪資分布（item 4）=====
+   來源：業界公開的永續職涯薪資調查（138 份有效問卷，2025 年 1 月發布）。
+   永續年資 0-2 年 中位 75 萬／3-5 年 中位 85 萬／6-11 年 中位 135 萬；
+   全體分布（人數）：50↓12、50-70:37、70-90:40、90-110:17、110-130:11、130-150:6、150-200:8、200↑6。
+   遊戲用它來（a）校準職級基準（b）在結局告訴玩家「你在真實分布裡的位置」。 */
+const REAL_SALARY_BUCKETS = [
+ {hi:50,  n:12}, {hi:70,  n:37}, {hi:90,  n:40}, {hi:110, n:17},
+ {hi:130, n:11}, {hi:150, n:6},  {hi:200, n:8},  {hi:9999,n:6}
+];
+const REAL_MEDIAN_BY_ESGYRS = [[2,75],[5,85],[11,135]];
+function realMedianFor(yrs){
+  for(const [y,m] of REAL_MEDIAN_BY_ESGYRS){ if(yrs<=y) return m }
+  return 135;
+}
+function salaryPercentile(pay){
+  const tot = REAL_SALARY_BUCKETS.reduce(function(a,b){return a+b.n},0);
+  let below=0, prevHi=0;
+  for(const b of REAL_SALARY_BUCKETS){
+    if(pay < b.hi){
+      const span=b.hi-prevHi, into=Math.max(0,pay-prevHi);
+      below += b.n * (span>0? into/span : 0);
+      break;
+    }
+    below += b.n; prevHi=b.hi;
+  }
+  return Math.max(1, Math.min(99, Math.round(below/tot*100)));
+}
 
 /* ============ 職級 ============ */
 const LEVELS = [
@@ -1817,6 +1880,7 @@ function apply(e, out){
   if(e.reveal){ EMP.forEach(function(x){ if(x.req){ S.knownReq[x.id]=1 } }); }
   if(e.esg && S.emp && S.emp.esg0!=null){ S.esgBoost[S.emp.id]=Math.min(22,(S.esgBoost[S.emp.id]||0)+e.esg); d.push(['公司 ESG','+'+e.esg]) }
   if(e.wfhdep){ S.wfhDep=1 }
+  if(e.region){ S.region=e.region; d.push(['據點',e.region]) }
   if(e.path){ S.stampPath=e.path }   // 中生代分岔（item 5）：破關後選的路，會一路影響到結局
   if(e.bond){ S.bond=(S.bond||0)+e.bond; d.push(['服務約', e.bond+' 年']) }
   if(e.hunt2esg){
@@ -1903,7 +1967,12 @@ function tryPromote(){
   const nxt = LEVELS[S.level+1];
   if(!nxt) return false;
   const n = nxt.need;
-  if(cw()>=n.cw && S.esgYrs>=n.yr && (!n.G||S.G>=n.G) && (!n.rel||S.rel>=n.rel)){
+  /* 四大的升遷是有時程表的（item 6，對齊真實調查）：
+     顧問 →約2年→ 資深顧問 →再2-3年→ 副理／經理。制度化，但上面越來越窄。 */
+  const b4 = S.emp && S.emp.big4;
+  const needYr = b4 ? [0,2,5,9,13][S.level+1] : n.yr;
+  const needCw = b4 ? Math.round(n.cw*0.88) : n.cw;
+  if(cw()>=needCw && S.esgYrs>=needYr && (!n.G||S.G>=n.G) && (!n.rel||S.rel>=n.rel)){
     let pr = .30 + S.luck*.010 + S.rel*.008 + (S.level===3?.06:0);
     if(S.crossTitle) pr += .14;      // 本業 x 永續 = 不可取代
     if(S.stampPath==='strategy') pr += .12;   // 破關後走策略線 → 升遷邏輯站你這邊
@@ -1912,6 +1981,8 @@ function tryPromote(){
     /* 位子是有限的：協理以上，小公司根本沒有那麼多層 */
     if(S.level>=3 && S.emp && S.emp.tier==='中後段' && !S.crossTitle) pr *= 0.45;
     if(S.level>=3 && isFreelance()) pr *= 0.6;
+    if(b4 && S.level<=2) pr += .14;     // 四大前段升遷制度化，快而穩
+    if(b4 && S.level>=3) pr -= .10;     // 但協理以上位子少，多數人在這裡離開
     if(rnd() < pr){
       S.level++; S.pay = Math.max(S.pay, calcPay(S.emp,S.level)); clampPay();
       return true;
@@ -1996,6 +2067,13 @@ function teamSize(emp){
   else if(emp.tier==='外商') base *= 0.8;
   else if(emp.tier==='中後段') base *= 0.7;
   else if(emp.tier==='公部門') base *= 2.0;
+  /* ESG 評分越高的公司，通常真的養得起越大的團隊（item 5）。
+     但有特例：分數低卻剛被客戶逼著擴編、或分數高卻只靠兩個人硬撐。 */
+  const esg = companyESG(emp, S.year);
+  if(esg!=null){
+    base *= (0.55 + esg/70);
+    if(emp.leanTeam) base *= 0.45;     // 特例：分數好看，但實際上人很少
+  }
   return Math.max(1, Math.round(base));
 }
 function teamWord(n){
@@ -2043,6 +2121,7 @@ function sidebar(){
     <div class="kv"><span class="k">產業專業</span><span class="v mono">${S.dom} ${S.domName?'· '+S.domName:''}</span></div>
     <div class="kv"><span class="k">存款</span><span class="v mono">${S.cash} 萬</span></div>
     ${(S.soc||S.adv)?`<div class="kv"><span class="k">社會影響力 / 永續影響力</span><span class="v mono">${S.soc||0} / ${S.adv||0}</span></div>`:''}
+    ${S.region&&S.region!=='台北'?`<div class="kv"><span class="k">據點</span><span class="v">${S.region}</span></div>`:''}
     <div class="kv"><span class="k">體力</span><span class="v mono" style="${S.burn>=70?'color:var(--warn)':''}">${stamina()} / 100${S.burn>=88?' ⚠ 快崩了':S.burn>=70?' ⚠':''}</span></div>
     <div class="kv"><span class="k">永續年資</span><span class="v mono">${S.esgYrs} 年</span></div>
     ${(S.emp&&S.emp.esg0!=null&&!isFreelance())?`<div class="kv"><span class="k">公司 ESG 評分</span><span class="v mono">${companyESG(S.emp,S.year)} · ${esgBand(companyESG(S.emp,S.year))}</span></div>`:''}
@@ -2140,7 +2219,7 @@ function newGameCore(){
      traits:[], certs:[], ledger:[], used:{}, hunt:0, quitFlag:0, joinFlag:0, foundFlag:0,
      intlFlag:0, health:0, riskAcc:0, school:null, major:null, goal:null, phase:'setup', jobless:0, freelance:0, freeYrs:0, uniScore:0, prevJob:'', carried:0, projNote:'', evOut:null, crossTitle:'', crossDesc:'', cardsLeft:0, adriftSeen:0, stamps:{}, ceilingSeen:0, yearUsed:{}, studied:0,
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
-     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0};
+     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北'};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -3222,13 +3301,20 @@ function takeOffer(v, idx){
   else { S.dom+=2 }
   S.pay = v===2 ? Math.round(np*0.88) : np;
   if(S.bond>0){ const fine=Math.round(4*S.bond); S.cash=Math.round(S.cash-fine); S.bondFine=fine; S.bond=0 }
-  const leftOrange = S.emp && S.emp.quitStress;   // 橘色所：離職會有壓力（item 14）
+  const leftOrange = S.emp && S.emp.quitStress;   // 橘色所：離職會有壓力
+  /* 四大的職級到了企業端常常接不過去（item 6）：
+     顧問經理≠企業經理，除非去的是中後段／小公司。 */
+  let b4Drop = 0;
+  if(S.emp && S.emp.big4 && S.level>=2 && emp.tier!=='中後段' && !emp.big4){
+    if(rnd() < 0.72){ b4Drop = 1; S.level = Math.max(1, S.level-1); }
+  }
   S.emp=emp; S.inESG=true; S.freelance=0; S.burn=Math.max(0,S.burn-8);
   if(leftOrange){ S.burn=Math.min(100,S.burn+12); if(!S.traits.includes('離開橘色所')) S.traits.push('離開橘色所'); }
   if(v===1&&type==='poach'){ S.compete=2 }
   if(of.lucky && !S.traits.includes('被人拉了一把')) S.traits.push('被人拉了一把');
   S.ledger.push({y:S.year,t:`跳槽到 ${emp.n}`,p:S.pay,mark:1});
-  const fineTxt = S.bondFine ? `<br><br>你還沒跑完服務約，賠了 <strong>${S.bondFine} 萬</strong>違約金。公司出的那筆訓練費，最後還是你自己付了。` : '';
+  const fineTxt = (S.bondFine ? `<br><br>你還沒跑完服務約，賠了 <strong>${S.bondFine} 萬</strong>違約金。公司出的那筆訓練費，最後還是你自己付了。` : '')
+    + (b4Drop ? `<br><br><em>不過職級沒有接過去</em>——你在事務所是${LEVELS[S.level+1].t}，到了企業端從 <strong>${LEVELS[S.level].t}</strong> 開始。顧問的經理和企業的經理，管的不是同一件事。` : '');
   S.bondFine=0;
   showOutcome((v===2
       ? `你談掉了競業條款，加薪也打了折。<br><br>年薪 <strong>${S.pay} 萬</strong>。你留住了自由。`
@@ -3403,7 +3489,13 @@ function ending(){
       <div><div class="k">永續影響力</div><div class="v mono">${S.adv||0}</div></div>
       <div><div class="k">存款</div><div class="v mono">${S.cash} 萬</div></div>
     </div>
-    <span class="eyebrow">能力分布</span>
+    ${S.inESG?`<div class="outcome" style="margin:18px 0 0">
+      對照真實世界：一份 138 人的永續職涯薪資調查裡，你的年薪 <strong>${S.pay} 萬</strong>
+      大約落在 <strong>PR${salaryPercentile(S.pay)}</strong>。
+      <span style="color:var(--ink-3);font-size:14px">（該調查中，永續年資 0–2 年的中位數是 75 萬、3–5 年 85 萬、6–11 年 135 萬；
+      你做了 ${S.esgYrs} 年。）</span>
+    </div>`:''}
+    <span class="eyebrow" style="display:block;margin-top:18px">能力分布</span>
     <div class="stats" style="margin-top:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
       ${statBar(S.E,'環境 E',60)}${statBar(S.S,'社會 S',60)}${statBar(S.G,'治理 G',60)}${statBar(S.D,'揭露 D',60)}
     </div>
