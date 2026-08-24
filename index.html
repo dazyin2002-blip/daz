@@ -2512,6 +2512,7 @@ function sidebar(){
     ${(S.emp&&S.emp.esg&&!isFreelance()&&companyESG(S.emp,S.year)!==null)?`<div class="kv"><span class="k">公司 ESG（E/S/G）</span><span class="v mono">${companyESG(S.emp,S.year)} · ${esgDims(S.emp,S.year).e}/${esgDims(S.emp,S.year).s}/${esgDims(S.emp,S.year).g}</span></div>`:''}
     ${(S.emp&&S.emp.esg&&!isFreelance()&&csaState(S.emp)===0)?`<div class="kv"><span class="k" style="color:var(--warn)">評比參與</span><span class="v" style="font-size:11px;color:var(--warn)">未參與（可推動）</span></div>`:''}
     ${(deptOf(S.emp)&&!isFreelance())?`<div class="kv"><span class="k">永續隸屬</span><span class="v" style="font-size:11.5px">${deptOf(S.emp).n}</span></div>`:''}
+    ${skillCount()?`<hr class="rule"><span class="eyebrow">會的事 ${skillCount()} 項${S.rareSkills?'（稀缺 '+S.rareSkills+'）':''}</span><div class="traits">${Object.keys(S.skills).map(function(id){const k=skillById(id);return k?`<span class="trait" title="${k.d}">${k.n}${S.skills[id]>1?' Lv'+S.skills[id]:''}</span>`:''}).join('')}</div>`:''}
     ${S.certs.length?`<hr class="rule"><span class="eyebrow">證照</span><div class="traits">${S.certs.map(c=>`<span class="trait">${CERTS.find(x=>x.id===c).n.split('（')[0]}</span>`).join('')}</div>`:''}
     ${S.traits.length?`<hr class="rule"><span class="eyebrow">特質</span><div class="traits">${S.traits.map(t=>`<span class="trait">${t}</span>`).join('')}</div>`:''}
     <hr class="rule">
@@ -2681,7 +2682,7 @@ function newGameCore(){
      traits:[], certs:[], ledger:[], used:{}, hunt:0, quitFlag:0, joinFlag:0, foundFlag:0,
      intlFlag:0, health:0, riskAcc:0, school:null, major:null, goal:null, phase:'setup', jobless:0, freelance:0, freeYrs:0, uniScore:0, prevJob:'', carried:0, projNote:'', evOut:null, crossTitle:'', crossDesc:'', cardsLeft:0, adriftSeen:0, stamps:{}, ceilingSeen:0, yearUsed:{}, studied:0,
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
-     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0};
+     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0, skills:{}, rareSkills:0, big4Grp:'', big4GrpName:''};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -3096,7 +3097,7 @@ function doHunt(i){
   S.ledger.push({y:S.year,t:'入職 '+emp.n+'・'+LEVELS[0].t,p:S.pay,mark:1});
   showOutcome('<strong>'+emp.n+'</strong>（'+IND[emp.ind].n+'・'+emp.tier+'）<br>'+emp.f
     + deptLine + teamLine + '<br><br>'+note+'年薪 <strong>'+S.pay+' 萬</strong>。',
-    [['年薪',S.pay]], function(){ S.phase='career'; yearStart() });
+    [['年薪',S.pay]], function(){ S.phase='career'; if(emp.big4) return screenBig4Group(); yearStart() });
 }
 
 function jobFlavor(m){
@@ -3464,6 +3465,148 @@ const FOCUS_CARDS = {
  ]
 };
 
+
+
+/* ===== 四大的組別（使用者需求）=====
+   真實的四大永續團隊會分線：金融組（PCAF／評鑑／責任投資）、
+   非金融組（報告書／評比／治理）、碳組（盤查／查證／CBAM／路徑），
+   綠色所另有供應鏈組（供應商稽核／範疇三／循環經濟）。
+   分到哪一組，決定你這幾年學得到什麼。 */
+const BIG4_GROUPS = [
+ {id:'fin', n:'金融組', tilt:'G', d:'服務金控、銀行、投信。做投融資碳排、永續金融評鑑、責任投資與綠色商品。',
+  skills:['pcaf','pri','gbond','twfin','gproduct','scen']},
+ {id:'nonfin', n:'非金融組', tilt:'D', d:'服務製造與服務業。報告書、國際評比、治理與策略藍圖——案子最多、也最雜。',
+  skills:['gri','mat','ifrss','rating','strat','sasb','bodedu']},
+ {id:'carbon', n:'碳組', tilt:'E', d:'專做碳：組織盤查、產品碳足跡、查證、CBAM、淨零路徑。技術最硬，AI 最難取代。',
+  skills:['ghg','lca','ghgver','cbam','sbti','path','ppa']},
+ {id:'supply', n:'永續供應鏈組', tilt:'S', d:'綠色所特有的一組：供應商稽核、範疇三收斂、循環經濟、人權盡職調查。',
+  skills:['ssc','saudit','scope3','circ','hrdd','mineral'], only:['green']},
+ {id:'social', n:'社會創新組', tilt:'S', d:'藍色所與橘色所特有：社會影響力衡量、SROI、公益專案設計、社會企業與影響力投資。做的是最難量化、卻最靠近人的那一塊。',
+  skills:['sroi','hrdd','strat','circ'], only:['blue','orange']}
+];
+function big4GroupsFor(emp){
+  return BIG4_GROUPS.filter(function(g){ return !g.only || (emp && g.only.indexOf(emp.firm)>=0) });
+}
+function big4GrpById(id){ for(const g of BIG4_GROUPS) if(g.id===id) return g; return null }
+
+/* ============ 具體技能（依四大台灣官網實際服務項目盤點）============
+   rare = 幾家事務所有做：4=基本功、3=常見、2=較少、1=稀缺。
+   越稀缺的技能越難學，但越不可取代——這是這一行真正的競爭力來源。
+   grp：屬於哪一個服務線（碳／揭露／氣候財務／供應鏈／永續金融／治理／評比／確信）。 */
+const SKILLS = [
+ // ── 碳管理 ──
+ {id:'ghg',   n:'組織型溫室氣體盤查',      grp:'carbon', rare:4, stat:'E', d:'ISO 14064-1／GHG Protocol 範疇一二三。所有碳服務的入門技能。'},
+ {id:'lca',   n:'產品碳足跡與生命週期評估', grp:'carbon', rare:4, stat:'E', d:'ISO 14067／LCA，以單一產品計算全生命週期排放。'},
+ {id:'sbti',  n:'SBTi 科學基礎減量目標',    grp:'carbon', rare:4, stat:'E', d:'依 1.5°C 情境建立可被國際驗證的減碳目標。'},
+ {id:'path',  n:'淨零路徑與減量成本曲線',   grp:'carbon', rare:4, stat:'E', d:'排序減碳工具、估成本、訂分年路徑。'},
+ {id:'icp',   n:'內部碳定價制度導入',       grp:'carbon', rare:2, stat:'G', d:'影子價格或碳費基金，把碳成本內化進投資決策。'},
+ {id:'casset',n:'碳權與碳資產管理',         grp:'carbon', rare:2, stat:'E', d:'抵換策略、碳權品質評估與減量生態圈媒合。'},
+ {id:'cbam',  n:'CBAM 因應與產品碳含量',    grp:'carbon', rare:3, stat:'E', d:'計算碳含量、申報流程與出口成本衝擊試算。'},
+ {id:'ppa',   n:'綠電採購與節能診斷',       grp:'carbon', rare:3, stat:'E', d:'規劃 PPA 綠電組合，用能源盤點找節能點。'},
+ // ── 永續報告與揭露 ──
+ {id:'gri',   n:'GRI 永續報告書撰寫',       grp:'report', rare:4, stat:'D', d:'這一行最基本的功夫——會寫報告書只是入場券。'},
+ {id:'mat',   n:'重大性與雙重重大性分析',   grp:'report', rare:4, stat:'D', d:'辨識議題、排序財務與衝擊雙軸。'},
+ {id:'ifrss', n:'IFRS S1／S2 導入',         grp:'report', rare:4, stat:'D', d:'建立符合 ISSB 準則的揭露流程與內控。'},
+ {id:'tcfd',  n:'TCFD 氣候財務揭露',        grp:'report', rare:4, stat:'D', d:'治理、策略、風險管理、指標目標四支柱。'},
+ {id:'sasb',  n:'SASB 產業別揭露與整合報告', grp:'report', rare:3, stat:'D', d:'用產業別財務重大指標強化投資人溝通。'},
+ // ── 氣候風險與財務 ──
+ {id:'scen',  n:'氣候情境分析與財務量化',   grp:'climfin',rare:4, stat:'G', d:'量化實體與轉型風險的財務衝擊。'},
+ {id:'adapt', n:'氣候調適與營運韌性',       grp:'climfin',rare:2, stat:'E', d:'極端氣候下的廠區與供應網絡持續營運。'},
+ {id:'pcaf',  n:'投融資組合碳排盤查 PCAF',  grp:'finance',rare:3, stat:'G', d:'金融組的核心技能：算放款與投資部位的範疇三。'},
+ {id:'clgov', n:'氣候治理架構與永續委員會', grp:'climfin',rare:4, stat:'G', d:'專責單位、董事會督導與 PDCA 機制。'},
+ // ── 供應鏈與循環 ──
+ {id:'ssc',   n:'綠色永續供應鏈管理',       grp:'supply', rare:4, stat:'S', d:'採購政策、行為準則與可追溯機制。'},
+ {id:'saudit',n:'供應商 ESG 風險鑑別與稽核', grp:'supply', rare:4, stat:'S', d:'分級鑑別風險並執行實地查核。'},
+ {id:'scope3',n:'供應鏈碳管理與供應商輔導', grp:'supply', rare:4, stat:'S', d:'帶上游建立盤查能力，收斂範疇三。'},
+ {id:'mineral',n:'衝突礦產與負責任採購',    grp:'supply', rare:1, stat:'S', d:'礦源盡職調查與 3TG 揭露——全台會的人極少。'},
+ {id:'circ',  n:'循環經濟商業模式設計',     grp:'supply', rare:3, stat:'S', d:'從設計、再生料到回收體系。'},
+ // ── 永續金融 ──
+ {id:'gbond', n:'綠色債券與永續連結商品確信', grp:'finance',rare:3, stat:'G', d:'對綠債、社會債、永續連結貸款出具確信。'},
+ {id:'pri',   n:'責任投資原則導入（PRI／赤道原則）',grp:'finance',rare:4,stat:'G',d:'把 ESG 因子嵌入投資、承保、授信流程。'},
+ {id:'twfin', n:'永續金融評鑑與經濟活動認定', grp:'finance',rare:1, stat:'G', d:'台灣在地題材，金管會評鑑與分類標準——稀缺但只在台灣有用。'},
+ {id:'gproduct',n:'永續金融商品開發',       grp:'finance',rare:3, stat:'G', d:'設計綠色標籤商品並衡量其環境影響。'},
+ // ── 公司治理 ──
+ {id:'gov',   n:'公司治理制度與法令遵循',   grp:'gov',    rare:2, stat:'G', d:'治理結構、誠信經營、董事會效能。'},
+ {id:'bodedu',n:'董監事 ESG 教育訓練',      grp:'gov',    rare:3, stat:'G', d:'到府授課，提升決策層永續素養。'},
+ {id:'hrdd',  n:'人權盡職調查與勞動人權',   grp:'gov',    rare:3, stat:'S', d:'依 UNGP 鑑別人權風險並建立救濟機制。'},
+ {id:'esgpay',n:'ESG 連結薪酬制度',         grp:'gov',    rare:1, stat:'G', d:'把永續 KPI 綁進薪酬委員會——稀缺技能。'},
+ // ── 評比與策略 ──
+ {id:'strat', n:'永續策略藍圖與成熟度診斷', grp:'rating', rare:4, stat:'G', d:'盤點成熟度、對接 SDGs、產出多年期藍圖。'},
+ {id:'rating',n:'DJSI／CDP／MSCI 評比輔導', grp:'rating', rare:4, stat:'D', d:'解構評分邏輯、補資料缺口、拉高分數。'},
+ {id:'esgdd', n:'ESG 盡職調查（併購）',     grp:'rating', rare:4, stat:'G', d:'交易前檢視環安衛責任、ESG 負債與轉型風險。'},
+ {id:'sroi',  n:'社會影響力貨幣化 SROI',    grp:'rating', rare:3, stat:'S', d:'把非財務影響換算成貨幣化數字。'},
+ // ── 確信查證 ──
+ {id:'assure',n:'永續報告書第三方確信',     grp:'assure', rare:4, stat:'D', d:'AA1000／ISAE 3000，出具有限或合理確信意見。'},
+ {id:'ghgver',n:'溫室氣體排放確信',         grp:'assure', rare:4, stat:'E', d:'ISO 14064-3，對溫盤數字獨立查證。'},
+ {id:'aigov', n:'AI 治理確信與演算法驗證',  grp:'assure', rare:1, stat:'G', d:'新興議題：對模型治理與控制出具意見——目前只有一家在做。'},
+ // ── 其他 ──
+ {id:'tnfd',  n:'生物多樣性與 TNFD 自然資本',grp:'other',  rare:2, stat:'E', d:'辨識自然相關依賴與衝擊，把 TCFD 延伸到生態系。'},
+ {id:'platform',n:'碳管理平台與 ESG 數位工具',grp:'other', rare:2, stat:'D', d:'導入數位碳工具與永續資料中台。'},
+ {id:'tax',   n:'永續稅務與碳費法規遵循',   grp:'other',  rare:4, stat:'G', d:'環境稅、碳費、綠色租稅與跨國法規追蹤。'}
+];
+function skillById(id){ for(const k of SKILLS) if(k.id===id) return k; return null }
+function hasSkill(id){ return !!(S.skills && S.skills[id]) }
+function skillLevel(id){ return (S.skills && S.skills[id]) || 0 }
+function skillCount(){ return S.skills ? Object.keys(S.skills).length : 0 }
+/* 學會一項技能（可重複精進，最高 3 級） */
+function learnSkill(id, note){
+  const k = skillById(id); if(!k) return null;
+  S.skills = S.skills || {};
+  const before = S.skills[id] || 0;
+  if(before >= 3) return null;
+  S.skills[id] = before + 1;
+  S[k.stat] = (S[k.stat]||0) + (before===0 ? 4 : 2);   // 第一次學收穫最大
+  if(before===0 && k.rare<=2){ S.rareSkills = (S.rareSkills||0) + 1 }
+  return {k:k, lv:S.skills[id], first:before===0, note:note||''};
+}
+/* 這一年的專案，會讓你學到哪些技能（依部門/公司/年份決定可學清單） */
+function skillsForFocus(focusKey){
+  const y = S.year, out = [];
+  const push = function(id, fromYear){ if(!fromYear || y>=fromYear) out.push(id) };
+  if(focusKey==='E'){ push('ghg'); push('lca'); push('sbti',2021); push('path',2021); push('cbam',2023); push('ppa',2020); push('casset',2024); push('ghgver'); push('adapt',2023); }
+  if(focusKey==='D'){ push('gri'); push('mat'); push('tcfd',2017); push('ifrss',2024); push('sasb',2019); push('rating'); push('assure'); push('platform',2023); }
+  if(focusKey==='S'){ push('ssc'); push('saudit'); push('scope3',2022); push('circ',2020); push('hrdd',2023); push('sroi',2020); push('mineral',2021); }
+  if(focusKey==='G'){ push('strat'); push('clgov'); push('scen',2019); push('gov'); push('bodedu',2020); push('tax',2024); push('esgdd',2021); push('icp',2022); push('esgpay',2024); push('aigov',2026); }
+  // 金融業／金融組專屬
+  if(S.emp && (S.emp.ind==='fin' || S.big4Grp==='fin')){ push('pcaf',2022); push('pri'); push('gbond',2020); push('gproduct',2021); push('twfin',2023); }
+  // 自然議題：科系或已有基礎才碰得到
+  if(S.major && S.major.id==='sci' || hasSkill('ghg')) push('tnfd',2023);
+  return out.filter(function(id){ return skillLevel(id) < 3 });
+}
+
+
+/* ===== 進四大要分組（使用者需求）===== */
+function screenBig4Group(){
+  const list = big4GroupsFor(S.emp);
+  const cards = list.map(function(g,i){
+    const sk = g.skills.map(function(id){ const k=skillById(id); return k?k.n:'' }).filter(Boolean).slice(0,4).join('、');
+    return '<button class="pick" onclick="pickBig4Group('+i+')">'
+      + '<span class="t">'+g.n+'</span>'
+      + '<span class="d">'+g.d+'</span>'
+      + '<span class="m">主要練到：'+sk+'</span></button>';
+  }).join('');
+  shell('<div class="panel panel-pad fade">'
+    + '<span class="eyebrow">'+S.emp.n+' ・ 你被分到哪一組？</span>'
+    + '<h2 class="card-title">分組決定你這幾年學得到什麼。</h2>'
+    + '<div class="card-body" style="font-size:15px">四大的永續團隊是分線作戰的。'
+    + '<span style="color:var(--ink-3)">同樣待三年，金融組出來的人跟碳組出來的人，履歷長得完全不一樣——'
+    + '而你未來跳去哪一種公司，很大一部分是這一刻決定的。</span></div>'
+    + '<div class="grid">'+cards+'</div></div>');
+  S._grpList = list;
+}
+function pickBig4Group(i){
+  const g = S._grpList[i];
+  S.big4Grp = g.id; S.big4GrpName = g.n;
+  if(!S.traits.includes(g.n)) S.traits.push(g.n);
+  S[g.tilt] = (S[g.tilt]||0) + 3;
+  const first = learnSkill(g.skills[0]);
+  S.ledger.push({y:S.year,t:S.emp.n+'：分到'+g.n,p:''});
+  showOutcome('你被分到<strong>'+g.n+'</strong>。<br><br>'+g.d
+    + (first ? '<br><br>第一個月，你就被丟去做<strong>'+first.k.n+'</strong>——邊做邊學，這一行都是這樣開始的。' : ''),
+    [[({E:'環境力',S:'社會力',G:'治理力',D:'揭露力'})[g.tilt], 3]],
+    function(){ yearStart() });
+}
+
 /* ============ 年中：主力專案 ============ */
 const PROJ = [
  {k:'E',g:'專業',l:'碳盤查與減量專案',h:'技術含量高，AI 最難取代',e:{E:7,co2:1}},
@@ -3553,6 +3696,24 @@ function applyProject(p, e, resultNote, trait){
     if(!S.traits.includes('開始寫了')) S.traits.push('開始寫了');
   }
   mbtiTilt(e, !!S._focusCard);   // 焦點卡也吃性格連動
+  /* 這一年學到的具體技能（依焦點方向、年份、公司與四大組別）*/
+  let learned = null;
+  if(p.g==='專業'){
+    let pool = skillsForFocus(p.k);
+    const grp = S.big4Grp && big4GrpById(S.big4Grp);
+    if(grp){ const pref = grp.skills.filter(function(id){ return pool.indexOf(id)>=0 }); if(pref.length && rnd()<0.6) pool = pref; }
+    if(pool.length){
+      // 越稀缺的技能越晚才學得到（要先有基礎）
+      const eligible = pool.filter(function(id){
+        const k = skillById(id); if(!k) return false;
+        if(k.rare<=1) return S.esgYrs>=6 || skillCount()>=6;
+        if(k.rare<=2) return S.esgYrs>=3 || skillCount()>=3;
+        return true;
+      });
+      const use = eligible.length ? eligible : pool;
+      learned = learnSkill(use[Math.floor(rnd()*use.length)]);
+    }
+  }
   const so = skillOutcome(p);
   if(so.q!==1){ ['E','S','G','D'].forEach(function(k){ if(e[k]) e[k]=Math.max(1,Math.round(e[k]*so.q)) }); }
   /* 邊際遞減：同一項能力越高，再往上長越慢（你已經是專家，多做一年學不到多少新的）*/
@@ -3588,7 +3749,12 @@ function applyProject(p, e, resultNote, trait){
     if(p.k==='E' && so.q>=1){ S.co2 += 1; }
   }
   const chips=(out.d||[]);
-  S.projNote = (resultNote ? resultNote+' ' : `這一年你壓在<strong>${p.l}</strong>上。`)
+  const learnNote = learned
+    ? (learned.first
+        ? `<br><br>這一年你第一次真的學會了<strong>${learned.k.n}</strong>${learned.k.rare<=2?'——這是連四大都沒幾家在做的東西':''}。`
+        : `<br><br>你又把<strong>${learned.k.n}</strong>練深了一層（Lv.${learned.lv}）。`)
+    : '';
+  S.projNote = (resultNote ? resultNote+' ' : `這一年你壓在<strong>${p.l}</strong>上。`) + learnNote
     + (so.note ? so.note : '')
     + (S.rel>=12 ? '不過你有一半時間在外面跑，實作的時間被吃掉了。' : '');
   yearEnd();
@@ -4204,6 +4370,7 @@ function ending(){
     <div class="stats" style="margin-top:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
       ${statBar(S.E,'環境 E',60)}${statBar(S.S,'社會 S',60)}${statBar(S.G,'治理 G',60)}${statBar(S.D,'揭露 D',60)}
     </div>
+    ${skillCount()?`<hr class="rule"><span class="eyebrow">你真正會做的事（${skillCount()} 項${S.rareSkills?'，其中 '+S.rareSkills+' 項是稀缺技能':''}）</span><div class="traits">${Object.keys(S.skills).map(function(id){const k=skillById(id);return k?`<span class="trait">${k.n}${S.skills[id]>1?' Lv'+S.skills[id]:''}</span>`:''}).join('')}</div>`:''}
     ${S.traits.length?`<hr class="rule"><span class="eyebrow">你成為了什麼樣的人</span><div class="traits">${S.traits.map(x=>`<span class="trait">${x}</span>`).join('')}</div>`:''}
     ${legacyBlock()}
     <hr class="rule">
