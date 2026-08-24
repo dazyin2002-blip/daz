@@ -292,6 +292,24 @@ const FEEDBACK_FORM = {
 const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
+/* ============ 版本紀錄（開場頁腳可展開） ============ */
+const GAME_VERSION = 'v23';
+const VERSION_LOG = [
+ ['v23','極端氣候改變工作類型（大旱／熱危害／颱風斷鏈／調適職缺／被壓下的情境分析多年後兌現）、青年百億海外圓夢基金、地方創生駐站、參政之路、出國念書獎學金、長假劇情、B 型企業選了就真的加入、考績差會扣薪、四大起薪對齊 2026 官方數字、永續長普及率機制'],
+ ['v22','考績 A/B/C、過勞早衰與突發結局（提早退休／車禍／被自己養的 AI 取代／出家六十天）、大一打電動彩蛋、主管卡與陷阱卡、四大合夥人之路'],
+ ['v19–v21','40 項具體技能與四大分組、英文介面（進行中）、266 張卡全數雙選項'],
+ ['v18','英文版切換、USR 路徑、TNFD 加權、203X 科技革新、AI 缺電、台灣永續獎項、公正轉型'],
+ ['v15–v17','公司 ESG 三面向與 CSA 參與機制、真實薪資分布對照、泡沫時間軸、FOCUS 專業方向卡、人權與反 DEI 主軸'],
+ ['v13–v14','MBTI、公司 ESG 評分、永續部門隸屬、四大四色所、研究所 17+14 科系、海外工作、時代起伏'],
+ ['v12','六大人生目標、隨機入學年、AI 軌跡、跨領域定位——最初可玩版本']
+];
+function versionBlock(){
+  return '<details style="margin-top:10px"><summary class="note" style="cursor:pointer;list-style:none">'
+    + GAME_VERSION + ' ・ 版本紀錄 ▾</summary><div class="note" style="margin-top:8px;line-height:1.8">'
+    + VERSION_LOG.map(function(v){ return '<strong>'+v[0]+'</strong>　'+v[1] }).join('<br>')
+    + '</div></details>';
+}
+
 /* ============ 市場曲線（2018–2026 為 104×環境部實測，其餘回推/推估） ============ */
 const MARKET = {
  2010:[800,5,'拓荒期'],2011:[950,6,'拓荒期'],2012:[1200,8,'拓荒期'],2013:[1600,10,'拓荒期'],
@@ -533,10 +551,11 @@ const EMP = [
  {id:'fab',  n:'南方織造',   ind:'text', tier:'中後段',mult:.88,bar:28,burn:1.1,pre:5,esg:{e:70,s:66,g:68},csa:1,dept:'ehs',req:'Higg 指數、化學品管理、品牌客戶驗廠、FSC／GRS／OCS 認證、英文精通',f:'國際品牌客戶的稽核月月來。薪水不高，實戰經驗全台最扎實。'},
  {id:'fud',  n:'統一帝國食品',ind:'food',tier:'龍頭',mult:1.00,bar:34,burn:.9,pre:7,esg:{e:36,s:34,g:35},csa:0,dept:'office',req:'食安與農產供應鏈、報告書（評比參與度低，制度待建）',f:'2014 年後最早練報告書的地方，制度成熟。'},
  {id:'shop', n:'團購王流通', ind:'retail',tier:'龍頭',mult:.93,bar:32,burn:1.05,pre:6,esg:{e:44,s:42,g:44},csa:0,dept:'pr',req:'供應商行為準則、包裝減量、報告書',f:'S 面向專案豐富。做環境面的預算要用搶的。'},
- {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:26,burn:1.85,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。案子什麼產業都碰得到，兩年學五年的東西。'},
- {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:.88,bar:26,burn:1.9,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
- {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:.90,bar:28,burn:2.05,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
- {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:.92,bar:28,burn:1.95,pre:8,esg:{e:56,s:58,g:64},csa:1,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
+ /* 四大 mult 依 2026 官方起薪校準（大學 42K／碩士 46K 月薪 → 年薪約 55–65 萬；經 calcPay 的 base66×cons0.85×市況 換算） */
+ {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.96,bar:26,burn:1.85,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。案子什麼產業都碰得到，兩年學五年的東西。'},
+ {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:1.00,bar:26,burn:1.9,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
+ {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:1.02,bar:28,burn:2.05,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
+ {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:1.04,bar:28,burn:1.95,pre:8,esg:{e:56,s:58,g:64},csa:1,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
  {id:'bout', n:'小而美顧問', ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.4,pre:5,esg:{e:46,s:48,g:50},csa:-1,dept:'consult',f:'什麼案子都接、什麼都要會。學得廣，名片不夠亮。'},
  {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg:{e:50,s:52,g:58},csa:1,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
  {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,esg:{e:58,s:60,g:62},csa:-1,dept:'office',f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
@@ -556,6 +575,7 @@ const EMP = [
  {id:'green3',n:'儲能系統商', ind:'green',tier:'中後段',mult:.96,bar:32,burn:1.15,pre:5,esg:{e:66,s:56,g:58},csa:0,dept:'office',req:'電池碳足跡、電網服務、消防與安全',f:'綠電的最後一塊拼圖。產業很新、規則還在寫，你等於在幫整個市場定義什麼叫永續。'},
  {id:'util3', n:'水務工程公司',ind:'util', tier:'中後段',mult:.92,bar:30,burn:1.0,pre:5,esg:{e:58,s:56,g:52},csa:0,dept:'ehs',req:'再生水、污泥處理、ISO 14064-1',f:'做再生水與污水處理。缺水的年代，這是被低估的關鍵基礎設施。'},
  {id:'ngo2',  n:'在地環保團體',ind:'ngo', tier:'NGO',mult:.62,bar:20,burn:1.1,pre:5,esg:{e:70,s:78,g:64},csa:-1,dept:'office',req:'議題倡議、政策研究、社區溝通、募款',f:'薪水低到不好意思講，做的事卻常常改變政策。你會站在企業的對面——那個位置看到的東西不一樣。'},
+ {id:'bcorp', n:'向光良品',   ind:'retail',tier:'中後段',mult:.78,bar:34,burn:.85,pre:6,esg:{e:66,s:80,g:70},csa:-1,dept:'gm',req:'B 型企業認證維運（BIA 重新驗證）、共益報告、供應鏈溯源',f:'B 型企業。薪水比外面低一截，但整間公司的存在就是為了做好事——永續不是部門，是商業模式本身。'},
  {id:'pub3',  n:'地方政府環保局',ind:'pub',tier:'公部門',mult:.86,bar:32,burn:.95,pre:6,esg:{e:62,s:60,g:60},csa:-1,dept:'ehs',req:'地方溫室氣體管制執行方案、稽查、公民溝通',f:'第一線的稽查與地方減碳。公文很多、資源很少，但你的一個決定會影響一整個縣市。'},
  {id:'sys1',  n:'永續系統商', ind:'cons', tier:'新創',mult:1.00,bar:34,burn:1.25,pre:6,esg:{e:58,s:52,g:56},csa:0,dept:'consult',req:'碳管理系統導入、資料架構、客戶教育訓練',f:'賣的是碳管理與 ESG 資料系統。你同時要懂準則和產品——這是這幾年才長出來的職涯。'},
  {id:'carbon1',n:'碳權開發商',ind:'cons', tier:'新創',mult:.94,bar:32,burn:1.3,pre:5,esg:{e:64,s:54,g:52},csa:-1,dept:'consult',req:'方法學、外加性論證、查驗機構溝通、專案開發',f:'開發自願減量專案、跑方法學、賣額度。前沿、刺激，也非常看市場臉色。'},
@@ -1902,9 +1922,9 @@ CARDS.push(
     {l:'先在本業裡找永續的切點',e:{dom:4,E:2,sp:1},r:'你不離職，先把本業和永續的交集做出來。這條路慢，但風險低。',trait:'從本業切進去'},
     {l:'想想就好，日子還是要過',e:{burn:3,dom:2},r:'你把念頭收起來。它不會消失，只是還沒到時候。'}]},
 {id:'pd_bcorp',pool:'p',w:10,t:'B 型企業的面試',
- cond:function(s){return s.esgYrs>=3&&s.rel>=8},
+ cond:function(s){return s.esgYrs>=3&&s.rel>=8&&s.emp&&!s.freelance&&s.emp.id!=='bcorp'&&s.emp.id!=='place'&&s.emp.id!=='polit'},
  x:'一家 B 型企業找你。<em>薪水比外面低一截，但整間公司的存在就是為了做好事</em>。面試官說：我們要圈粉的不只是客戶，還有員工。',
- o:[{l:'去，賭一個價值觀對齊的環境',e:{S:5,soc:3,adv:2,pay:-.05,burn:-6},r:'你進去了。這裡沒有「做永續是不是漂綠」的內耗，因為那就是本業。錢少一點，但你睡得好。',trait:'B 型企業人'},
+ o:[{l:'去，賭一個價值觀對齊的環境',e:{S:5,soc:3,adv:2,bjoin:1,burn:-6},r:'你真的遞了辭呈，搬進了新辦公室。這裡沒有「做永續是不是漂綠」的內耗，因為那就是本業。錢少一點，但你睡得好。',trait:'B 型企業人'},
     {l:'欣賞但婉拒，現實要顧',e:{sp:1,rel:1},r:'你謝謝他們，選了薪水高的那個。偶爾你會想起那場很不一樣的面試。'}]},
 {id:'pd_thinktank',pool:'p',w:10,t:'智庫的位子',
  cond:function(s){return s.G>=20&&s.esgYrs>=4},
@@ -2257,7 +2277,107 @@ CARDS.push(
  cond:function(s){return s.traits.indexOf('體面離開')>=0||(s.esgYrs>=8&&s.traits.some&&s.traits.some(function(t){return /色所|金融組|非金融組|碳組|永續供應鏈組|社會創新組/.test(t)})) },
  x:'你去提案，走進會議室才發現坐在對面的是<em>當年一起熬夜趕報告書的同梯</em>。<br><br>他現在是這家公司的永續主管。你們有五年沒見了。',
  o:[{l:'把案子做好，也把交情續上',e:{rel:5,cash:6,sp:1},r:'案子順利拿下，但更重要的是你們約了下週吃飯。<em>四大最值錢的東西，從來不是那張名片。</em>',trait:'同梯情誼'},
-    {l:'公事公辦，不想欠人情',e:{D:3,rel:1},r:'你把提案做得無懈可擊，全程沒提當年。專業，但也少了點什麼。'}]}
+    {l:'公事公辦，不想欠人情',e:{D:3,rel:1},r:'你把提案做得無懈可擊，全程沒提當年。專業，但也少了點什麼。'}]},
+{id:'eg_mentor',pool:'p',w:9,t:'當年帶你的那個資深',
+ cond:function(s){return s.esgYrs>=7&&s.traits.some&&s.traits.some(function(t){return /色所|金融組|非金融組|碳組|永續供應鏈組|社會創新組|同梯情誼/.test(t)})},
+ x:'你在一場論壇的講者名單上看到一個熟悉的名字——<em>當年手把手帶你做第一本報告書的那個資深</em>。<br><br>頭銜寫著：某上市公司永續長。散場時他在人群裡認出了你。',
+ o:[{l:'上前敘舊，把這條線重新接起來',e:{rel:4,sp:1},r:'他記得你當年犯過的每一個錯，也記得你哪裡做得好。「有缺人我第一個想到你。」<em>這句話半年後真的兌現了一次面試邀請。</em>',trait:'師徒緣分'},
+    {l:'點個頭就好，各自都有新的人生',e:{sp:1},r:'你們隔著人群點了頭。有些關係停在最好的時候，也是一種完整。'}]}
+);
+
+/* ===== 地方創生／參政 專屬雇主（不進 EMP，獵頭與 offer 池抽不到） ===== */
+const EMP_PLACE = {id:'place', n:'地方創生工作站', ind:'pub', tier:'地方', mult:.70, bar:0, burn:1.05, pre:5, dept:'office',
+  f:'青年培力工作站。計畫養人，KPI 養計畫。'};
+const EMP_POLIT = {id:'polit', n:'公職／議會', ind:'pub', tier:'公職', mult:1, bar:0, burn:1.35, pre:7, dept:'gm',
+  f:'從寫報告書的人，變成審預算的人。'};
+
+/* ===== 青年百億／地方創生／參政（v23 items 4/6/7） ===== */
+CARDS.push(
+{id:'yb_fund',pool:'p',w:10,nonEsg:1,yr:[2025,2026,2027,2028],t:'青年百億海外圓夢基金',
+ cond:function(s){return s.age>=20&&s.age<=30},
+ x:'教育部青年署的「青年百億海外圓夢基金」開放申請了——15 到 30 歲、不補留學遊學打工度假，補的是<em>你那個一直放著的計畫</em>。<br><br>「海外翱翔組」最高 150 萬、「築夢工場組」最高 200 萬。2025 年第一屆，一千四百多人錄取。<br><br>你桌面深處確實有一個那樣的資料夾。',
+ o:[{l:'申請海外翱翔組：把那個出國看永續的計畫寫出來',e:{youth:'fly',burn:6},r:''},
+    {l:'申請築夢工場組：在台灣把構想做出來',e:{youth:'forge',burn:6},r:''},
+    {l:'資格是有，但現在工作走不開',e:{sp:1},r:'你把公告轉發給了一個學弟。三十歲的門檻一年一年近了，你知道有些補助是有身分保存期限的。'}]},
+
+{id:'rv_station',pool:'p',w:8,nonEsg:1,t:'回鄉的那個提案',
+ cond:function(s){return s.year>=2022&&s.age>=26&&s.age<=38&&s.emp&&!s.freelance&&s.emp.id!=='place'&&!s.polit&&(s.rel>=8||(s.soc||0)>=4||s.community)},
+ x:'國發會「青年培力工作站」在徵件——一般組一年 250 萬、高階組 300 萬，做地方創生。<br><br>你想起那個人口一直在流出的家鄉小鎮：廢校的小學、沒人接的果園、開始淹水的老街。<em>你會的這些東西，在那裡沒有人會。</em><br><br>已核定的工作站有一百多個。也有做到第五年退場、整個團隊解散的。',
+ o:[{l:'提案，放下現在的工作回鄉駐站',e:{placemake:1},r:''},
+    {l:'用假日回去幫忙就好，工作先留著',e:{rel:2,soc:2,burn:6},r:'你成了那種「週五晚上高鐵往南、週日深夜回來」的人。地方的事你參與了一角，代價是你的週末從此姓公。'},
+    {l:'誠實面對：這不是我的路',e:{sp:1},r:'你把徵件公告關掉。不是每個人都要回鄉，把城市裡的事做好，也是一種對地方的交代。'}]},
+
+{id:'rv_renew',pool:'p',w:20,rep:1,t:'續案審查',
+ cond:function(s){return s.emp&&s.emp.id==='place'},
+ x:'一年一度的續案審查到了。<br><br>簡報要交、KPI 要填：辦了幾場活動、觸及幾個青年、帶動幾筆投資。<em>你真正做的事——陪一個返鄉青年撐過第一年、把一條排水溝的問題吵到公所處理——沒有一格放得下。</em>',
+ o:[{l:'把 KPI 的語言學會，讓計畫活下去',e:{placeRenew:1,burn:14,D:2},r:''},
+    {l:'見好就收，帶著地方經驗回職場',e:{leave:1,soc:2,rel:2},r:'你決定在還體面的時候交棒。工作站留給了在地的夥伴，你帶走的是別人沒有的東西：<em>你真的在第一線做過。</em>',trait:'從地方回來'}]},
+
+{id:'rv_life',pool:'p',w:18,t:'地方的日子',
+ cond:function(s){return s.emp&&s.emp.id==='place'},
+ x:'在這裡工作的第 N 個月。<br><br>菜市場的阿姨會多塞一把蔥給你，公所的承辦看到你會躲，鎮上唯一的咖啡店老闆想跟你合作「低碳菜單」。<br><br>薪水單上的數字，你已經學會不去跟以前的同學比。',
+ o:[{l:'把低碳菜單做起來，順便串起整條街',e:{soc:3,adv:2,rel:3,co2:1,burn:8},r:'三個月後，那條街有了六家店掛上「在地食材」的牌子。報導來拍的那天，老闆把你拉進鏡頭裡。<em>這種成就感，做報告書的年代沒有過。</em>',trait:'一條街的改變'},
+    {l:'今天想休息，去海邊坐一下',e:{burn:-12,sp:1},r:'你在堤防上坐到天黑。在城市裡，「什麼都不做」要先請假；在這裡，它只需要一台機車和二十分鐘。'}]},
+
+{id:'po_call',pool:'p',w:7,t:'有人問你要不要參政',
+ cond:function(s){return s.age>=32&&s.esgYrs>=8&&!s.polit&&((s.adv||0)>=8||(s.soc||0)>=10||s.rel>=13)},
+ x:'選舉年。一通電話進來，對方開門見山：<em>「你在這個圈子有聲量、有專業，有沒有想過換一個位子推這些事？」</em><br><br>你想起這些年：法規是別人訂的，預算是別人審的，你寫的建議書永遠停在「參考」。<br><br>NGO 出身的人進過國會，教氣候的教授當過部長，也有人辭職回選區從里走起。每一條路都有人走成過——<em>也都有人摔過。</em>',
+ o:[{l:'接受政黨徵詢，排進不分區名單',e:{polit:'list'},r:''},
+    {l:'等專業被延攬：政務官的路',e:{polit:'appoint'},r:''},
+    {l:'辭職，繳保證金，回選區參選',e:{polit:'run'},r:''},
+    {l:'婉拒。我的位子在體制外',e:{sp:2,adv:1},r:'你想清楚了：有人要在裡面，也要有人在外面。你選擇留在能說真話的那一側——<em>而且從此，裡面有人接你的電話了。</em>'}]},
+
+{id:'po_forget',pool:'p',w:45,t:'「進了體制就忘了初衷」',
+ cond:function(s){return !!s.polit},
+ x:'一篇評論在你的同溫層瘋傳，標題點名了你：<em>「那些進了體制的永續人，還記得自己為什麼出發嗎？」</em><br><br>底下留言有當年跟你一起舉牌的老戰友。你的手指在鍵盤上停了很久。<br><br>而現實是：你手上正有一個案子，黨團要你「先放一放」。',
+ o:[{l:'把那個案子硬推到底，得罪誰都認了',e:{adv:4,soc:3,burn:14,rel:-2},r:'你在協商會議上把門關起來吵了三個小時。案子過了一半——是被砍過的一半，但它從「參考」變成了<em>條文</em>。老戰友在文章下面補了一句留言：「他還在。」',trait:'體制內的倡議者'},
+    {l:'先蹲低。留在場上才有下一次',e:{rel:3,sp:1,adv:-2},r:'你把案子收進抽屜，換來黨團在另一件事上的支持。政治是交換的藝術——<em>只是每交換一次，你都要重新回答一次那個標題的問題。</em>'}]},
+
+{id:'m_nocso',pool:'p',w:12,t:'我們公司沒有永續長',
+ cond:function(s){return s.level>=3&&s.emp&&s.emp.esg&&!s.emp.big4&&(companyESG(s.emp,s.year)||0)<58},
+ x:'你到了協理，往上看——<em>那個位子不存在</em>。<br><br>2022 年的調查說，台灣只有 9% 的企業專設永續長，金融業最高也才 16.7%。你們公司的 ESG 分數在後段，董事會的態度很明白：永續「有人管就好」，不需要一個 C 開頭的頭銜。<br><br>天花板不是你不夠好，是<em>這裡根本沒蓋那一層</em>。',
+ o:[{l:'做一份設置永續長的提案，直接遞給董事會',e:{G:5,esg:4,adv:2,burn:10},r:'你用同業比較、法規趨勢和機構投資人的意見書堆出一份提案。董事會「原則同意研議」——在這家公司的語言裡，這已經是很大的一步。<em>那個位子開始有輪廓了，而離它最近的人是你。</em>',trait:'把位子做出來'},
+    {l:'認清結構，開始看有那一層的公司',e:{hunt:1,sp:1},r:'你把獵頭的訊息一則一則回了。要坐上永續長，先得去一家「有永續長」的公司——<em>這是很多人繞了十年才想通的事。</em>'},
+    {l:'頭銜不重要，把現在的事做好',e:{sp:2,burn:-4},r:'你決定不追那個頭銜。實權有時候不在名片上——只是年底統計永續長人數的時候，你不會被算進去。'}]}
+);
+
+/* ===== 極端氣候 → 工作類型改變（TCFD 實體風險／IPCC 情境，使用者需求 2026-08-25） ===== */
+CARDS.push(
+{id:'cc_drought21',pool:'h',yr:[2021],w:26,t:'百年大旱',
+ x:'這一年<em>沒有半個颱風登陸</em>。水庫見底，日月潭的九蛙全部露出來，中部開始「供五停二」，科學園區出動水車一車一車載水。<br><br>過去「氣候風險」是報告書裡的一個章節，這一年它變成<em>製程停擺的天數</em>。老闆第一次主動問你：「我們的水，到底靠哪裡來？」',
+ o:[{l:'把水風險盤點做進公司裡',e:{E:5,esgDim:{e:3},learn:'adapt',burn:10},r:'你把每個廠區的水源、依賴度、備援方案攤成一張表。這是公司第一份「實體風險」文件——<em>而你因此比別人早五年懂了「調適」這兩個字。</em>',trait:'旱季裡醒來'},
+    {l:'協助應變就好，那是工程部門的事',e:{D:2,rel:1},r:'你幫忙彙整了停水應變的資訊。危機過去後一切照舊——但你記住了那個畫面：<em>再大的公司，也是會沒有水的。</em>'}]},
+{id:'cc_phys',pool:'p',w:12,t:'把 IPCC 的情境跑在自家廠區上',
+ cond:function(s){return s.year>=2026&&s.inESG&&s.emp&&!s.freelance&&s.emp.id!=='free'},
+ x:'IFRS S2 要的不只是排放數字——它要你回答：<em>在 IPCC 的暖化情境下，你的廠區會發生什麼事？</em><br><br>顧問的報價單上寫著「氣候情境分析：SSP1-2.6 與 SSP5-8.5 雙情境、淹水與高溫熱危害圖層套疊」。你看著那個數字，再看看自己的團隊。',
+ o:[{l:'自己學：把情境分析做成內部能力',e:{G:4,D:3,learn:'scen',burn:14},r:'你花了半年啃 IPCC 圖資、學著把百年重現期洪水套上廠區座標。第一版粗糙，但它是<em>你們自己的</em>——明年準則改版，你不用再等報價單。',trait:'看得懂情境的人'},
+    {l:'外包給平台，買圖層輸出',e:{D:3,cash:-4,esgDim:{g:2}},r:'報告如期交出，圖很漂亮。查證的時候老師問了一個參數假設，你答不上來——<em>黑盒子的方便，是用理解換的。</em>'},
+    {l:'先寫定性描述擋這一年',e:{D:1,risk:.05},r:'「本公司持續關注氣候變遷相關風險。」這句話今年還能用。你自己知道，能用的年份在倒數。'}]},
+{id:'cc_heat',pool:'p',w:11,t:'四十度的作業現場',
+ cond:function(s){return s.year>=2024&&s.inESG&&s.emp&&!s.freelance&&['build','steel','semi','elec','chem','food','util'].indexOf(s.emp.ind)>=0},
+ x:'連續第三週高溫警報。工地與廠區的作業現場逼近四十度，中暑通報翻倍，勞動部的高氣溫作業指引發下來了。<br><br>工班的班長在會議上說了一句話，整間會議室安靜下來：<em>「你們吹冷氣的人訂的休息時間，我們曬太陽的人用不到。」</em>',
+ o:[{l:'把熱危害正式寫進職安與供應商管理',e:{S:5,soc:3,esgDim:{s:3},burn:9},r:'你陪工班站了三天現場，把休息艙、輪班表、飲水點一項一項落地——連外包商都納進來。<em>氣候議題第一次以「人」的樣子出現在你的 KPI 裡。</em>',trait:'把人放進氣候議題'},
+    {l:'發布指引、加購冰背心，先求合規',e:{S:1,D:1},r:'公告貼出去了，背心也發了。那年夏天的中暑通報還是多了四成——<em>紙上的降溫，現場感受不到。</em>'}]},
+{id:'cc_typhoon',pool:'p',w:10,t:'一場颱風打斷的供應鏈',
+ cond:function(s){return s.year>=2027&&s.inESG&&s.emp&&!s.freelance&&s.emp.id!=='free'},
+ x:'強颱過境，南部一家關鍵供應商的廠房淹了一層樓，交期直接開天窗。<br><br>採購在群組裡罵人，業務在安撫客戶——而你翻開自己去年寫的報告書，「供應鏈氣候風險」那一段，寫的是<em>問卷回收率</em>。',
+ o:[{l:'做一次真的供應鏈氣候韌性盤點',e:{S:3,E:3,esgDim:{e:2,s:2},learn:'adapt',burn:12},r:'你把一級供應商的所在地全部套上淹水潛勢圖，替三家高風險的談了備援方案。下一次颱風來的時候，公司第一次<em>提前</em>做了反應。',trait:'供應鏈上的氣候眼'},
+    {l:'先幫忙搶交期，檢討以後再說',e:{rel:2,burn:10},r:'你跟著大家打了兩週電話。交期救回來了，檢討會開完，結論是「持續關注」。<em>下一場颱風已經在生成。</em>'}]},
+{id:'cc_adapt30',pool:'p',w:13,t:'職缺欄位上出現了新的名字',
+ cond:function(s){return s.year>=2030&&s.inESG&&s.esgYrs>=5},
+ x:'人力銀行上的職缺長出了新的名字：<em>氣候調適規劃師、營運韌性經理、轉型金融分析師</em>。<br><br>IPCC 說的那些「未來情境」開始變成保費、變成信用評等、變成董事會的議程。減碳的人還在，但預算的重心正在移動——<em>從「讓排放變少」，移向「讓公司在變熱的世界裡活下來」。</em>',
+ o:[{l:'轉向調適線：把韌性變成你的新專業',e:{E:4,G:3,learn:'adapt',pay:.06,burn:8},r:'你把這幾年的盤查底子接上調適規劃，成了公司裡少數「算得出風險、也做得出對策」的人。<em>工作類型變了，而你剛好站在變過去的那一邊。</em>',trait:'調適與韌性'},
+    {l:'留在減碳與揭露的本行',e:{D:2,sp:1},r:'你選擇把熟的事做深。揭露永遠有人要做——只是你注意到，這幾年部門的新預算，越來越常撥給隔壁那個叫「韌性」的團隊。'}]},
+{id:'cc_warn',pool:'p',w:11,t:'那份沒有人想看的分析',
+ cond:function(s){return s.year>=2024&&s.year<=2030&&s.inESG&&s.emp&&!s.freelance&&!s.ccWarned&&['semi','elec','steel','chem','food','util','text','ship','build'].indexOf(s.emp.ind)>=0},
+ x:'你把 TCFD 的情境分析真的跑完了。<br><br>結論放在第 34 頁：<em>在高排放情境下，臨海廠區疊加風暴潮與地層下陷，2030 年代中期起淹水機率大幅上升</em>——防護投資現在做，成本是災後重建的十分之一。<br><br>簡報到這一頁時，總經理看了一眼手錶：「<em>2050 年的事，我們 2049 再煩惱。</em>先講下一題。」',
+ o:[{l:'不退：把它列進重大風險，一路吵到董事會',e:{ccwarn:2,G:3,burn:12,rel:-1},r:'你把那一頁從附錄搬進了正文，在風險委員會上跟三個部門吵了一輪。防護預算最後還是沒過，但<em>白紙黑字，公司「知道了」</em>——這件事總有一天會有重量。',trait:'說了沒人聽'},
+    {l:'把它收進附錄，別擋大家的年度計畫',e:{ccwarn:1,D:1,sp:1},r:'報告書如期付印，那份分析安安靜靜躺在第 34 頁。查證老師翻到了，多看了兩眼，沒說什麼。<em>你自己知道那一頁寫的是真的。</em>'}]},
+{id:'cc_flooded',pool:'p',w:70,t:'第 34 頁兌現的那天',
+ cond:function(s){return s.year>=2031&&s.ccWarned&&s.inESG&&s.emp&&!s.freelance&&!s.emp.big4&&['semi','elec','steel','chem','food','util','text','ship','build','air'].indexOf(s.emp.ind)>=0},
+ x:'強颱撞上天文大潮。風暴潮翻過堤防，<em>臨海廠區一夜之間泡在一米八的海水裡</em>——主力產線、倉庫、變電站，全毀。<br><br>保險理賠談不攏（保單當年沒有涵蓋這種複合災害），客戶轉單，銀行抽銀根。三個月後，公司公告：<strong>進入重整程序</strong>。<br><br>這一幕，跟很多年前那份情境分析第 34 頁的地圖，<em>幾乎一模一樣</em>。',
+ o:[{l:'留下來幫公司做災後的最後一份報告',e:{ccflood:2,burn:12},r:'你留到最後，把災損、對外說明和員工的資遣文件一份一份收好。<em>公司沒能撐過去，但你讓它倒得清楚。</em>'},
+    {l:'這裡結束了。整理自己，重新出發',e:{ccflood:1,burn:6},r:'你把工位上的東西裝進一個紙箱。走出廠區大門時你回頭看了一眼——<em>水線的痕跡還印在牆上，跟地圖上畫的一樣高。</em>'}]}
 );
 
 /* ============ 證照 ============ */
@@ -2321,6 +2441,7 @@ function payCap(){
   let c = lv.cap * Math.min(1.35, Math.max(0.85, ind.c));
   if(isFreelance()) c = lv.cap * 1.18;      // 接案：沒有職級紅利，但接得動就有
   if(!S.inESG) c = 235;                      // 非永續職另計
+  if(S.polit) c = 260;                       // 公職薪資法定，不套企業職級天花板
   return Math.round(c);
 }
 function clampPay(){
@@ -2496,6 +2617,171 @@ function apply(e, out){
     if(S.rel+S.luck+ri(1,10)>=24){ S.pay=Math.round(S.pay*1.08); d.push(['談成了','+8% 年薪']); out.extra='主管沉默了三秒，說：「我幫你爭取。」下個月調薪令下來了。' }
     else { S.burn+=8; out.extra='主管說：「今年預算已經定了，明年再看看。」你點點頭走出會議室。' }
   }
+  if(e.youth){
+    /* 青年百億海外圓夢基金（教育部青年署，2025–2028，15–30 歲；2025 年錄取 1,463 人） */
+    if(e.youth==='fly'){
+      const pr = 0.22 + (S.adv||0)*0.02 + S.luck*0.010 + (S.en>=6?0.08:0);
+      if(rnd() < pr){
+        S.youthFund=1; S.cash=Math.round(S.cash+20); S.en+=3; S.adv=(S.adv||0)+3; S.rel+=2; S.sp+=2;
+        S.burn=Math.max(0,S.burn-15);
+        d.push(['獲選','海外翱翔組'],['英文','+3'],['永續影響力','+3']);
+        out.extra = '錄取通知來的那天你看了三次。<br><br>你用這筆補助把那個放了很多年的計畫做完了——'
+          + '去看別人的城市怎麼做循環、別人的漁村怎麼談轉型。回來之後你寫的成果報告，'
+          + '被青年署放上了官網。<em>有些門是錢打開的，而這筆錢是國家出的。</em>';
+        if(!S.traits.includes('青年百億圓夢')) S.traits.push('青年百億圓夢');
+        S.ledger.push({y:S.year,t:'獲選青年百億「海外翱翔組」，出國圓夢',p:'',mark:1});
+      } else {
+        S.sp+=1;
+        out.extra = '兩個月後你收到很客氣的未錄取通知。那年錄取一千四百多人，報名的人是好幾倍。<br><br>'
+          + '不過為了寫計畫書，你把那個「總有一天要做」的夢想第一次完整地寫了下來。<em>它現在有名字了。</em>';
+      }
+    } else {
+      const pr = 0.18 + (S.adv||0)*0.02 + (S.soc||0)*0.012 + S.luck*0.008;
+      if(rnd() < pr){
+        S.youthFund=1; S.cash=Math.round(S.cash+40); S.adv=(S.adv||0)+4; S.soc=(S.soc||0)+2; S.rel+=2;
+        d.push(['獲選','築夢工場組'],['存款','+40 萬'],['永續影響力','+4']);
+        out.extra = '你的提案過了。<br><br>接下來一年你邊上班邊執行計畫，把構想做成了看得見摸得著的東西。'
+          + '結案發表那天，台下坐著幾個部會的人。<em>你第一次體會到「有資源」跟「沒資源」是兩種人生。</em>';
+        if(!S.traits.includes('青年百億圓夢')) S.traits.push('青年百億圓夢');
+        S.ledger.push({y:S.year,t:'獲選青年百億「築夢工場組」',p:'',mark:1});
+      } else {
+        S.sp+=1;
+        out.extra = '沒有上。評審意見寫得很誠懇：「構想具社會價值，惟執行規劃待補強。」<br><br>你把那份計畫書存進了一個叫「以後」的資料夾。';
+      }
+    }
+  }
+  if(e.placemake){
+    /* 地方創生青年培力工作站：一般組 250 萬／高階組 300 萬一年，養整個站；個人拿到的不多 */
+    const senior = S.workYrs>=8;
+    S.prevJob = S.emp ? S.emp.id : S.prevJob;
+    S.emp = EMP_PLACE; S.inESG = true; S.jobless=0; S.freelance=0; S.quitFlag=0; S.placeYrs=0;
+    S.pay = Math.round((senior?62:50) + Math.min(14, S.workYrs*1.2));
+    S.burn = Math.max(0, S.burn-12);
+    S.soc=(S.soc||0)+3; S.adv=(S.adv||0)+2; S.rel+=3;
+    d.push(['年薪',S.pay],['社會影響力','+3'],['關係力','+3']);
+    out.extra = '你搬回了那個你長大的（或你選中的）鄉鎮，掛牌成立工作站。<br><br>'
+      + '計畫一年 '+(senior?'三百萬（高階組）':'兩百五十萬（一般組）')+'，聽起來很多——但那是整個站的錢：'
+      + '人事、活動、場地、成果報告，全部從裡面出。你自己領的，比在城市裡少了一截。<br><br>'
+      + '<em>換來的是：你做的每一件事，走在路上都看得到。</em>';
+    if(!S.traits.includes('回鄉駐站')) S.traits.push('回鄉駐站');
+    S.ledger.push({y:S.year,t:'成立地方創生青年培力工作站',p:S.pay,mark:1});
+  }
+  if(e.placeRenew){
+    /* 續案是每年的生死線：KPI 追著跑，5 年退場的案例是真的存在 */
+    const pr = 0.62 + S.rel*0.010 + (S.adv||0)*0.010 + (S.soc||0)*0.008;
+    if(rnd() < pr){
+      S.pay = Math.round(S.pay*1.03); S.soc=(S.soc||0)+2;
+      d.push(['續案','通過'],['社會影響力','+2']);
+      out.extra = '審查委員問了很多 KPI 的問題，你把這一年做的事一件一件攤開。續案過了。<br><br><em>又買到了一年。</em>';
+    } else {
+      S.quitFlag=1; S.burn=Math.min(100,S.burn+10);
+      d.push(['續案','沒過']);
+      out.extra = '公文下來的那天，你把它讀了三次。<br><br>理由寫得很官方：「計畫成果與原規劃目標之連結性待強化。」'
+        + '你想起這一年做的那些事——它們是真的，只是放不進 KPI 的格子裡。<br><br>'
+        + '<em>工作站要收了。你得想下一步。</em>';
+      if(!S.traits.includes('被 KPI 退場')) S.traits.push('被 KPI 退場');
+      S.ledger.push({y:S.year,t:'工作站續案未過，準備退場',p:'',mark:1});
+    }
+  }
+  if(e.polit){
+    /* 參政三路徑：不分區（NGO／倡議聲量）、政務官（專業被延攬）、區域參選（保證金與沒收線） */
+    if(e.polit==='list'){
+      const pr = 0.30 + (S.adv||0)*0.015 + (S.soc||0)*0.010 + S.rel*0.006;
+      if(rnd() < pr){
+        S.polit='立委'; S.prevJob=S.emp?S.emp.id:S.prevJob; S.emp=EMP_POLIT; S.freelance=0; S.jobless=0; S.quitFlag=0;
+        S.pay=195; S.soc=(S.soc||0)+5; S.adv=(S.adv||0)+5;
+        d.push(['進了國會','不分區立委'],['年薪',195]);
+        out.extra = '排名公布那天，你的名字在安全名單裡。<br><br>宣誓那天你想起很多年前那個在環評會場外舉牌的自己。'
+          + '<em>現在你坐在裡面了。接下來才是真正難的部分。</em>';
+        if(!S.traits.includes('進了國會')) S.traits.push('進了國會');
+        S.ledger.push({y:S.year,t:'以不分區立委身分進入國會',p:195,mark:1});
+      } else {
+        S.rel+=2; S.sp+=1;
+        out.extra = '你被排在名單的第十四位。開票那晚算下來，政黨票分到第九席就停了。<br><br>'
+          + '你回到原本的位子上班。名片沒換，但整個圈子都知道你「差一點」——<em>這件事有時是資產，有時是標籤。</em>';
+      }
+    } else if(e.polit==='appoint'){
+      const pr = 0.25 + (S.G>=50?0.20:0) + S.rel*0.012;
+      if(rnd() < pr){
+        S.polit='政務官'; S.prevJob=S.emp?S.emp.id:S.prevJob; S.emp=EMP_POLIT; S.freelance=0; S.jobless=0; S.quitFlag=0;
+        S.pay=180; S.G+=4;
+        d.push(['被延攬','政務官'],['年薪',180]);
+        out.extra = '那通電話來的時候你以為是詐騙。<br><br>兩週後你站在部裡宣誓，隔天開始被立委輪流質詢。'
+          + '你發現自己過去十年寫的每一份報告書，都在為這個位子做準備——<em>只是沒有一份報告書教你怎麼被罵。</em>';
+        if(!S.traits.includes('被延攬入閣')) S.traits.push('被延攬入閣');
+        S.ledger.push({y:S.year,t:'被延攬出任政務官',p:180,mark:1});
+      } else {
+        S.burn+=6;
+        out.extra = '媒體報了「傳出接任名單」，你的名字在裡面。然後就沒有然後了。<br><br>'
+          + '公司裡有人開始用不一樣的眼神看你——<em>「原來你想走」這四個字，比走了本身更麻煩。</em>';
+      }
+    } else {
+      // 辭職區域參選：保證金議員 10–16 萬／立委 20 萬（2026 調降後），得票未達門檻沒收
+      S.cash = Math.round(S.cash-20);
+      const pr = 0.18 + S.rel*0.015 + (S.adv||0)*0.010 + S.luck*0.008;
+      if(rnd() < pr){
+        S.polit='議員'; S.prevJob=S.emp?S.emp.id:S.prevJob; S.emp=EMP_POLIT; S.freelance=0; S.jobless=0; S.quitFlag=0;
+        S.pay=130; S.soc=(S.soc||0)+4; S.adv=(S.adv||0)+3;
+        d.push(['當選','地方議員'],['年薪',130],['保證金','-20 萬']);
+        out.extra = '你辭了工作，把積蓄押進一場選戰。開票那晚，你在競選總部看著自己的票數一格一格往上爬。<br><br>'
+          + '<strong>你當選了。</strong>從明天起，你要用質詢台把這些年寫在報告書裡的東西，一件一件變成預算和自治條例。';
+        if(!S.traits.includes('選上了')) S.traits.push('選上了');
+        S.ledger.push({y:S.year,t:'辭職參選，當選地方議員',p:130,mark:1});
+      } else {
+        const lost = rnd()<0.5;
+        S.quitFlag=1; S.cash=Math.round(S.cash-(lost?0:0)-10); S.burn=Math.min(100,S.burn+12);
+        d.push(['落選','—'],['選舉開銷','-30 萬']);
+        out.extra = '你落選了。'+(lost?'得票沒有過門檻，<em>保證金被沒收</em>。':'保證金拿回來了，但其他的開銷拿不回來。')
+          + '<br><br>謝票那幾天你站在路口鞠躬，有個阿姨搖下車窗說：「少年欸，你講的那些我有聽進去。」<br><br>'
+          + '<em>你輸了選舉，但你把議題留在了那個選區。</em>然後，你得重新找工作。';
+        if(!S.traits.includes('選過一次')) S.traits.push('選過一次');
+        S.ledger.push({y:S.year,t:'辭職參選，落選',p:'',mark:1});
+      }
+    }
+  }
+  if(e.bjoin){
+    /* B 型企業：選了「去」就是真的去（修 v22 只加數值不換東家的 bug） */
+    const bc = EMP.find(function(x){ return x.id==='bcorp' });
+    if(bc && S.emp && S.emp.id!=='bcorp'){
+      S.prevJob = S.emp.id;
+      S.emp = bc; S.inESG = true; S.freelance=0; S.jobless=0; S.quitFlag=0;
+      S.pay = Math.round(S.pay*0.88);
+      d.push(['新東家', bc.n], ['年薪', S.pay]);
+      S.ledger.push({y:S.year, t:'跳槽到 '+bc.n+'（B 型企業）', p:S.pay, mark:1});
+    }
+  }
+  if(e.ccwarn){
+    /* 鋪梗：情境分析算出臨海廠區的實體風險，公司聽不聽是它的事，你說沒說過是你的事 */
+    S.ccWarned=1;
+    if(e.ccwarn===2){ S.ccPushed=1 }
+  }
+  if(e.ccflood){
+    /* 回收：當年被壓下去的那份分析，多年後被海水兌現。公司重創，你失業——
+       但如果當年是你堅持示警的，整個圈子都會記得你是「說對的那個人」。 */
+    const pushed = !!S.ccPushed;
+    S.prevJob = S.emp ? S.emp.id : S.prevJob;
+    S.emp=null; S.quitFlag=1; S.freelance=0;
+    S.cash = Math.round(S.cash + (e.ccflood===2?10:4));
+    if(e.ccflood===2){
+      S.S+=3; S.soc=(S.soc||0)+2;
+      if(!S.traits.includes('把災後收好的人')) S.traits.push('把災後收好的人');
+    }
+    d.push(['公司','進入重整'],['遣散費','+'+(e.ccflood===2?10:4)+' 萬']);
+    if(pushed){
+      S.rel+=3; S.adv=(S.adv||0)+4;
+      d.push(['關係力','+3'],['永續影響力','+4']);
+      out.extra = (out.extra||'') + '<br><br>災後第三天，有記者翻出了公司歷年的報告書——'
+        + '<em>你當年寫的那份情境分析被整段截圖瘋傳</em>：淹水範圍、發生機率、建議的防護投資，'
+        + '跟這次的災情幾乎逐條對得上。<br><br>標題寫著：「<strong>早在多年前，就有人警告過。</strong>」<br><br>'
+        + '接下來一週，你接到三通獵頭電話和一通立委辦公室的來電。'
+        + '<em>公司沒了，但「說對過一次」這件事，成了你履歷上最貴的一行。</em>';
+      if(!S.traits.includes('當年說對的人')) S.traits.push('當年說對的人');
+    } else {
+      out.extra = (out.extra||'') + '<br><br>你想起很多年前那份被收進附錄的分析。'
+        + '當時你選擇不吵——<em>現在它兌現了，而你和其他人一樣，站在瓦礫上重新找工作。</em>';
+    }
+    S.ledger.push({y:S.year,t:'臨海廠區重創，公司進入重整——失業',p:'',mark:1});
+  }
   return d;
 }
 
@@ -2510,6 +2796,7 @@ function calcPay(emp, level){
 }
 function tryPromote(){
   if(!S.emp) return false;          // 收攤／離職當年沒有雇主，不做升遷判定
+  if(S.polit) return false;         // 公職的升遷是選票與內閣改組決定的，不走企業職級
   const nxt = LEVELS[S.level+1];
   if(!nxt) return false;
   const n = nxt.need;
@@ -2529,6 +2816,13 @@ function tryPromote(){
     if(S.level>=3 && isFreelance()) pr *= 0.6;
     if(b4 && S.level<=2) pr += .14;     // 四大前段升遷制度化，快而穩
     if(b4 && S.level>=3) pr -= .10;     // 但協理以上位子少，多數人在這裡離開
+    /* 永續長普及率（item 8）：2022 年僅 9% 企業專設永續長（金融 16.7% 最高）。
+       ESG 分數低的公司，多半連這個位子都沒有——天花板不是你，是組織圖。 */
+    if(S.level===3 && !b4 && S.emp.esg){
+      const sc = companyESG(S.emp, S.year) || 0;
+      const need = S.emp.ind==='fin' ? 50 : 58;
+      if(sc < need) pr *= 0.30;
+    }
     if(rnd() < pr){
       S.level++; S.pay = Math.max(S.pay, calcPay(S.emp,S.level)); clampPay();
       return true;
@@ -3920,6 +4214,7 @@ function screenIntro(){
     <div class="opts"><button class="btn" onclick="startSetup()">開始</button></div>
     <hr class="rule">
     <p class="note">一局約 10–15 分鐘。法規時程、職缺數量與薪資級距皆參考公開資料校準（金管會永續發展路徑圖、環境部與人力銀行的綠領人才就業趨勢報告、上市公司薪資揭露資訊）。公司名稱、人物與情節皆為虛構。</p>
+    ${versionBlock()}
   </div>`;
 }
 
@@ -3932,6 +4227,7 @@ function screenIntroEN(){
     + '<hr class="rule">'
     + '<p class="note">'+t('introNote')+'</p>'
     + '<p class="note" style="margin-top:8px;color:var(--accent)">'+t('cardNote')+'</p>'
+    + versionBlock()
     + '</div>';
 }
 function startSetup(){ newGameCore(); screenName() }
@@ -4006,7 +4302,7 @@ function newGameCore(){
      intlFlag:0, health:0, riskAcc:0, school:null, major:null, goal:null, phase:'setup', jobless:0, freelance:0, freeYrs:0, uniScore:0, prevJob:'', carried:0, projNote:'', evOut:null, crossTitle:'', crossDesc:'', cardsLeft:0, adriftSeen:0, stamps:{}, ceilingSeen:0, yearUsed:{}, studied:0,
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
      soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0, skills:{}, rareSkills:0, big4Grp:'', big4GrpName:'',
-     grades:[], gradeC:0, highBurnYrs:0, uniFun:'', partner:0, quota:0, endedEarly:'', scholarship:0, youthFund:0};
+     grades:[], gradeC:0, highBurnYrs:0, uniFun:'', partner:0, quota:0, endedEarly:'', scholarship:0, youthFund:0, polit:'', ccWarned:0, ccPushed:0, placeYrs:0};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -4543,6 +4839,11 @@ function yearStart(){
   const f = S.emp && S.emp.fortune ? FORTUNE[S.emp.fortune] : null;
   if(f && f.yrs.includes(S.year) && !S.used['F'+S.emp.fortune+S.year]){
     S.used['F'+S.emp.fortune+S.year]=1; S.cardsLeft++; return fortuneCard(f);
+  }
+  /* 駐站的年度生死線：續案審查每年必來（第二年起），不靠隨機抽 */
+  if(S.emp && S.emp.id==='place' && (S.placeYrs||0)>=1){
+    const rc = CARDS.find(function(c){ return c.id==='rv_renew' });
+    if(rc){ S.cardsLeft--; S.used[rc.id]=(S.used[rc.id]||0)+1; S.yearUsed[rc.id]=1; return showCard(rc); }
   }
   drawCard();
 }
@@ -5276,13 +5577,15 @@ function yearEnd(){
       if(S.grades.filter(function(x){return x==='A'}).length>=3 && !S.traits.includes('連年拿A')) S.traits.push('連年拿A');
     } else if(g==='C'){
       S.gradeC++;
-      S.pay = Math.round(S.pay*0.99);
+      /* 考績不好是會扣薪的（使用者需求）：C 扣 3%，連兩年 C 扣 6% ＋ 績效改善計畫 */
       if(S.gradeC>=2){
+        S.pay = Math.round(S.pay*0.94);
         S.riskAcc += 0.28;
-        events.push('年度考績又是 <strong>C</strong>。<em>人資找你談了一次「績效改善計畫」</em>——這個詞你聽過，通常不是好事。');
+        events.push('年度考績又是 <strong>C</strong>。調薪單上是<em>負的：-6%</em>，而且人資找你談了一次「績效改善計畫」——這個詞你聽過，通常不是好事。');
         if(!S.traits.includes('被績效改善過')) S.traits.push('被績效改善過');
       } else {
-        events.push('年度考績 <strong>C</strong>。評語寫得很客氣，但意思你看得懂。');
+        S.pay = Math.round(S.pay*0.97);
+        events.push('年度考績 <strong>C</strong>。評語寫得很客氣，但薪水單很誠實：<em>年薪被調降了 3%</em>。');
       }
     } else {
       S.gradeC = 0;
@@ -5476,7 +5779,7 @@ function renderYearEnd(events, offers, certOffer){
     <div class="opts">${opts.map(o=>`<button class="opt" onclick="yePick('${o.k}')"><span class="lab">${o.l}</span>${o.h?`<span class="hint">${o.h}</span>`:''}</button>`).join('')}</div>
   </div>`);
 }
-function nextYear(){ S.year++; S.age++; if(S.age>=40) return ending(); yearStart() }
+function nextYear(){ if(S.emp&&S.emp.id==='place'){S.placeYrs=(S.placeYrs||0)+1} S.year++; S.age++; if(S.age>=40) return ending(); yearStart() }
 
 function yePick(k){
   const out={}; let d=[], txt='';
@@ -5520,12 +5823,47 @@ function yePick(k){
   }
   if(k==='rest'){
     S.quitFlag=0;
-    const rec = 30 + ri(0,15);
-    S.burn = Math.max(0, S.burn - rec);
     S.pay = Math.round(S.pay*0.985); S.sp = Math.max(0,S.sp-1);
+    /* 長假不只一種過法（item 2）：多數時候有休到，偶爾出意外，極少數人走上山就沒有回來 */
+    const roll = rnd();
+    if(roll < 0.02 && (S.burn>=60 || (S.gw||0)>=3)){
+      // 原本只是請個長假——出家六十天，這一局在這裡結束
+      return endEarly('awaken', '出家六十天',
+        '你原本只是請了長假，想去山上住幾天，把自己修好再回來。<br><br>'
+        + '第一週你還在看手機。第二週你開始睡得著。第三週，'
+        + '有人問你：「你做那些事，是為了讓世界變好，還是為了證明自己有用？」<br><br>'
+        + '你想了很久，久到六十天就這樣過去了。假單早就過期，你也沒有續。<br><br>'
+        + '<strong>你沒有再回去上班。</strong>後來有人在山下的社區看過你，'
+        + '在教孩子認植物。<em>你算過的碳都留在報告書裡，而你把自己留了下來。</em>');
+    }
+    let rec, cost=0, txt, d;
+    if(roll < 0.22){
+      // 出國玩，結果在旅途中病倒
+      rec = 8 + ri(0,6); cost = 10 + ri(0,6);
+      S.burn = Math.max(0, S.burn - rec); S.cash = Math.round(S.cash - cost);
+      txt = '你訂了機票，決定用一趟旅行把自己修好。<br><br>結果第四天你在異國的旅館裡發燒到 39 度，'
+        + '剩下的假期在陌生的診所、海外就醫理賠文件和一間看得到天花板的房間裡過完。<br><br>'
+        + '回來時同事說你氣色不太好。<em>你花了錢，也確實離開了工作——只是沒有休息到。</em>';
+      d = [['體力','+'+rec],['存款',-cost]];
+    } else if(roll < 0.52){
+      // 出國玩，真的有休到
+      rec = 38 + ri(0,14); cost = 8 + ri(0,7);
+      S.burn = Math.max(0, S.burn - rec); S.cash = Math.round(S.cash - cost); S.sp += 1;
+      txt = '你飛了出去。<br><br>在一個沒有人認識你的城市，你發現自己已經很多年沒有「不趕時間地走路」了。'
+        + '你看了別人的街道怎麼種樹、別人的超市怎麼標碳足跡，然後有幾天，你成功地什麼都沒有想。<br><br>'
+        + '回來的飛機上你睡得很沉。<em>錢花掉了，但你把自己帶回來了。</em>';
+      d = [['體力','+'+rec],['存款',-cost],['視野','+1']];
+    } else {
+      // 國旅，很開心
+      rec = 32 + ri(0,13); cost = 2 + ri(0,3);
+      S.burn = Math.max(0, S.burn - rec); S.cash = Math.round(S.cash - cost);
+      txt = '你把假請完了，沒有出國——訂了幾間台灣的小旅宿，把幾條一直說要走的步道走完。<br><br>'
+        + '手機關掉兩個禮拜，回來時發現案子有人接手、世界沒有塌。'
+        + '年度考評上多了一句「本年度投入度略低」，你看了一眼，沒有很在意。';
+      d = [['體力','+'+rec],['存款',-cost]];
+    }
     if(S.burn<=20 && !S.traits.includes('懂得停下來')) S.traits.push('懂得停下來');
-    return showOutcome('你把假請完了。<br><br>手機關掉兩個禮拜，回來時發現案子有人接手、世界沒有塌。年度考評上多了一句「本年度投入度略低」，你看了一眼，沒有很在意。',
-      [['體力','+'+rec]], ()=>nextYear());
+    return showOutcome(txt, d, ()=>nextYear());
   }
   if(k==='cert'){
     const c=S._certOffer; S.cash=Math.round(S.cash-c.cost); S.certs.push(c.id); S[c.stat]+=c.gain;
@@ -5552,17 +5890,26 @@ function yePick(k){
     S.quitFlag=0; S.studied=1; S.emp=null; S.jobless=0;
     let cost = 80 + ri(0,25);
     if(S.cash < cost){ cost = Math.round(cost*0.72); }   // 半工半讀、申請補助，代價是更累
-
+    /* 獎學金（item 5）：學海飛颺等官方獎助——名目上最高 30 萬，多數人實拿 8–13 萬 */
+    let sch = 0;
+    if(rnd() < 0.32 + (S.en>=6?0.10:0) + S.luck*0.008){
+      sch = rnd()<0.12 ? 30 : 8+ri(0,5);
+      S.scholarship = sch; cost = Math.max(20, cost - sch);
+      if(!S.traits.includes('拿過獎學金')) S.traits.push('拿過獎學金');
+    }
     S.cash = Math.round(S.cash - cost); S.en += 5; S.E+=4; S.S+=4; S.G+=4; S.D+=4; S.rel += 2;
     S.burn = Math.max(0, S.burn-35) + (S.cash<0?12:0);
     S.year += 2; S.age += 2; S.workYrs += 2;
     if(!S.traits.includes('海外碩士')) S.traits.push('海外碩士');
-    S.ledger.push({y:S.year,t:'辭職出國念書，兩年後回來',p:'',mark:1});
-    const txt = S.cash<0
+    S.ledger.push({y:S.year,t:'辭職出國念書，兩年後回來'+(sch?'（獲獎學金 '+sch+' 萬）':''),p:'',mark:1});
+    const schTxt = sch ? (sch>=30
+      ? `<br><br>你申請到了整包的官方獎學金——<strong>${sch} 萬</strong>，等於少扛半年的生活費。寫申請書那幾個晚上，值了。`
+      : `<br><br>你申請到了 <strong>${sch} 萬</strong>的獎學金。不夠付學費，但夠付幾個月的房租——出國這種事，每一筆都算。`) : '';
+    const txt = (S.cash<0
       ? `你把工作辭了，飛出去念書。<br><br>學費加生活費 ${cost} 萬，存款見底還借了一些。兩年後你帶著一張文憑、變好的英文，和<em>零在地年資</em>回到台灣。`
-      : `你把工作辭了，飛出去念書。<br><br>兩年，花了 ${cost} 萬。回來時你的英文變好了、看事情的角度變寬了，但台灣的法規和人脈都往前跑了兩年。`;
+      : `你把工作辭了，飛出去念書。<br><br>兩年，花了 ${cost} 萬。回來時你的英文變好了、看事情的角度變寬了，但台灣的法規和人脈都往前跑了兩年。`) + schTxt;
     if(S.age>=40) return ending();
-    return showOutcome(txt, [['英文',5],['存款',-cost],['壓力',-35]], ()=>rehire());
+    return showOutcome(txt, sch?[['英文',5],['獎學金','+'+sch+' 萬'],['存款',-cost],['壓力',-35]]:[['英文',5],['存款',-cost],['壓力',-35]], ()=>rehire());
   }
   if(k==='hunt' || k==='poach'){
     S._offers = genOffers(k); S._otype = k;
@@ -5842,7 +6189,7 @@ function ending(){
   const yrs = S.esgYrs;
   if(met){
     const w = {
-      cso:`你坐上了永續長的位子。<br><br>十八年前那個在 104 上搜「永續」只搜到清潔隊的大學生，現在要在董事會上解釋為什麼這筆減碳投資值得。`,
+      cso:`你坐上了永續長的位子。<br><br>十八年前那個在 104 上搜「永續」只搜到清潔隊的大學生，現在要在董事會上解釋為什麼這筆減碳投資值得。<br><br><span style="color:var(--ink-3);font-size:14px">對照真實世界：台灣僅約一成的企業專設永續長；美國 CSO 的中位年薪約 US$149K（約新台幣 400 多萬）——你坐的是一張很少人坐到的椅子。</span>`,
       money:`年薪 ${S.pay} 萬。<br><br>你證明了這件事：做永續，也可以把日子過好。這在你入行的那年，不是一個理所當然的結論。`,
       impact:`你真的減下了碳。<br><br>不是報告書上的數字，是實際少排出去的那些。沒有人幫你辦頒獎典禮，但你自己算得出來。`,
       found:`你有了自己的招牌。<br><br>接案、報價、被拒絕、再接案。沒有年終，沒有組織，只有你自己決定要不要接下一個漂綠的案子。`,
@@ -5852,7 +6199,7 @@ function ending(){
     verdict = w[g.id];
   } else {
     const l = {
-      cso:`你沒有坐上永續長。<br><br>四十歲這年你是${LEVELS[S.level].t}，年薪 ${S.pay} 萬。這在圈子裡不算差——只是離那間辦公室還有兩階。<br><br>能走到那個位子的人本來就很少。你不是失敗，你只是活在真實的分布裡。`,
+      cso:`你沒有坐上永續長。<br><br>四十歲這年你是${LEVELS[S.level].t}，年薪 ${S.pay} 萬。這在圈子裡不算差——只是離那間辦公室還有兩階。<br><br>能走到那個位子的人本來就很少：2022 年的調查裡，<em>台灣只有 9% 的企業專設永續長</em>——很多公司的組織圖上根本沒有那一層。你不是失敗，你只是活在真實的分布裡。`,
       money:`年薪 ${S.pay} 萬，沒有到兩百。<br><br>你做的每個決定當下都有它的道理。只是這個行業的薪資天花板，比外面想像的低一點。`,
       impact:`你寫了很多報告書。<br><br>認真算的話，實際減下來的碳沒有你預期的多。這不完全是你的錯——這個行業有很長一段時間，要的就是把數字寫得好看。`,
       found:`你沒有出去開自己的公司。<br><br>那個念頭出現過幾次，每次都被房貸、被小孩、被「再等一年」推遲。這也是一種選擇。`,
@@ -5876,6 +6223,10 @@ function ending(){
   if((S.adv||0)>=12) t.push('你的號召力是真的：因為你，有一群人走進了這個行業。這件事不會出現在任何報表上，但它可能是你做過最永續的事。');
   else if((S.soc||0)>=12) t.push('你在「人」的那一側留下了痕跡——供應商的工人、部落的窗口、團隊裡被你撐住的人。');
   if(S.collapses>=1) t.push('你垮過'+(S.collapses>1?(S.collapses+' 次'):'一次')+'。身體逼你停下來的那些日子提醒你：<em>做永續，自己的人生也要永續</em>，不然撐不到看見成果的那天。');
+  if(S.polit) t.push(S.polit==='立委'?'你最後走進了國會。從寫建議書的人變成審預算的人——那些年你在報告書裡吵不贏的事，現在有機會寫進條文裡。':S.polit==='政務官'?'你被延攬進了內閣。專業進了體制，體制也磨了你的專業——這筆帳，要很多年後才算得清。':'你在地方議會有了一個位子。永續在中央是簡報，在地方是排水溝、行道樹和垃圾場——你選了離人最近的那一種。');
+  if(S.traits.includes('回鄉駐站')||S.traits.includes('從地方回來')) t.push('你把幾年的人生放進了一個小地方。KPI 記不下來的那些改變，鎮上的人都記得。');
+  if(S.traits.includes('當年說對的人')) t.push('那份沒人想看的情境分析，最後被海水親自查證了一次。你說對過一次——這個行業會一直記得。');
+  if(S.youthFund) t.push('二十幾歲那年，你拿了國家的錢去圓了一個夢。那趟旅程的東西，後來一直在你身上。');
   if((S.gw||0)>=4) t.push('這些年你把數字弄好看過很多次。沒有一次違法，每一次都有說得過去的理由。只是加起來，你不太確定自己還記不記得當初為什麼要做這行。');
   else if((S.gw||0)>=2) t.push('你妥協過幾次。不多，但你都記得是哪幾次。');
   else if(S.co2>=5) t.push('你沒有走捷徑。數字是慢慢做出來的，碳也是慢慢減下來的。');
@@ -5934,7 +6285,7 @@ function ending(){
   </div>`);
 }
 function resultSummary(){
-  return `永續人森模擬器 — ${playerRef()}（${S.mbti||'—'}）／${S.startYear} 入學／${S.goal.n} ${goalMet()?'達成':'未達成'}／年薪 ${S.pay} 萬／${S.inESG?LEVELS[S.level].t:'非永續職'}／永續年資 ${S.esgYrs} 年／E${S.E} S${S.S} G${S.G} D${S.D}／減碳${S.co2} 社會${S.soc||0} 號召${S.adv||0}／SEED ${S.seed.toString(36).toUpperCase()}`;
+  return `永續人森模擬器 ${GAME_VERSION} — ${playerRef()}（${S.mbti||'—'}）／${S.startYear} 入學／${S.goal.n} ${goalMet()?'達成':'未達成'}${S.endedEarly?'／提早結束:'+S.earlyTitle:''}／年薪 ${S.pay} 萬／${S.inESG?LEVELS[S.level].t:'非永續職'}／永續年資 ${S.esgYrs} 年／E${S.E} S${S.S} G${S.G} D${S.D}／減碳${S.co2} 社會${S.soc||0} 號召${S.adv||0}／SEED ${S.seed.toString(36).toUpperCase()}`;
 }
 /* ===== 結果回傳（item 13, 19）=====
    玩到結局「當下」就立刻記錄名字＋MBTI＋結果（不必等玩家離開、不必按鈕）。
