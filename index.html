@@ -428,15 +428,54 @@ function deptOf(emp){ return (emp && DEPT[emp.dept]) || null }
 function industryPush(emp, y){
   // 指標品牌帶動 + 產業成熟度：越成熟的產業，同儕被逼著往上跑（item 8）
   const yrsIn = Math.max(0, (y + indMat(emp.ind)) - 2018);
-  return Math.min(22, yrsIn * 1.4);
+  return Math.min(14, yrsIn * 0.9);   // 產業成熟帶動，但收斂上限讓頂標仍有層次
+}
+/* ===== 公司 ESG 三面向與評比參與（item 1, 2）=====
+   真實世界最大的分數落差不是「做得好不好」，而是<有沒有填那份問卷>：
+   有參與評比的重工業（水泥、鋼鐵、航空）常在 84-90，
+   不參與的科技或食品大廠只拿到 30-40 的公開資訊評分，未受評的中小企業則根本沒有分數。
+   這也給了玩家一個真實的槓桿：把一家沒在做評比的公司推上評比，分數會跳一大階。 */
+function csaState(emp){
+  if(!emp || !emp.esg) return null;
+  if(S && S.csaFlip && S.csaFlip[emp.id]) return 1;   // 玩家推動公司開始參與
+  return emp.csa;
+}
+function esgDims(emp, y){
+  if(!emp || !emp.esg) return null;
+  y = y || (S && S.year) || 2024;
+  const push = industryPush(emp, y);
+  const st = csaState(emp);
+  const boost = (S && S.esgBoost && S.esgBoost[emp.id]) || 0;
+  const bd = (S && S.esgBoostDim && S.esgBoostDim[emp.id]) || {};
+  const out={};
+  ['e','s','g'].forEach(function(k){
+    let v = emp.esg[k] + push + boost*0.5 + (bd[k]||0);
+    if(st===0) v *= 0.62;                 // 沒參與評比：只拿得到公開資訊的分數
+    else if(st===1 && emp.csa===0) v *= 1.0;  // 玩家推動後，回到實際水準
+    out[k]=Math.max(3, Math.min(95, Math.round(v)));
+  });
+  return out;
 }
 function companyESG(emp, y){
-  if(!emp || emp.esg0==null) return null;
-  y = y || (S && S.year) || 2024;
-  let v = emp.esg0 + industryPush(emp, y);
-  // 玩家在這家公司實際做出的貢獻（存在 S.espBoost[emp.id]）
-  if(typeof S!=='undefined' && S && S.esgBoost && S.esgBoost[emp.id]) v += S.esgBoost[emp.id];
-  return Math.max(5, Math.min(92, Math.round(v)));
+  const st = csaState(emp);
+  if(st===-1) return null;                // 未受評
+  const d = esgDims(emp, y);
+  if(!d) return null;
+  return Math.round((d.e + d.s + d.g)/3);
+}
+/* 職缺的面向（item 2）：分數高、有制度的公司職缺分得細；
+   分數低或沒在做評比的公司，一個人要包 E、S、G 全部。 */
+function roleFocus(emp){
+  const st = csaState(emp), sc = companyESG(emp, S.year);
+  if(st===-1 || sc===null || sc<50 || st===0) return {k:'all', n:'全包'};
+  const d = esgDims(emp, S.year);
+  const tz = teamSize(emp);
+  if(tz<=3) return {k:'all', n:'全包'};
+  // 團隊夠大 → 依公司最強的面向給你一塊專職
+  const arr=[['e','環境面（碳與能源）','E'],['s','社會面（供應鏈與人）','S'],['g','治理面（法遵與評比）','G']];
+  arr.sort(function(a,b){ return d[b[0]]-d[a[0]] });
+  const pickd = arr[0];
+  return {k:pickd[0], n:pickd[1], stat:pickd[2]};
 }
 function esgBand(v){
   if(v==null) return '';
@@ -460,62 +499,70 @@ function reqKnown(e){
 }
 /* 職缺卡片上的一行公司資訊：產業・層級・ESG 評分・永續隸屬・要求 */
 function empMeta(e){
-  const dp = deptOf(e), esg = companyESG(e, S.year);
+  const dp = deptOf(e), esg = companyESG(e, S.year), st = csaState(e), d = esgDims(e, S.year);
   let s = IND[e.ind].n + '・' + e.tier;
-  if(esg!=null) s += '　ESG <b>'+esg+'</b>（'+esgBand(esg)+'）';
-  if(dp) s += '<br>永續隸屬 '+dp.n;
+  if(esg!=null){
+    s += '　ESG <b>'+esg+'</b>（'+esgBand(esg)+'）';
+    if(d) s += ' <span style="color:var(--ink-3)">E'+d.e+'/S'+d.s+'/G'+d.g+'</span>';
+    if(st===0) s += ' <span style="color:var(--warn)">未參與評比</span>';
+  } else {
+    s += '　ESG <span style="color:var(--ink-3)">未受評</span>';
+  }
+  const rf = roleFocus(e);
+  s += '<br>職缺型態 <b>'+(rf.k==='all'?'全包（E／S／G 一人扛）':rf.n)+'</b>';
+  if(dp) s += '　永續隸屬 '+dp.n;
   if(e.req){ s += '　｜加入要求：' + (reqKnown(e) ? e.req : '<span style="color:var(--ink-3)">門檻不明（關係力高或參加永續尾牙可得知）</span>'); }
   return s;
 }
 const EMP = [
- {id:'gg',   n:'積積電子',   ind:'semi', tier:'龍頭',mult:1.35,bar:60,burn:1.3,pre:10,esg0:64,dept:'office',req:'RE100 進度、SBTi 已核准、CDP A 級、供應商行為準則',f:'全台最大的那座山。分工細到你三年可能只做同一張表。'},
- {id:'fa',   n:'發哥科技',   ind:'semi', tier:'龍頭',mult:1.28,bar:52,burn:1.25,pre:9,esg0:57,dept:'office',req:'SBTi 目標、CDP 揭露、供應鏈稽核',f:'永續團隊小而精，薪水直逼護國群山。'},
- {id:'sea',  n:'海公公集團', ind:'elec', tier:'龍頭',mult:1.05,bar:45,burn:1.35,pre:7,esg0:50,dept:'ehs',req:'EcoVadis 銀牌、供應商行為準則、SMETA 社會責任稽核',f:'廠區遍布全球，做供應鏈稽核可以繞地球三圈。'},
- {id:'pork', n:'肉鬆電腦',   ind:'elec', tier:'中後段',mult:.92,bar:36,burn:1.1,pre:6,esg0:40,dept:'ehs',req:'品牌客戶問卷、CDP 揭露',f:'電子五哥之一。AI 伺服器訂單接到手軟。',fortune:'ai'},
- {id:'bacon',n:'培根電腦',   ind:'elec', tier:'中後段',mult:.90,bar:34,burn:1.15,pre:5,esg0:37,dept:'pr',req:'品牌客戶問卷',f:'電子五哥之一。以代工毛利薄著稱，永續起步比同業慢半拍。',fortune:'ai'},
- {id:'saus', n:'香腸科技',   ind:'elec', tier:'中後段',mult:.94,bar:38,burn:1.2,pre:6,esg0:43,dept:'ehs',req:'RE100 承諾、CDP 揭露、供應商稽核',f:'電子五哥之一。押注 AI 伺服器與液冷，訂單能見度很長。',fortune:'ai'},
- {id:'tree', n:'大樹金控',   ind:'fin',  tier:'龍頭',mult:1.22,bar:50,burn:1.1,pre:9,esg0:67,dept:'gm',req:'永續金融評鑑前段、TCFD／IFRS S2、投融資碳排盤查',f:'永續金融評鑑常勝軍。做得好，能見度直達董事會。'},
- {id:'mtn',  n:'高山銀行',   ind:'fin',  tier:'中後段',mult:1.08,bar:42,burn:.9,pre:8,esg0:55,dept:'office',req:'永續金融評鑑、TCFD 揭露',f:'把 ESG 當招牌經營。文化好、坑少，天花板也略低。'},
- {id:'deep', n:'厚土人壽',   ind:'fin',  tier:'中後段',mult:1.10,bar:44,burn:1.0,pre:8,esg0:52,dept:'risk',req:'投資組合碳盤查、TCFD、責任投資政策',f:'資產部位龐大，投資組合的碳排是它真正的戰場。'},
- {id:'cem',  n:'水泥一哥',   ind:'steel',tier:'龍頭',mult:1.00,bar:40,burn:1.0,pre:7,esg0:47,dept:'ehs',req:'CBAM 申報、SBTi、替代燃料與製程減碳',f:'全台碳費繳最多的公司之一，永續部門是戰略單位。'},
- {id:'stl',  n:'鋼鐵大叔',   ind:'steel',tier:'中後段',mult:.95,bar:34,burn:.9,pre:6,esg0:35,dept:'ehs',req:'CBAM 申報、廢鋼比例、能效',f:'CBAM 首當其衝。氫能煉鋼是十年大計，進去就是做真的。'},
- {id:'grn',  n:'綠巨人海運', ind:'ship', tier:'龍頭',mult:1.12,bar:40,burn:.95,pre:7,esg0:44,dept:'office',req:'IMO 碳強度、替代燃料評估、CDP',f:'年終看運價：好年 40 個月，壞年 2 個月。',fortune:'ship'},
- {id:'hv',   n:'老牌重電廠', ind:'green',tier:'中後段',mult:.86,bar:28,burn:1.0,pre:4,esg0:41,dept:'ehs',req:'產品碳足跡、供應商問卷',f:'做變壓器做了五十年沒人理，直到全世界都要電網。',fortune:'grid'},
- {id:'sun',  n:'追日能源',   ind:'green',tier:'中後段',mult:.90,bar:24,burn:1.2,pre:4,esg0:49,dept:'office',req:'產品碳足跡、EcoVadis 銅牌',f:'使命感滿點，選擇權比薪水多。可能上市，也可能明年收掉。',fortune:'solar'},
- {id:'fab',  n:'南方織造',   ind:'text', tier:'中後段',mult:.88,bar:28,burn:1.1,pre:5,esg0:46,dept:'ehs',req:'Higg 指數、化學品管理、SMETA、EcoVadis 金牌',f:'國際品牌客戶的稽核月月來。薪水不高，實戰經驗全台最扎實。'},
- {id:'fud',  n:'統一帝國食品',ind:'food',tier:'龍頭',mult:1.00,bar:34,burn:.9,pre:7,esg0:51,dept:'office',req:'食安與農產供應鏈、SBTi、CDP',f:'2014 年後最早練報告書的地方，制度成熟。'},
- {id:'shop', n:'團購王流通', ind:'retail',tier:'龍頭',mult:.93,bar:32,burn:1.05,pre:6,esg0:43,dept:'pr',req:'供應商行為準則、包裝減量',f:'S 面向專案豐富。做環境面的預算要用搶的。'},
- {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:26,burn:1.85,pre:8,esg0:54,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。兩年學五年的東西——只是薪水在四大裡敬陪末座。'},
- {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:.88,bar:26,burn:1.9,pre:8,esg0:55,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
- {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:.90,bar:28,burn:2.05,pre:8,esg0:55,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
- {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:.92,bar:28,burn:1.95,pre:8,esg0:56,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
- {id:'bout', n:'小而美顧問', ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.4,pre:5,esg0:41,dept:'consult',f:'什麼案子都接、什麼都要會。學得廣，名片不夠亮。'},
- {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg0:49,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
- {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,esg0:56,dept:'office',f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
- {id:'ngo',  n:'國際倡議組織',ind:'ngo', tier:'NGO',mult:.75,bar:30,burn:1.0,pre:7,esg0:61,dept:'office',intl:true,f:'薪水最低，影響力敘事最強。通往國際線的蟲洞。'},
- {id:'fbrand',n:'外商品牌台灣分部',ind:'retail',tier:'外商',mult:1.25,bar:50,burn:.85,pre:8,esg0:71,dept:'gm',req:'EcoVadis 金牌、SBTi、總部行為準則、CDP',intl:true,f:'薪水高、假多、一人當三人用。策略在總部。'},
- {id:'sky',  n:'翱翔航空',     ind:'air',   tier:'龍頭',mult:1.10,bar:42,burn:1.05,pre:7,esg0:44,dept:'office',req:'SAF 摻配、CORSIA、CDP',f:'燃油就是碳排，減碳等於省錢。但要換的是整隊飛機。'},
- {id:'lowfare',n:'小藍天航空', ind:'air',   tier:'中後段',mult:.92,bar:30,burn:1.15,pre:5,esg0:32,dept:'pr',req:'CORSIA 抵換',f:'廉航。成本壓到極限，永續預算是最後才排到的那一項。',fortune:'travel'},
- {id:'pharma_big',n:'寶寶藥業',ind:'pharma',tier:'龍頭',mult:1.05,bar:38,burn:1.0,pre:7,esg0:34,dept:'pr',req:'品牌客戶問卷、產品碳足跡（起步中）',intl:true,f:'營收全台製藥龍頭，靠併購一路長大——但永續一直掛在公關部、資源給得少，評分在業界墊底。十個廠區三個國家，制度各做各的。'},
- {id:'pharma_sm',n:'新藥小廠', ind:'pharma',tier:'中後段',mult:.88,bar:26,burn:1.1,pre:4,esg0:31,dept:'ehs',req:'品牌客戶問卷',f:'研發燒錢、還沒獲利，但國際品牌客戶已經開始問永續問卷。'},
- {id:'build',n:'老牌營造廠',   ind:'build', tier:'中後段',mult:.95,bar:30,burn:1.15,pre:5,esg0:30,dept:'ehs',req:'工地環安、廢棄物、綠建築標章',f:'工地、職安、廢棄物。這裡的永續是很具體的事。'},
- {id:'devbuild',n:'豪宅建商',    ind:'build', tier:'龍頭',mult:1.05,bar:36,burn:1.0,pre:6,esg0:38,dept:'pr',req:'綠建築標章、低碳建材',f:'房子越賣越貴，ESG 是新的行銷語言。你要分辨哪些是真的在做。'},
- {id:'semi2', n:'晶圓小老弟',   ind:'semi', tier:'中後段',mult:1.10,bar:40,burn:1.2,pre:6,esg0:45,dept:'ehs',req:'RE100 承諾、CDP 揭露',f:'跟在兩座大山後面跑。資源少一截，但客戶的要求一項都不少。'},
- {id:'fin3',  n:'公股銀行',     ind:'fin',  tier:'中後段',mult:.98,bar:38,burn:.8,pre:7,esg0:48,dept:'risk',req:'永續金融評鑑、赤道原則',f:'穩到不能再穩。做事要跑公文，但你能參與政策性綠色金融。'},
- {id:'steel2',n:'不鏽鋼世家',   ind:'steel',tier:'中後段',mult:.92,bar:30,burn:.95,pre:5,esg0:33,dept:'ehs',req:'CBAM 申報、廢鋼比例',f:'家族企業第三代接班，少主想做 ESG，老臣在觀望。'},
- {id:'ship2', n:'快桅台灣',     ind:'ship', tier:'外商',mult:1.18,bar:46,burn:.9,pre:7,esg0:62,dept:'office',req:'甲醇雙燃料、綠色物流方案',intl:true,f:'國際航商台灣分部。總部的淨零目標是玩真的，你負責讓台灣客戶跟上。'},
- {id:'food2', n:'手搖飲帝國',   ind:'food', tier:'中後段',mult:.90,bar:28,burn:1.05,pre:5,esg0:35,dept:'pr',req:'包材減量、供應鏈稽核',f:'一年賣出十億杯。塑膠杯與封膜是永續部門每天被罵的原因。'},
- {id:'text2', n:'機能布霸主',   ind:'text', tier:'龍頭',mult:1.02,bar:36,burn:1.05,pre:6,esg0:52,dept:'office',req:'Higg 指數、再生聚酯比例、EcoVadis 金牌',f:'國際品牌的頂級供應商。回收紗做到全球前段，客戶還是年年加碼要求。'},
- {id:'green2',n:'風電開發商',   ind:'green',tier:'外商',mult:1.20,bar:44,burn:1.1,pre:6,esg0:60,dept:'office',req:'生態調查、漁業溝通、在地承諾',intl:true,f:'離岸風場一支一支立起來。你的工作一半在海上，一半在漁會。'},
- {id:'retail2',n:'超商雙雄之一',ind:'retail',tier:'龍頭',mult:.96,bar:34,burn:1.0,pre:7,esg0:47,dept:'office',req:'惜食計畫、能源管理、循環杯',f:'全台六千家店，每家店都是一個小碳源。規模就是你的槓桿。'},
- {id:'pharma3',n:'學名藥老牌',  ind:'pharma',tier:'中後段',mult:.90,bar:28,burn:.95,pre:5,esg0:36,dept:'ehs',req:'品牌客戶問卷、廢水管理',f:'做藥五十年，最近才聽說 ESG。你會是第一個專職的人。'},
- {id:'air3',  n:'貨運航空',     ind:'air',  tier:'中後段',mult:1.00,bar:34,burn:1.1,pre:5,esg0:37,dept:'office',req:'SAF 評估、CORSIA',f:'電商把貨機塞滿。飛得越多賺得越多，碳也排得越多。'},
- {id:'chem1', n:'塑化集團',     ind:'chem', tier:'龍頭',mult:1.08,bar:42,burn:1.05,pre:7,esg0:39,dept:'ehs',req:'CBAM、循環塑膠、碳費大戶',f:'全台繳碳費最多的集團之一。轉型的錢有，決心看年份。'},
- {id:'elec9', n:'連接器隱形冠軍',ind:'elec',tier:'中後段',mult:.95,bar:32,burn:1.05,pre:5,esg0:41,dept:'ehs',req:'品牌客戶問卷、RE100',f:'你沒聽過它，但全球一半的手機裡有它的零件。品牌客戶的要求一層層壓下來。'},
- {id:'telco1',n:'大哥大電信',   ind:'telco',tier:'龍頭',mult:1.22,bar:46,burn:.95,pre:8,esg0:66,dept:'office',req:'RE100、基站節能、CDP A 級、DJSI 成分股',f:'基地台是吃電怪獸，但這裡的永續做得早、做得深，評鑑年年拿獎。福利好，位子難空。'},
- {id:'telco2',n:'老電信巨人',   ind:'telco',tier:'龍頭',mult:1.15,bar:44,burn:.85,pre:8,esg0:63,dept:'office',req:'RE100、綠色資料中心、TCFD',leanTeam:0,f:'國營色彩濃，制度完整、步調慢。你會學到最扎實的治理流程，也會學到什麼叫跑公文。'},
- {id:'util1', n:'國營電力公司', ind:'util', tier:'公部門',mult:1.05,bar:42,burn:1.0,pre:8,esg0:44,dept:'ehs',req:'電力排放係數、能源轉型路徑、公正轉型',f:'全台碳排最大的單一機構，也是能源轉型的執行者。你做的每個決定都會上新聞。'},
- {id:'util2', n:'自來水／廢水處理',ind:'util',tier:'公部門',mult:.92,bar:32,burn:.85,pre:6,esg0:41,dept:'ehs',req:'水資源管理、污泥處理、碳盤查',f:'水、污泥、能耗。沒有人覺得性感，但缺水那年全台灣都在看你們。'}
+ {id:'gg',   n:'積積電子',   ind:'semi', tier:'龍頭',mult:1.35,bar:60,burn:1.3,pre:10,esg:{e:88,s:82,g:88},csa:1,dept:'office',req:'ISO 14064-1 盤查與第三方查證、ISO 14067 產品碳足跡、ISO 50001、RE100 綠電布局、英文精通',f:'全台最大的那座山。分工細到你三年可能只做同一張表。'},
+ {id:'fa',   n:'發哥科技',   ind:'semi', tier:'龍頭',mult:1.28,bar:52,burn:1.25,pre:9,esg:{e:42,s:32,g:36},csa:0,dept:'office',req:'永續報告書、法規遵循（永續團隊精簡，什麼都要碰）',f:'永續團隊小而精，薪水直逼護國群山。'},
+ {id:'sea',  n:'海公公集團', ind:'elec', tier:'龍頭',mult:1.05,bar:45,burn:1.35,pre:7,esg:{e:72,s:60,g:74},csa:1,dept:'ehs',req:'RBA 稽核、責任礦產、供應商 ESG 盡職調查、SMETA、英文精通',f:'廠區遍布全球，做供應鏈稽核可以繞地球三圈。'},
+ {id:'pork', n:'肉鬆電腦',   ind:'elec', tier:'中後段',mult:.92,bar:36,burn:1.1,pre:6,esg:{e:46,s:32,g:38},csa:0,dept:'ehs',req:'品牌客戶 ESG 問卷回覆、CDP 揭露',f:'電子五哥之一。AI 伺服器訂單接到手軟。',fortune:'ai'},
+ {id:'bacon',n:'培根電腦',   ind:'elec', tier:'中後段',mult:.90,bar:34,burn:1.15,pre:5,esg:{e:40,s:32,g:36},csa:0,dept:'pr',req:'品牌客戶 ESG 問卷回覆',f:'電子五哥之一。以代工毛利薄著稱，永續起步比同業慢半拍。',fortune:'ai'},
+ {id:'saus', n:'香腸科技',   ind:'elec', tier:'中後段',mult:.94,bar:38,burn:1.2,pre:6,esg:{e:90,s:84,g:88},csa:1,dept:'ehs',req:'主導 MSCI／EcoVadis／CDP／Sustainalytics 評比問卷、RE100、英文可獨立主持會議',f:'電子五哥之一。押注 AI 伺服器與液冷，訂單能見度很長。',fortune:'ai'},
+ {id:'tree', n:'大樹金控',   ind:'fin',  tier:'龍頭',mult:1.22,bar:50,burn:1.1,pre:9,esg:{e:84,s:84,g:92},csa:1,dept:'gm',req:'PCAF 投融資碳盤查、SBT、TCFD／IFRS S2 接軌、永續金融評鑑前段、DJSI',f:'永續金融評鑑常勝軍。做得好，能見度直達董事會。'},
+ {id:'mtn',  n:'高山銀行',   ind:'fin',  tier:'中後段',mult:1.08,bar:42,burn:.9,pre:8,esg:{e:78,s:78,g:86},csa:1,dept:'office',req:'永續金融評鑑、TCFD 揭露、永續發展基礎能力測驗尤佳',f:'把 ESG 當招牌經營。文化好、坑少，天花板也略低。'},
+ {id:'deep', n:'厚土人壽',   ind:'fin',  tier:'中後段',mult:1.10,bar:44,burn:1.0,pre:8,esg:{e:70,s:72,g:80},csa:1,dept:'risk',req:'投資組合碳盤查、氣候風險情境分析、責任投資政策、Tableau 佳',f:'資產部位龐大，投資組合的碳排是它真正的戰場。'},
+ {id:'cem',  n:'水泥一哥',   ind:'steel',tier:'龍頭',mult:1.00,bar:40,burn:1.0,pre:7,esg:{e:86,s:82,g:86},csa:1,dept:'ehs',req:'CBAM 申報、SBTi、替代燃料與製程減碳、CDP A 級維持',f:'全台碳費繳最多的公司之一，永續部門是戰略單位。'},
+ {id:'stl',  n:'鋼鐵大叔',   ind:'steel',tier:'中後段',mult:.95,bar:34,burn:.9,pre:6,esg:{e:84,s:84,g:84},csa:1,dept:'ehs',req:'CBAM 申報、廢鋼比例、ISO 50001 能源管理、CDP',f:'CBAM 首當其衝。氫能煉鋼是十年大計，進去就是做真的。'},
+ {id:'grn',  n:'綠巨人海運', ind:'ship', tier:'龍頭',mult:1.12,bar:40,burn:.95,pre:7,esg:{e:54,s:56,g:60},csa:1,dept:'office',req:'IMO 碳強度、替代燃料評估、CDP',f:'年終看運價：好年 40 個月，壞年 2 個月。',fortune:'ship'},
+ {id:'hv',   n:'老牌重電廠', ind:'green',tier:'中後段',mult:.86,bar:28,burn:1.0,pre:4,esg:{e:56,s:50,g:54},csa:1,dept:'ehs',req:'產品碳足跡、供應商問卷',f:'做變壓器做了五十年沒人理，直到全世界都要電網。',fortune:'grid'},
+ {id:'sun',  n:'追日能源',   ind:'green',tier:'中後段',mult:.90,bar:24,burn:1.2,pre:4,esg:{e:62,s:52,g:50},csa:-1,dept:'office',req:'產品碳足跡、EcoVadis 銅牌',f:'使命感滿點，選擇權比薪水多。可能上市，也可能明年收掉。',fortune:'solar'},
+ {id:'fab',  n:'南方織造',   ind:'text', tier:'中後段',mult:.88,bar:28,burn:1.1,pre:5,esg:{e:70,s:66,g:68},csa:1,dept:'ehs',req:'Higg 指數、化學品管理、品牌客戶驗廠、FSC／GRS／OCS 認證、英文精通',f:'國際品牌客戶的稽核月月來。薪水不高，實戰經驗全台最扎實。'},
+ {id:'fud',  n:'統一帝國食品',ind:'food',tier:'龍頭',mult:1.00,bar:34,burn:.9,pre:7,esg:{e:36,s:34,g:35},csa:0,dept:'office',req:'食安與農產供應鏈、報告書（評比參與度低，制度待建）',f:'2014 年後最早練報告書的地方，制度成熟。'},
+ {id:'shop', n:'團購王流通', ind:'retail',tier:'龍頭',mult:.93,bar:32,burn:1.05,pre:6,esg:{e:44,s:42,g:44},csa:0,dept:'pr',req:'供應商行為準則、包裝減量、報告書',f:'S 面向專案豐富。做環境面的預算要用搶的。'},
+ {id:'b4y',  n:'黃色所',     ind:'cons', tier:'顧問',mult:.80,bar:26,burn:1.85,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'yellow',f:'規模大、同期人多、制度完整。兩年學五年的東西——只是薪水在四大裡敬陪末座。'},
+ {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:.88,bar:26,burn:1.9,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
+ {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:.90,bar:28,burn:2.05,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
+ {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:.92,bar:28,burn:1.95,pre:8,esg:{e:56,s:58,g:64},csa:1,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
+ {id:'bout', n:'小而美顧問', ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.4,pre:5,esg:{e:46,s:48,g:50},csa:-1,dept:'consult',f:'什麼案子都接、什麼都要會。學得廣，名片不夠亮。'},
+ {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg:{e:50,s:52,g:58},csa:1,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
+ {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,esg:{e:58,s:60,g:62},csa:-1,dept:'office',f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
+ {id:'ngo',  n:'國際倡議組織',ind:'ngo', tier:'NGO',mult:.75,bar:30,burn:1.0,pre:7,esg:{e:64,s:70,g:66},csa:-1,dept:'office',intl:true,f:'薪水最低，影響力敘事最強。通往國際線的蟲洞。'},
+ {id:'fbrand',n:'外商品牌台灣分部',ind:'retail',tier:'外商',mult:1.25,bar:50,burn:.85,pre:8,esg:{e:78,s:76,g:80},csa:1,dept:'gm',req:'EcoVadis 金牌、SBTi、總部行為準則、CDP、英文精通',intl:true,f:'薪水高、假多、一人當三人用。策略在總部。'},
+ {id:'sky',  n:'翱翔航空',     ind:'air',   tier:'龍頭',mult:1.10,bar:42,burn:1.05,pre:7,esg:{e:88,s:88,g:92},csa:1,dept:'office',req:'SAF 摻配、CORSIA、CDP、DJSI 成分股維持、英文精通',f:'燃油就是碳排，減碳等於省錢。但要換的是整隊飛機。'},
+ {id:'lowfare',n:'小藍天航空', ind:'air',   tier:'中後段',mult:.92,bar:30,burn:1.15,pre:5,esg:{e:30,s:30,g:32},csa:0,dept:'pr',req:'CORSIA 抵換（永續預算排在最後）',f:'廉航。成本壓到極限，永續預算是最後才排到的那一項。',fortune:'travel'},
+ {id:'pharma_big',n:'寶寶藥業',ind:'pharma',tier:'龍頭',mult:1.05,bar:38,burn:1.0,pre:7,esg:{e:34,s:30,g:32},csa:-1,dept:'pr',req:'品牌客戶問卷、產品碳足跡（未受評，制度從零開始）',intl:true,f:'營收全台製藥龍頭，靠併購一路長大——但永續一直掛在公關部、資源給得少，評分在業界墊底。十個廠區三個國家，制度各做各的。'},
+ {id:'pharma_sm',n:'新藥小廠', ind:'pharma',tier:'中後段',mult:.88,bar:26,burn:1.1,pre:4,esg:{e:30,s:28,g:30},csa:-1,dept:'ehs',req:'品牌客戶問卷',f:'研發燒錢、還沒獲利，但國際品牌客戶已經開始問永續問卷。'},
+ {id:'build',n:'老牌營造廠',   ind:'build', tier:'中後段',mult:.95,bar:30,burn:1.15,pre:5,esg:{e:26,s:24,g:26},csa:0,dept:'ehs',req:'工地環安、廢棄物、綠建築標章、承攬商管理',f:'工地、職安、廢棄物。這裡的永續是很具體的事。'},
+ {id:'devbuild',n:'豪宅建商',    ind:'build', tier:'龍頭',mult:1.05,bar:36,burn:1.0,pre:6,esg:{e:24,s:22,g:24},csa:0,dept:'pr',req:'綠建築標章、低碳建材',f:'房子越賣越貴，ESG 是新的行銷語言。你要分辨哪些是真的在做。'},
+ {id:'semi2', n:'晶圓小老弟',   ind:'semi', tier:'中後段',mult:1.10,bar:40,burn:1.2,pre:6,esg:{e:58,s:50,g:56},csa:1,dept:'ehs',req:'ISO 14064-1 盤查、排放熱點分析、跨廠區碳數據管理',f:'跟在兩座大山後面跑。資源少一截，但客戶的要求一項都不少。'},
+ {id:'fin3',  n:'公股銀行',     ind:'fin',  tier:'中後段',mult:.98,bar:38,burn:.8,pre:7,esg:{e:58,s:62,g:68},csa:1,dept:'risk',req:'永續金融評鑑、赤道原則、公文流程耐受度',f:'穩到不能再穩。做事要跑公文，但你能參與政策性綠色金融。'},
+ {id:'steel2',n:'不鏽鋼世家',   ind:'steel',tier:'中後段',mult:.92,bar:30,burn:.95,pre:5,esg:{e:34,s:30,g:32},csa:0,dept:'ehs',req:'碳盤查（第一次做，沒有前例可循）',f:'家族企業第三代接班，少主想做 ESG，老臣在觀望。'},
+ {id:'ship2', n:'快桅台灣',     ind:'ship', tier:'外商',mult:1.18,bar:46,burn:.9,pre:7,esg:{e:80,s:74,g:80},csa:1,dept:'office',req:'甲醇雙燃料、綠色物流方案、總部行為準則、英文精通',intl:true,f:'國際航商台灣分部。總部的淨零目標是玩真的，你負責讓台灣客戶跟上。'},
+ {id:'food2', n:'手搖飲帝國',   ind:'food', tier:'中後段',mult:.90,bar:28,burn:1.05,pre:5,esg:{e:30,s:28,g:30},csa:0,dept:'pr',req:'包材減量、供應鏈稽核、報告書一人全包',f:'一年賣出十億杯。塑膠杯與封膜是永續部門每天被罵的原因。'},
+ {id:'text2', n:'機能布霸主',   ind:'text', tier:'龍頭',mult:1.02,bar:36,burn:1.05,pre:6,esg:{e:74,s:70,g:70},csa:1,dept:'office',req:'Higg 指數、再生聚酯比例、EcoVadis 金牌、品牌客戶策略會議',f:'國際品牌的頂級供應商。回收紗做到全球前段，客戶還是年年加碼要求。'},
+ {id:'green2',n:'風電開發商',   ind:'green',tier:'外商',mult:1.20,bar:44,burn:1.1,pre:6,esg:{e:78,s:70,g:76},csa:1,dept:'office',req:'生態調查、漁業溝通、在地承諾、英文精通',intl:true,f:'離岸風場一支一支立起來。你的工作一半在海上，一半在漁會。'},
+ {id:'retail2',n:'超商雙雄之一',ind:'retail',tier:'龍頭',mult:.96,bar:34,burn:1.0,pre:7,esg:{e:84,s:86,g:88},csa:1,dept:'office',req:'惜食計畫、能源管理、循環杯、供應鏈稽核、DJSI',f:'全台六千家店，每家店都是一個小碳源。規模就是你的槓桿。'},
+ {id:'pharma3',n:'學名藥老牌',  ind:'pharma',tier:'中後段',mult:.90,bar:28,burn:.95,pre:5,esg:{e:32,s:30,g:32},csa:-1,dept:'ehs',req:'品牌客戶問卷、廢水管理（你會是第一個專職的人）',f:'做藥五十年，最近才聽說 ESG。你會是第一個專職的人。'},
+ {id:'air3',  n:'貨運航空',     ind:'air',  tier:'中後段',mult:1.00,bar:34,burn:1.1,pre:5,esg:{e:40,s:38,g:40},csa:0,dept:'office',req:'SAF 評估、CORSIA',f:'電商把貨機塞滿。飛得越多賺得越多，碳也排得越多。'},
+ {id:'chem1', n:'塑化集團',     ind:'chem', tier:'龍頭',mult:1.08,bar:42,burn:1.05,pre:7,esg:{e:38,s:28,g:30},csa:0,dept:'ehs',req:'CBAM、循環塑膠、碳費大戶自主減量計畫、ISO 50001',f:'全台繳碳費最多的集團之一。轉型的錢有，決心看年份。'},
+ {id:'elec9', n:'連接器隱形冠軍',ind:'elec',tier:'中後段',mult:.95,bar:32,burn:1.05,pre:5,esg:{e:46,s:38,g:42},csa:0,dept:'ehs',req:'品牌客戶問卷、ISO 14064-1 盤查',f:'你沒聽過它，但全球一半的手機裡有它的零件。品牌客戶的要求一層層壓下來。'},
+ {id:'telco1',n:'大哥大電信',   ind:'telco',tier:'龍頭',mult:1.22,bar:46,burn:.95,pre:8,esg:{e:92,s:92,g:94},csa:1,dept:'office',req:'RE100、基站節能、CDP A 級、DJSI 成分股維持、英文精通',f:'基地台是吃電怪獸，但這裡的永續做得早、做得深，評鑑年年拿獎。福利好，位子難空。'},
+ {id:'telco2',n:'老電信巨人',   ind:'telco',tier:'龍頭',mult:1.15,bar:44,burn:.85,pre:8,esg:{e:92,s:92,g:96},csa:1,dept:'office',req:'RE100、綠色資料中心、TCFD、公司治理評鑑前 5%',leanTeam:0,f:'國營色彩濃，制度完整、步調慢。你會學到最扎實的治理流程，也會學到什麼叫跑公文。'},
+ {id:'util1', n:'國營電力公司', ind:'util', tier:'公部門',mult:1.05,bar:42,burn:1.0,pre:8,esg:{e:48,s:56,g:52},csa:1,dept:'ehs',req:'電力排放係數、能源轉型路徑、公正轉型、公民溝通',f:'全台碳排最大的單一機構，也是能源轉型的執行者。你做的每個決定都會上新聞。'},
+ {id:'util2', n:'自來水／廢水處理',ind:'util',tier:'公部門',mult:.92,bar:32,burn:.85,pre:6,esg:{e:44,s:50,g:46},csa:0,dept:'ehs',req:'水資源管理、污泥處理、ISO 14064-1 盤查',f:'水、污泥、能耗。沒有人覺得性感，但缺水那年全台灣都在看你們。'}
 ];
 /* 四大：只以顏色代稱，畫面與程式碼皆不出現任何事務所本名 */
 function isBig4(e){ return !!(e && e.big4) }
@@ -1765,6 +1812,95 @@ CARDS.push(
     {l:'乾脆在南部辦自己的聚會',e:{rel:4,adv:3,soc:2,burn:6},r:'你揪了南部的永續工作者辦第一場聚會，來了二十幾個人——原來大家都在等有人先開口。',trait:'南部揪團'}]}
 );
 
+
+/* ===== 評比參與與職缺面向（item 2）=====
+   真實世界最大的分數落差不是做得好不好，而是有沒有填那份問卷。
+   把一家從沒參與評比的公司推上國際評比，分數會跳一大階——而你就是那個推的人。 */
+CARDS.push(
+{id:'v_join_csa',pool:'p',w:20,plan:1,t:'我們從來沒填過那份問卷',
+ cond:function(s){return s.inESG&&s.emp&&s.emp.esg&&csaState(s.emp)===0&&s.esgYrs>=2&&s.year>=2020},
+ x:'你查了一輪才發現：公司的 ESG 分數之所以難看，<em>不是因為做得比別人差，是因為從來沒有人去填那份問卷</em>。<br><br>國際評比機構只能用公開資訊給你們打分，而公開的東西少得可憐。',
+ o:[{l:'扛下來，今年就把問卷填完',e:{G:7,D:6,csaJoin:1,burn:18,rel:2},r:'你花了半年跨部門要資料、補文件、寫英文說明。分數公布那天，經營層第一次認真看永續這件事——<em>而他們發現，你只是把本來就有做的事寫出來而已</em>。',trait:'把公司推上評比'},
+    {l:'先做內部差異分析，明年再送',e:{G:4,D:3,sp:2,burn:8},r:'你做了一份缺口清單，把該補的證據列出來。今年沒送，但明年送出去的版本會好看很多。'},
+    {l:'高層沒興趣，先別碰',e:{sp:1,soc:-1},r:'你把資料收進資料夾。分數還是那個分數，而每年客戶問起來，業務還是答不出來。'}]},
+{id:'v_focus_deep',pool:'p',w:13,t:'你只負責這一塊',
+ cond:function(s){return s.inESG&&s.emp&&teamSize(s.emp)>=8&&s.esgYrs>=2},
+ x:'公司大到永續分成三個專職：<em>永續專案管理師管框架與揭露、低碳管理師管集團盤查數據、供應鏈永續管理師跑 RBA 稽核</em>。<br><br>你被分到其中一個，其他兩塊有人管，你碰不到。',
+ o:[{l:'把這一塊做到公司沒人取代得了',e:{sp:3,burn:5},r:'你成了那個領域裡最懂的人。範圍窄，但深度夠——履歷上那一行寫得出具體成果。',trait:'單點極深'},
+    {l:'私下把另外兩塊也摸熟',e:{E:3,S:3,G:3,burn:12,sp:1},r:'你利用午休和下班去搞懂別人在做什麼。累，但兩年後要跳槽時，你是唯一講得出全貌的人。',trait:'看得到全貌'}]},
+{id:'v_focus_all',pool:'p',w:14,t:'一個人的永續部門',
+ cond:function(s){return s.inESG&&s.emp&&teamSize(s.emp)<=2&&s.esgYrs>=1&&!s.freelance},
+ x:'職缺寫的是「永續管理師」，實際上你要做：<em>依櫃買規範編報告書、Scope 1–3 盤查、節能專案、教育訓練，順便管承攬商工安證照回訓</em>。<br><br>沒有前例、沒有預算、沒有人可以問。',
+ o:[{l:'先把盤查做起來，那是所有事的地基',e:{E:6,co2:1,esgDim:{e:4},burn:14},r:'你從電費單一張一張抓起。第一年的數字很醜，但那是真的——之後每一件事都建在這份底稿上。',trait:'從零建起來'},
+    {l:'先把報告書生出來，公司要的是那本',e:{D:6,esgDim:{g:3},burn:12},r:'報告書如期出版，老闆很滿意。你知道裡面有幾個數字是推估的，也知道明年還要再推估一次。'},
+    {l:'爭取預算找顧問，自己學怎麼管',e:{G:4,rel:2,cash:0,sp:2},r:'你說服老闆花錢請顧問，自己全程跟。第二年你就能自己做了——這筆錢花得比想像中值得。',trait:'學會管顧問'}]},
+{id:'v_lowscore_win',pool:'p',w:12,t:'從後段班往上爬比較有成就感',
+ cond:function(s){return s.inESG&&s.emp&&s.emp.esg&&companyESG(s.emp,s.year)!==null&&companyESG(s.emp,s.year)<50&&s.esgYrs>=3},
+ x:'同業的分數是你們的兩倍。但換個角度看：<em>他們再進步一分要花一年，你們隨便補幾項就能跳十分</em>。<br><br>年度考評時，你把這件事講給老闆聽。',
+ o:[{l:'把「分數成長幅度」做成你的績效',e:{G:5,esg:4,payroll:1,rel:2},r:'你用進步幅度談判——不是跟台積電比，是跟去年的自己比。這個框架讓經營層第一次覺得永續是划算的投資。',trait:'從後段班翻身'},
+    {l:'埋頭做，不談績效',e:{E:3,D:3,esg:3,burn:8},r:'分數確實往上爬了。只是沒有人把這件事跟你的加薪連在一起。'}]}
+);
+
+
+/* ===== 碳權開發（item 8）：資料取自環境部自願減量機制與碳交所實況 ===== */
+CARDS.push(
+{id:'k_credit_dev',pool:'p',w:12,plan:1,t:'要不要去做碳權開發',
+ cond:function(s){return s.year>=2024&&s.E>=16&&s.esgYrs>=4},
+ x:'碳交所開了、環境部核可的減量方法學有一百四十幾項。有人找你去做<em>自願減量專案開發</em>：選方法學、寫計畫書、論證外加性、找查驗機構確證、跑監測、最後把額度賣掉。<br><br>聽起來很前沿。',
+ o:[{l:'跳進去做專案開發',e:{E:8,G:4,dom:5,burn:14,sp:1},r:'你做了第一個案子才發現：這行八成的時間在寫文件與跟主管機關來回，不是在減碳。但你成了少數真的跑完整個流程的人。',trait:'開發過碳權'},
+    {l:'先從簡易方法學試水溫',e:{E:5,co2:1,sp:2},r:'你挑了環境部公告免第三方確證的簡易方法（照明汰換、空調效率）。門檻低、量也小，但整條路你走過一次了。'},
+    {l:'留在企業端，當買方就好',e:{G:3,sp:1},r:'你決定不當開發商。後來看著那個市場的起落，你覺得這個判斷不算錯。'}]},
+{id:'k_credit_frozen',pool:'p',w:12,t:'市場凍住了',
+ cond:function(s){return s.year>=2026&&(s.traits.indexOf('開發過碳權')>=0||s.E>=20)},
+ x:'國內碳權平台上路一年半，<em>成交只有個位數筆、總量幾十噸</em>。原因很簡單：碳費一噸三百，碳權一噸三千到四千。<br><br>沒有人有經濟誘因買。你手上的專案卡在那裡。',
+ o:[{l:'轉做國際市場與 CORSIA 需求',e:{en:2,G:4,dom:3,burn:10},r:'你把目光轉向航空業的抵換需求——那邊缺口以億噸計，價格也在漲。台灣太小，這個生意本來就要往外看。',trait:'轉戰國際碳市'},
+    {l:'轉回輔導型業務，靠服務費活著',e:{G:3,cash:5,sp:2},r:'你不再賭額度價格，改收專案輔導的服務費。不性感，但現金流穩定——很多同業就是這樣活下來的。',trait:'務實轉型'},
+    {l:'撐著等政策',e:{burn:10,cash:-5},r:'你相信碳費會漲、市場會活。也許會，只是不知道是哪一年。'}]},
+{id:'k_credit_quality',pool:'p',w:11,t:'那批額度的外加性有問題',
+ cond:function(s){return s.year>=2025&&s.E>=18},
+ x:'國際上接連爆出森林碳權醜聞——某家全球最大的開發商被指控超額核發數倍，驗證機構裁掉四分之一員工。<em>而你們手上正要買的那批，方法學屬於同一類</em>。',
+ o:[{l:'退掉，改買國內有查證的減量額度',e:{G:6,co2:2,cash:-6},r:'你堅持只買說得清楚來源的。成本高了三成，但兩年後媒體翻舊帳時，你們的名字不在名單上。',trait:'買得謹慎'},
+    {l:'先買，反正法規認可',e:{D:3,co2:-2,gwrisk:1},r:'合規上沒有問題。但你把新聞存了下來，心裡知道這件事沒完。'}]}
+);
+
+
+/* ===== 永續職涯眾生相（item 10）：素材取自多檔永續職涯 podcast 與訪談 ===== */
+CARDS.push(
+{id:'pd_ngo_pay',pool:'p',w:11,t:'NGO 的薪水與那句話',
+ cond:function(s){return s.emp&&s.emp.ind==='ngo'&&s.esgYrs>=2},
+ x:'月底看薪轉，你又想起企業端同學的數字。<em>但你今天做的事，是把一個議題推進了一點點</em>。<br><br>有份調查說，六成的 NGO 工作者想留在這個領域——你懂那個六成。',
+ o:[{l:'留下來，把技能練到能帶著走',e:{S:5,soc:3,adv:2,sp:1},r:'你在 NGO 一年學到的專案與溝通，抵得上企業端三年。這裡逼你快速成長、橫向補位。',trait:'NGO 練出來的'},
+    {l:'企業端挖你，這次去試試',e:{hunt:1,S:2},r:'你決定去看看另一邊。薪水會好很多，你想知道自己會不會後悔。'},
+    {l:'再撐一年，這個案子想做完',e:{soc:3,burn:6,cash:-2},r:'你為了一個還沒收尾的專案留下來。錢不是這份工作的重點——雖然你偶爾希望它是。'}]},
+{id:'pd_pivot',pool:'p',w:11,t:'如果沒有明天，我會想做什麼',
+ cond:function(s){return !s.inESG&&s.workYrs>=4},
+ x:'你在本業做得不差，但心裡有個問題揮之不去。有個前輩從科技業顧問轉去教育基金會當永續長，他說當初就是問自己：<em>「如果沒有明天，我會想做什麼工作？」</em>',
+ o:[{l:'認真規劃轉進永續',e:{sp:2,rel:2,D:2},r:'你開始上課、找人聊、投履歷。轉過去要降薪，但你第一次覺得工作跟自己是同一個方向。'},
+    {l:'先在本業裡找永續的切點',e:{dom:4,E:2,sp:1},r:'你不離職，先把本業和永續的交集做出來。這條路慢，但風險低。',trait:'從本業切進去'},
+    {l:'想想就好，日子還是要過',e:{burn:3,dom:2},r:'你把念頭收起來。它不會消失，只是還沒到時候。'}]},
+{id:'pd_bcorp',pool:'p',w:10,t:'B 型企業的面試',
+ cond:function(s){return s.esgYrs>=3&&s.rel>=8},
+ x:'一家 B 型企業找你。<em>薪水比外面低一截，但整間公司的存在就是為了做好事</em>。面試官說：我們要圈粉的不只是客戶，還有員工。',
+ o:[{l:'去，賭一個價值觀對齊的環境',e:{S:5,soc:3,adv:2,pay:-.05,burn:-6},r:'你進去了。這裡沒有「做永續是不是漂綠」的內耗，因為那就是本業。錢少一點，但你睡得好。',trait:'B 型企業人'},
+    {l:'欣賞但婉拒，現實要顧',e:{sp:1,rel:1},r:'你謝謝他們，選了薪水高的那個。偶爾你會想起那場很不一樣的面試。'}]},
+{id:'pd_thinktank',pool:'p',w:10,t:'智庫的位子',
+ cond:function(s){return s.G>=20&&s.esgYrs>=4},
+ x:'一間綠色智庫在找研究員：做政策研究、跑淨零路徑模型、當政府與產業之間的橋。<em>看得到全局，但碰不到執行；影響力很大，薪水很普通</em>。',
+ o:[{l:'去做政策研究',e:{G:6,adv:3,dom:-2,burn:4},r:'你的名字開始出現在政府的委辦報告和公聽會上。你影響的是規則本身——只是那影響很慢才看得見。',trait:'進了智庫'},
+    {l:'留在企業端做執行',e:{E:3,co2:1,dom:2},r:'你選擇繼續做看得到成果的事。智庫的宏觀視野很誘人，但你喜歡把東西真的做出來。'}]},
+{id:'pd_circular',pool:'p',w:10,t:'循環經濟新創找共同創辦人',
+ cond:function(s){return s.rel>=11&&s.esgYrs>=5&&s.year>=2023},
+ x:'幾個朋友要做一間循環經濟新創——把廢棄物變成材料。<em>技術很酷，但要說服客戶「買一個看不見的環境效益」非常難</em>。他們缺一個懂永續實務、講得清楚價值的人。',
+ o:[{l:'加入，賭一把',e:{found:1,adv:3,burn:12},r:'你把穩定的工作換成了選擇權。第一年最難的不是技術，是讓市場相信這件事值錢。'},
+    {l:'當顧問幫他們，不全職跳',e:{cash:6,rel:3,adv:2,burn:6},r:'你週末幫他們看方向、接觸客戶。風險小，也看得到這個題目未來的樣子。'},
+    {l:'祝福他們，自己不冒這個險',e:{sp:1},r:'你沒有跳。兩年後他們募到資，你有點感慨，但知道那不是你的路。'}]},
+{id:'pd_unsustain',pool:'p',w:12,t:'先顧好自己，才能發揮影響力',
+ cond:function(s){return s.inESG&&s.burn>=55&&s.esgYrs>=3},
+ x:'你讀到一篇同行寫的文章，標題是<em>「先顧好自己，才能發揮影響力」</em>。裡面講顧問團隊加班是常態、企業裡一人當十人用——<em>做永續的工作，本身卻很不永續</em>。<br><br>你一邊點頭，一邊還在回加班的訊息。',
+ o:[{l:'認真替自己畫一條線',e:{burn:-18,rel:-1,sp:1},r:'你開始拒絕一些事、把下班時間要回來。世界沒有塌，你的產出反而更穩。',trait:'替自己畫線'},
+    {l:'現在還不行，等這波過去',e:{burn:10,D:2},r:'你告訴自己再撐一下。這句話你已經對自己說了兩年。'}]}
+);
+
 /* ============ 證照 ============ */
 const CERTS = [
  /* from = 該證照在台灣「實際可考／課程開辦」的最早年份（已查證，2026-08）。年份門檻依此發放。 */
@@ -1878,7 +2014,17 @@ function apply(e, out){
   if(e.community){ S.community=1; d.push(['永續生活圈','加入']) }
   if(e.aifill){ S.aifill=1; d.push(['AI 填答系統','上線']) }
   if(e.reveal){ EMP.forEach(function(x){ if(x.req){ S.knownReq[x.id]=1 } }); }
-  if(e.esg && S.emp && S.emp.esg0!=null){ S.esgBoost[S.emp.id]=Math.min(22,(S.esgBoost[S.emp.id]||0)+e.esg); d.push(['公司 ESG','+'+e.esg]) }
+  if(e.esg && S.emp && S.emp.esg){ S.esgBoost[S.emp.id]=Math.min(22,(S.esgBoost[S.emp.id]||0)+e.esg); d.push(['公司 ESG','+'+e.esg]) }
+  if(e.esgDim && S.emp && S.emp.esg){
+    const b=S.esgBoostDim[S.emp.id]||(S.esgBoostDim[S.emp.id]={});
+    Object.keys(e.esgDim).forEach(function(k){ b[k]=Math.min(20,(b[k]||0)+e.esgDim[k]) });
+  }
+  if(e.csaJoin && S.emp && S.emp.esg && csaState(S.emp)===0){
+    S.csaFlip[S.emp.id]=1;
+    const after=companyESG(S.emp,S.year);
+    d.push(['公司開始參與評比','✓'],['ESG 分數','→ '+after]);
+    if(!S.traits.includes('把公司推上評比')) S.traits.push('把公司推上評比');
+  }
   if(e.wfhdep){ S.wfhDep=1 }
   if(e.region){ S.region=e.region; d.push(['據點',e.region]) }
   if(e.path){ S.stampPath=e.path }   // 中生代分岔（item 5）：破關後選的路，會一路影響到結局
@@ -2124,7 +2270,8 @@ function sidebar(){
     ${S.region&&S.region!=='台北'?`<div class="kv"><span class="k">據點</span><span class="v">${S.region}</span></div>`:''}
     <div class="kv"><span class="k">體力</span><span class="v mono" style="${S.burn>=70?'color:var(--warn)':''}">${stamina()} / 100${S.burn>=88?' ⚠ 快崩了':S.burn>=70?' ⚠':''}</span></div>
     <div class="kv"><span class="k">永續年資</span><span class="v mono">${S.esgYrs} 年</span></div>
-    ${(S.emp&&S.emp.esg0!=null&&!isFreelance())?`<div class="kv"><span class="k">公司 ESG 評分</span><span class="v mono">${companyESG(S.emp,S.year)} · ${esgBand(companyESG(S.emp,S.year))}</span></div>`:''}
+    ${(S.emp&&S.emp.esg&&!isFreelance()&&companyESG(S.emp,S.year)!==null)?`<div class="kv"><span class="k">公司 ESG（E/S/G）</span><span class="v mono">${companyESG(S.emp,S.year)} · ${esgDims(S.emp,S.year).e}/${esgDims(S.emp,S.year).s}/${esgDims(S.emp,S.year).g}</span></div>`:''}
+    ${(S.emp&&S.emp.esg&&!isFreelance()&&csaState(S.emp)===0)?`<div class="kv"><span class="k" style="color:var(--warn)">評比參與</span><span class="v" style="font-size:11px;color:var(--warn)">未參與（可推動）</span></div>`:''}
     ${(deptOf(S.emp)&&!isFreelance())?`<div class="kv"><span class="k">永續隸屬</span><span class="v" style="font-size:11.5px">${deptOf(S.emp).n}</span></div>`:''}
     ${S.certs.length?`<hr class="rule"><span class="eyebrow">證照</span><div class="traits">${S.certs.map(c=>`<span class="trait">${CERTS.find(x=>x.id===c).n.split('（')[0]}</span>`).join('')}</div>`:''}
     ${S.traits.length?`<hr class="rule"><span class="eyebrow">特質</span><div class="traits">${S.traits.map(t=>`<span class="trait">${t}</span>`).join('')}</div>`:''}
@@ -2219,7 +2366,7 @@ function newGameCore(){
      traits:[], certs:[], ledger:[], used:{}, hunt:0, quitFlag:0, joinFlag:0, foundFlag:0,
      intlFlag:0, health:0, riskAcc:0, school:null, major:null, goal:null, phase:'setup', jobless:0, freelance:0, freeYrs:0, uniScore:0, prevJob:'', carried:0, projNote:'', evOut:null, crossTitle:'', crossDesc:'', cardsLeft:0, adriftSeen:0, stamps:{}, ceilingSeen:0, yearUsed:{}, studied:0,
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
-     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北'};
+     soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -2938,11 +3085,21 @@ function projPick(i){
   /* 永續部門隸屬：所屬單位吃哪一項能力，每年小幅被動累積（item 11） */
   const dp = deptOf(S.emp);
   if(dp && !isFreelance()){ S[dp.tilt]=(S[dp.tilt]||0)+1; if(dp.board && S.level>=1) S.G+=1; }
-  /* 你在這家公司做實事 → 公司 ESG 評分緩步上升（item 6） */
-  if(S.emp && S.emp.esg0!=null && !isFreelance()){
-    const id=S.emp.id;
-    const gain = p.g==='專業' ? 1.1 : 0.4;
+  /* 你做的事會讓公司的 ESG 分數往上走（item 2）。
+     分數低的公司基期低、補一項就跳一階；高分公司再進步一分要花一年。 */
+  if(S.emp && S.emp.esg && !isFreelance()){
+    const id=S.emp.id, cur=companyESG(S.emp,S.year);
+    let gain = p.g==='專業' ? 1.1 : 0.4;
+    if(cur!==null){ gain *= cur<45 ? 1.9 : cur<60 ? 1.3 : cur<75 ? 0.8 : 0.45 }
+    if(so.q<1) gain *= 0.5;                      // 學不精，公司也跟著沒進展
     S.esgBoost[id]=Math.min(22,(S.esgBoost[id]||0)+gain);
+    // 你負責的那一面向長得最快
+    if(p.g==='專業'){
+      const dimOf={E:'e',S:'s',G:'g',D:'g'};
+      const dk=dimOf[p.k];
+      if(dk){ const b=S.esgBoostDim[id]||(S.esgBoostDim[id]={}); b[dk]=Math.min(20,(b[dk]||0)+gain*0.8) }
+    }
+    S.esgLift=(S.esgLift||0)+gain;               // 你這輩子替公司拉起來的總分
   }
   S.projNote = `這一年你壓在<strong>${p.l}</strong>上。` + (so.note ? so.note : '') +
     (S.rel>=12 ? '不過你有一半時間在外面跑，實作的時間被吃掉了。' : '');
@@ -3013,6 +3170,11 @@ function yearEnd(){
     const era = mNow>=84 ? 1.8 : mNow>=60 ? 1.2 : mNow>=40 ? 1.0 : 0.5;
     let inc=1+(0.013+rnd()*0.013+S.luck*0.0005)*damp*era;
     if(mNow<45 && rnd()<0.25){ inc = 0.985; }   // 寒冬年代：可能被砍薪
+    /* 把公司 ESG 分數拉起來的人，加薪談得比較動（item 2）——
+       尤其在原本分數難看的公司，進步幅度是最好講的故事。 */
+    const lift = (S.emp && S.esgBoost && S.esgBoost[S.emp.id]) || 0;
+    if(lift>=6) inc += 0.012;
+    if(lift>=12) inc += 0.012;
     if(aiLv(S.year)>=5 && S.D>cw()*0.42 && !S.traits.includes('駕馭工具的人')) inc-=0.016;
     S.pay=Math.round(S.pay*Math.max(1,inc)) }
   else { S.pay=Math.round(S.pay*(1+0.012+rnd()*0.013)) }
