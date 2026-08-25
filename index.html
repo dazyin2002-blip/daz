@@ -293,7 +293,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v26';
+const GAME_VERSION = 'v28';
+/* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
+   GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
+const BUILD_ID = '20260825-2230+130b328';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -11288,7 +11291,7 @@ function ending(){
   </div>`);
 }
 function resultSummary(){
-  return `永續人森模擬器 ${GAME_VERSION} — ${playerRef()}（${S.mbti||'—'}）／${S.startYear} 入學／${S.goal.n} ${goalMet()?'達成':'未達成'}${S.endedEarly?'／提早結束:'+S.earlyTitle:''}／年薪 ${S.pay} 萬／${S.inESG?LEVELS[S.level].t:'非永續職'}／永續年資 ${S.esgYrs} 年／E${S.E} S${S.S} G${S.G} D${S.D}／減碳${S.co2} 社會${S.soc||0} 號召${S.adv||0}／SEED ${S.seed.toString(36).toUpperCase()}`;
+  return `永續人森模擬器 ${GAME_VERSION}(${BUILD_ID}) — ${playerRef()}（${S.mbti||'—'}）／${S.startYear} 入學／${S.goal.n} ${goalMet()?'達成':'未達成'}${S.endedEarly?'／提早結束:'+S.earlyTitle:''}／年薪 ${S.pay} 萬／${S.inESG?LEVELS[S.level].t:'非永續職'}／永續年資 ${S.esgYrs} 年／E${S.E} S${S.S} G${S.G} D${S.D}／減碳${S.co2} 社會${S.soc||0} 號召${S.adv||0}／SEED ${S.seed.toString(36).toUpperCase()}`;
 }
 /* ===== 結果回傳（item 13, 19）=====
    玩到結局「當下」就立刻記錄名字＋MBTI＋結果（不必等玩家離開、不必按鈕）。
