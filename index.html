@@ -3304,6 +3304,57 @@ function apply(e, out){
   return d;
 }
 
+/* ===== 年終獎金（使用者需求）=====
+   遊戲裡的 S.pay 一直是「總包」。這裡把它拆開：
+     固定薪 = 總包 × (1 - varShare)      每年穩穩入帳
+     年終   = 總包 × varShare × 考績係數 × 景氣係數
+   varShare 依產業而異——半導體與航運是低月薪高獎金，電信與公用事業幾乎不動。
+   guard 是保障月數的概念：那一段不受考績與景氣影響。 */
+const BONUS_IND = {
+ semi: {v:0.46, guard:0.22, beta:1.6, note:'低月薪、高獎金'},
+ fin:  {v:0.34, guard:0.28, beta:1.3, note:'後台穩、業務端擺盪大'},
+ elec: {v:0.36, guard:0.25, beta:1.4, note:'低月薪、高獎金'},
+ steel:{v:0.27, guard:0.30, beta:1.5, note:'跟著景氣循環'},
+ chem: {v:0.28, guard:0.62, beta:1.3, note:'保障月數高、彈性小'},
+ food: {v:0.17, guard:0.55, beta:0.5, note:'穩定，抗景氣'},
+ text: {v:0.20, guard:0.30, beta:1.2, note:'看接到什麼單'},
+ ship: {v:0.52, guard:0.12, beta:2.5, note:'極端：好年很誇張，壞年幾乎沒有'},
+ retail:{v:0.15, guard:0.45, beta:0.8, note:'月薪低、獎金也低'},
+ green:{v:0.22, guard:0.35, beta:1.2, note:'看標案與政策'},
+ air:  {v:0.44, guard:0.20, beta:2.2, note:'景氣主導，疫情時可歸零'},
+ pharma:{v:0.22,guard:0.45, beta:0.7, note:'穩定'},
+ build:{v:0.30, guard:0.30, beta:1.5, note:'跟著推案與結案'},
+ telco:{v:0.20, guard:0.72, beta:0.3, note:'高月薪、低獎金，極穩'},
+ util: {v:0.28, guard:0.85, beta:0.2, note:'幾乎不動，有名額管制'},
+ cons: {v:0.18, guard:0.35, beta:1.1, note:'顧問業：高月薪、獎金比例低'},
+ pub:  {v:0.14, guard:0.80, beta:0.2, note:'考成獎金，等第有名額限制'},
+ ngo:  {v:0.08, guard:0.60, beta:0.5, note:'幾乎沒有年終'}
+};
+function bonusProfile(){
+  if(!S.emp || isFreelance() || S.polit) return null;
+  return BONUS_IND[S.emp.ind] || {v:0.24, guard:0.40, beta:1.0, note:''};
+}
+const GRADE_MULT = {A:1.9, B:1.0, C:0.35};
+function fixedPay(){
+  const b = bonusProfile();
+  if(!b) return S.pay;
+  return Math.round(S.pay * (1 - b.v));
+}
+/* 今年實際領到的年終。grade 是本年度考績，mood 是景氣係數。 */
+function yearEndBonus(grade){
+  const b = bonusProfile();
+  if(!b) return {amt:0, base:0, mult:1, boom:1, prof:null};
+  const base = S.pay * b.v;
+  const guard = base * b.guard;                 // 保障的那一段：考績與景氣都動不了
+  const flex  = base - guard;
+  /* 景氣係數：以當年市場熱度為中心，依產業 beta 放大擺盪 */
+  const m = moodAdj(mk(S.year)[1]);
+  let boom = 1 + ((m - 70) / 70) * b.beta;
+  boom = Math.max(0, Math.min(2.4, boom));
+  const mult = GRADE_MULT[grade] !== undefined ? GRADE_MULT[grade] : 1;
+  const amt = Math.round(guard + flex * mult * boom);
+  return {amt:amt, base:Math.round(base), mult:mult, boom:boom, prof:b};
+}
 /* ============ 薪資 ============ */
 function calcPay(emp, level){
   const ind = IND[emp.ind]||{c:1};
@@ -8560,7 +8611,7 @@ function newGameCore(seedIn){
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
      soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0, skills:{}, rareSkills:0, big4Grp:'', big4GrpName:'',
      grades:[], gradeC:0, highBurnYrs:0, uniFun:'', partner:0, quota:0, endedEarly:'', scholarship:0, youthFund:0, polit:'', ccWarned:0, ccPushed:0, placeYrs:0, ballYrs:0, ngoEdu:0, indYrs:{}, apexTitle:0,
-     relFrac:0, learnedThisYear:0, gradePush:0, lastSeen:{}, lastFocus:'', eraNext:undefined, eraDir:0, eraMood:0, askedFocusThisYear:0, focusOverride:'', studyCount:0, phd:0, lead:0, leadIdle:0, agency:0, retireSelf:0, retireGap:0, staleYrs:0, decayed:0, expertOf:'', windfall:0, b4Grp2:'', grpSwitches:0};
+     relFrac:0, learnedThisYear:0, gradePush:0, bonusLast:0, bonusSum:0, lastSeen:{}, lastFocus:'', eraNext:undefined, eraDir:0, eraMood:0, askedFocusThisYear:0, focusOverride:'', studyCount:0, phd:0, lead:0, leadIdle:0, agency:0, retireSelf:0, retireGap:0, staleYrs:0, decayed:0, expertOf:'', windfall:0, b4Grp2:'', grpSwitches:0};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -9402,6 +9453,7 @@ function header(){
     <div class="cell"><span class="k">年齡</span><span class="v mono">${S.age}</span></div>
     <div class="cell"><span class="k">職位</span><span class="v">${isFreelance()?'自己接案':(S.inESG?LEVELS[S.level].t:'非永續職')}</span></div>
     <div class="cell"><span class="k">年薪</span><span class="v mono">${S.pay} 萬</span></div>
+    ${bonusProfile()?`<div class="cell"><span class="k">結構</span><span class="v" style="font-size:11.5px;color:var(--ink-3)">固定 ${fixedPay()}／年終 ${S.pay-fixedPay()}</span></div>`:''}
     <div class="cell"><span class="k">${S.emp?S.emp.n:''}</span><span class="v" style="font-size:12px;color:var(--ink-3)">${m[2]}</span></div>
   </div>
   <div class="hud">
@@ -9445,7 +9497,7 @@ function showCard(c){
   const pb=pendingBlock();
   const showTrend = (S.cardsLeft===(bigYear(S.year)?2:1)) && trendOf(S.year);
   shell(header()
-    + (showTrend?`<div class="panel panel-pad" style="margin-bottom:14px"><span class="eyebrow">${S.year} 年 ・ 行情</span><div class="note" style="margin-top:6px;font-size:13.5px;line-height:1.75">${trendOf(S.year)}</div></div>`:'')
+    + (showTrend?`<div class="panel panel-pad" style="margin-bottom:14px"><span class="eyebrow">${S.year} 年 ・ 行情</span><div class="note" style="margin-top:6px;font-size:13.5px;line-height:1.75">${trendOf(S.year)}${copLine(S.year)?'<br><br>'+copLine(S.year):''}</div></div>`:'')
     + `<div class="panel panel-pad fade">
     ${pb}<span class="eyebrow">${c.pool==='h'?'這一年，整個行業都在講這件事':'你的一年'}</span>
     <h2 class="card-title">${c.t}</h2>
@@ -10267,8 +10319,8 @@ function yearEnd(){
   /* 當到主管，體力掉得更快：會議、擔責、幫下屬擋事（item 12）*/
   const lvBurn = (S.inESG && !isFreelance()) ? S.level*1.35 : 0;
   S.burn = Math.max(0, S.burn + Math.round((S.emp?S.emp.burn:1)*5 + lvBurn) - 6);
-  // 存款
-  S.cash = Math.round(S.cash + S.pay*(isFreelance()?0.20:0.12));
+  // 存款（固定薪的部分先入帳；年終等考績出來之後另算）
+  S.cash = Math.round(S.cash + (isFreelance() ? S.pay*0.20 : fixedPay()*0.10));
   const events=[];
   /* ===== 年度考績 A／B／C（使用者需求）=====
      看你今年的投入、能見度、體力與運氣。C 連兩年會被盯上。 */
@@ -10306,6 +10358,21 @@ function yearEnd(){
     } else {
       S.gradeC = 0;
       events.push('年度考績 <strong>B</strong>。不好不壞，跟大多數人一樣。');
+    }
+    /* 年終獎金：考績決定倍率、景氣決定池子有多大（使用者需求） */
+    const bo = yearEndBonus(g);
+    if(bo.prof && bo.base > 0){
+      S.cash = Math.round(S.cash + bo.amt);
+      S.bonusLast = bo.amt;
+      S.bonusSum = (S.bonusSum||0) + bo.amt;
+      const months = (bo.amt / (S.pay/12));
+      let line = '年終發下來：<strong>' + bo.amt + ' 萬</strong>（約 ' + months.toFixed(1) + ' 個月）。';
+      if(bo.boom <= 0.45) line += '公司今年不好過，<em>獎金池被砍掉一大半</em>——'
+        + (bo.prof.guard >= 0.5 ? '還好你們有保障的那一段，不然更難看。' : '而你們這行本來就是靠年終在補薪水的。');
+      else if(bo.boom >= 1.5) line += '<em>今年公司賺得凶</em>，整層樓的人都在算自己那一包。';
+      if(g === 'A') line += '你的考績把倍率拉了上來。';
+      else if(g === 'C') line += '<em>考績把你的那一份壓下去了。</em>';
+      events.push(line);
     }
   }
   /* ===== 主管不帶人的代價（使用者需求）=====
@@ -10529,6 +10596,33 @@ function eraShift(){
 function moodAdj(m){
   if(S.year < 2026 || !S.eraMood) return m;
   return Math.max(30, Math.min(96, m + S.eraMood * 7));
+}
+/* ===== 每一年的氣候談判背景（使用者需求 7）=====
+   主辦地、決議名稱與主席團標語皆為公開事實；括號裡那句是「對做這行的人代表什麼」。
+   2020 年沒有 COP（因疫情延期一年），這一點本身就是那一年的註腳。 */
+const COP_YEAR = {
+ 2010:['COP16 坎昆','《坎昆協議》把「升溫控制在 2°C 內」第一次寫進聯合國決議。哥本哈根談崩之後，這一年做的事是把桌子重新搭起來。'],
+ 2011:['COP17 德班','德班平台定下「2015 年前談出一份適用所有國家的協定」。訊號很清楚：<em>總有一天，開發中國家的工廠也要算碳。</em>'],
+ 2012:['COP18 杜哈','京都議定書延長，但日本、俄羅斯、加拿大、紐西蘭退出第二期。<em>這一年合規碳市場崩了</em>——CER 價格跌到一歐元以下，CDM 專案整批被放棄。'],
+ 2013:['COP19 華沙','設立損失與損害的華沙機制，也啟動了各國提交自訂貢獻的流程。這屆最被記得的是煤炭與鋼鐵企業贊助了大會，八百多位 NGO 代表集體離場。'],
+ 2014:['COP20 利馬','《利馬氣候行動倡議》。這是<em>企業第一次在氣候談判裡拿到正式座位</em>——利馬－巴黎行動議程與 NAZCA 平台開始登錄非國家行為者的承諾。'],
+ 2015:['COP21 巴黎','《巴黎協定》。全世界第一次同意把升溫控制在遠低於 2°C、並努力朝 1.5°C。<em>這是這個行業所有東西的起點</em>——科學基礎目標、淨零承諾、氣候情境分析，全都是從這裡長出來的。'],
+ 2016:['COP22 馬拉喀什','被稱為「行動之屆」，工作是開始寫巴黎的規則書。美國大選結果在會期中傳來，三百多家美國企業與投資人連署力挺巴黎——<em>企業第一次在國家退場時站出來說話。</em>'],
+ 2017:['COP23 波昂（斐濟主持）','斐濟用「同島一命」的獨木舟意象主持，推動塔拉諾阿對話。這屆正式邀請非國家行為者提交意見，<em>企業與公協會第一次被列為對話的一方。</em>'],
+ 2018:['COP24 卡托維治','《卡托維治規則書》——巴黎協定的操作手冊，包含強化透明度框架。同屆的《西里西亞宣言》第一次把「公正轉型」寫進國際文件。'],
+ 2019:['COP25 馬德里','主題是「行動的時刻」，實際上被評為巴黎之後最弱的一屆，碳市場規則再度談不攏。<em>國家做不到的，企業的自願承諾補了上去</em>——淨零承諾在這一年成為顯學。'],
+ 2020:['（這一年沒有 COP）','疫情讓大會延後一年，這是這個遊戲跨越的年份裡唯一沒有 COP 的一年。但歐盟綠色政綱與各國淨零宣示照樣往前推——<em>沒有大會，規則還是在變。</em>'],
+ 2021:['COP26 格拉斯哥','《格拉斯哥氣候協定》——聯合國決議<em>第一次寫出「化石燃料」四個字</em>。同一屆成立了 ISSB、GFANZ 集結金融業，格拉斯哥之後，永續揭露開始往財報靠攏。'],
+ 2022:['COP27 夏姆錫克','主題是「together for implementation」。歷史性地成立了損失與損害基金——距離小島國家第一次提出，過了三十年。'],
+ 2023:['COP28 杜拜','《阿聯共識》與第一次全球盤點：世界不在軌道上，並<em>第一次呼籲「轉型脫離化石燃料」</em>。這句話後來被抄進每一份轉型計畫與董事會簡報裡。'],
+ 2024:['COP29 巴庫','被稱為「金融屆」，談的是新的氣候資金目標。對做這行的人來說，真正的大事是<em>《巴黎協定》第六條終於談成</em>——碳市場的國際規則，走了九年。'],
+ 2025:['COP30 貝倫','在亞馬遜舉辦。決議用了葡萄牙語的「集體協力」當名字，並第一次把貿易措施納入正式對話——<em>那是聯合國承認碳邊境調整已經是氣候政治的一部分。</em>'],
+ 2026:['COP31 安塔利亞','土耳其主辦、澳洲擔任談判主席，會前會辦在太平洋島國。結論還沒發生，但議程上擺著的是化石燃料轉型路徑圖。']
+};
+function copLine(y){
+  const c = COP_YEAR[y];
+  if(!c) return '';
+  return '<span style="color:var(--ink-3)">' + c[0] + '：</span>' + c[1];
 }
 /* 時代感（item 11）：讓玩家「感覺到」現在是紅利年代還是寒冬 */
 function eraWord(){
@@ -11123,6 +11217,7 @@ function ending(){
       <div><div class="k">社會影響力</div><div class="v mono">${S.soc||0}</div></div>
       <div><div class="k">永續影響力</div><div class="v mono">${S.adv||0}</div></div>
       <div><div class="k">存款</div><div class="v mono">${S.cash} 萬</div></div>
+      ${(S.bonusSum||0)?`<div><div class="k">歷年年終</div><div class="v mono">${S.bonusSum} 萬</div></div>`:''}
     </div>
     ${S.inESG?`<div class="outcome" style="margin:18px 0 0">
       對照真實世界：在業界的永續職涯薪資調查裡，你的年薪 <strong>${S.pay} 萬</strong>
