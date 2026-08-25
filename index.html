@@ -293,8 +293,9 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本紀錄（開場頁腳可展開） ============ */
-const GAME_VERSION = 'v25';
+const GAME_VERSION = 'v26';
 const VERSION_LOG = [
+ ['v26','每個選擇都有自己的結果頁（原本有些會被跳過看不到）、MBTI 的影響會直接寫在結果裡、四大分組與公司職務會限制你每年能碰什麼（當上主管就全都要負責，也可以每年申請調職但不一定成功）、主管要練管理力（練管理專業就會退，兩邊都顧就爆體力）、出國念書一生兩次且每次重選領域、第二次或已有碩士可以念博士（受薪博士不花錢，真正的代價是四五年的年資斷層）、留學費用依 2025-26 實際行情大幅上修、接案的生存結構（押標金、靠行資格、鐘點費天花板、輔導查證各半、沒有勞退）'],
  ['v25','台東偏鄉球隊課輔彩蛋（大學去帶課輔，畢業可以留在那個機構工作）、極少數人能走到的集團永續長（年薪七百萬以上）、英文版的金額改成新台幣換算'],
  ['v24','修好結局 PR 卡在 96 的計算、薪資天花板收斂、關係力上限放寬到 30 並改成邊際遞減、體力掉得慢一點、35 歲後突發結局大幅降頻、四大換組機制、準則年年改版不學就會退化、冷門產業待久變成產業專家、目標會影響你遇到什麼事、事件卡不再重複、社會面不再只有 SROI（IRIS+／影響力管理 ABC／影響力連結貸款）、永續金融先行者聯盟與以大帶小、以及極罕見的中獎財富自由'],
  ['v23','極端氣候改變工作類型（大旱／熱危害／颱風斷鏈／調適職缺／被壓下的情境分析多年後兌現）、青年百億海外圓夢基金、地方創生駐站、參政之路、出國念書獎學金、長假劇情、B 型企業選了就真的加入、考績差會扣薪、四大起薪對齊 2026 官方數字、永續長普及率機制'],
@@ -2361,6 +2362,59 @@ CARDS.push(
     {l:'接受這是一份年度循環的工作',e:{sp:1,burn:-5},r:'你不再焦慮了。有些工作的價值就是「每年都要有人把它做對」。<br><br>這樣想之後，日子好過很多。'}]}
 );
 
+/* ===== 一個人怎麼活下去（使用者需求 2）=====
+   素材來自公開制度：政府採購的押標金 5%／履約保證金 10%、投標資格的資本額與實績門檻、
+   行政院講座鐘點費 2,000 元／節上限、單筆 2 萬以上扣 10% 稅＋2.11% 補充保費、
+   職業工會投保自付六成且沒有雇主提繳的勞退。這些不是故事，是每個獨立顧問每天在算的數字。 */
+CARDS.push(
+{id:'f_bond',pool:'p',w:15,freeOnly:1,rep:1,t:'接得越大，死得越快',
+ cond:function(s){return s.freeYrs>=1},
+ x:'有個三百萬的政府輔導標案，規模是你接過最大的。<br><br>'
+  +'但投標當下要先壓<strong>押標金</strong>（不逾預算 5%），得標後再壓<strong>履約保證金</strong>（不逾 10%）——'
+  +'<em>在收到任何一毛錢之前，先失血四十五萬</em>，而且要壓到驗收完才退。<br><br>'
+  +'驗收要等結案報告核定，核定要等承辦簽核。你算了一下，最快也是明年的事。',
+ o:[{l:'咬牙壓下去，這是做大的唯一路徑',e:{cash:-45,burn:14,dom:3,D:4},r:'你把錢壓進去了，接下來八個月靠著剩下的存款和幾個小案子過日子。<br><br>結案那天錢退回來，你在銀行的簡訊裡看到那個數字，坐在車上很久。<em>你做成了，也差一點沒撐過去。</em>',trait:'壓過保證金'},
+    {l:'不投。現金流比案子重要',e:{sp:2,cash:3},r:'你算完現金流就退出了。<br><br>後來聽說得標的那家做到一半週轉不靈，追加預算談不攏。<em>沒接到的案子，有時候是你賺到的。</em>'},
+    {l:'找人合投，分帳也分風險',e:{rel:3,cash:-18,D:3,burn:9},r:'你找了另一個獨立顧問合作，一人壓一半。<br><br>錢少賺一半，但兩個人的實績表都多了一筆——<em>而這一行，實績表就是入場券。</em>',trait:'學會合作'}]},
+{id:'f_agency',pool:'p',w:16,freeOnly:1,t:'你連投標的資格都沒有',
+ cond:function(s){return s.freeYrs>=1&&s.freeYrs<=6},
+ x:'你看上一個五百萬的案子，點開投標須知才發現門檻寫得很清楚：<br><br>'
+  +'<em>實收資本額不低於預算的十分之一</em>（五十萬），<em>五年內要有單案兩百萬以上的同類實績</em>。<br><br>'
+  +'你剛離職，兩項都沒有。這一行有個公開的做法：<strong>掛在別人的公司底下投</strong>——'
+  +'你做事，對方出資格，抽一到三成。<br><br>也有人更省事：<em>直接借牌</em>。',
+ o:[{l:'合法分包：掛在熟識的顧問公司下，讓對方賺管理費',e:{cash:8,rel:4,dom:3,agency:1,burn:8},r:'你談成了分包：對方出資格與行政、你做主要交付，抽兩成五。<br><br>錢少了四分之一，但你的名字進了結案報告的團隊名單——<em>兩三個案子之後，你就有自己的實績了。</em>',trait:'靠行做起來的'},
+    {l:'借牌。反正實際做事的是我',e:{cash:14,risk:.22,gwrisk:1},r:'你用別人的牌投了標，做得很好，錢也拿到了。<br><br><em>只是借牌在採購法下是停權三年的重大違規</em>——不是罰款，是三年不能碰任何政府案子。你把那份合約收進最深的抽屜。',trait:'走過鋼索'},
+    {l:'放棄公部門，專心做企業客戶',e:{rel:2,sp:2,dom:2},r:'你決定不玩這個遊戲。企業客戶不看資本額，看的是你上一個案子做得怎麼樣。<br><br><em>案子比較小，但錢比較快，而且不用壓保證金。</em>',trait:'只做企業端'}]},
+{id:'f_teach',pool:'p',w:15,freeOnly:1,rep:1,t:'講一場能賺多少',
+ cond:function(s){return s.esgYrs>=5},
+ x:'開始有人找你去講課了。<br><br>'
+  +'公部門的價碼是硬的：<em>外聘專家學者一節（五十分鐘）上限兩千元</em>，一整天六節，一萬二封頂，還常常再打折。<br><br>'
+  +'企業內訓就是另一個世界——基礎講師一小時三千到八千，做出名號的可以喊到兩三萬。<br><br>'
+  +'而講師費屬於執行業務所得，<em>一年十八萬以內免稅</em>。',
+ o:[{l:'走企業內訓：把課做成產品，一套講很多次',e:{cash:22,adv:3,rel:3,burn:11},r:'你花了三個月把課程做成完整的教材，然後同一套講了十四場。<br><br>邊際成本趨近於零，這是接案人生裡少數能「複製」的東西。<em>而且台下坐的，都是明年可能發案給你的人。</em>',trait:'把課做成產品'},
+    {l:'公部門的課照接：錢少，但名單和信任是真的',e:{cash:8,rel:5,soc:2,burn:8},r:'一整天一萬二，扣掉車馬幾乎不剩。<br><br>但你認識了三個縣市的承辦、兩個輔導團的主持人。<em>這一行的案子不是投出來的，是被想起來的。</em>',trait:'公部門講師'},
+    {l:'不講課，把時間留給專案',e:{cash:12,D:4,sp:1},r:'你判斷講課會吃掉太多做案子的時間。<br><br>你的手藝更好了，但認識你的人沒有變多——<em>而接案這件事，有時候手藝不是瓶頸。</em>'}]},
+{id:'f_half',pool:'p',w:14,freeOnly:1,rep:1,t:'四十萬的案子，你只拿一半',
+ cond:function(s){return s.year>=2023},
+ x:'中小企業客戶問：「做一次碳盤查要多少？」<br><br>'
+  +'市場行情大概是<strong>輔導二十萬＋第三方查證二十萬</strong>。客戶聽到四十萬倒抽一口氣——'
+  +'而你要跟他解釋：<em>那二十萬的查證費不是給你的，是給驗證機構的</em>。<br><br>'
+  +'你實收的只有輔導那一半，扣掉時間成本很薄。而且這個市場，已經有人開十五萬的套裝方案在殺。',
+ o:[{l:'不殺價，改賣「做完之後怎麼用」',e:{cash:16,G:4,dom:3,adv:2,burn:9},r:'你不跟低價方案比誰便宜，你賣的是盤查完之後的減量路徑與客戶問卷回覆。<br><br>成交的案子少了，單價高了三成。<em>你發現真正願意付錢的客戶，要的從來不是那張證書。</em>',trait:'不賣便宜的'},
+    {l:'跟進低價套裝，先把量做起來',e:{cash:20,burn:16,D:3},r:'你推出了自己的低價方案，案子多到做不完。<br><br>年底一算，營收成長四成、工時成長八成。<em>你把自己變成了一台便宜的機器。</em>',trait:'量做起來了'},
+    {l:'跟客戶說實話：你們現在還不需要做',e:{rel:4,soc:2,sp:2},r:'你評估完客戶的規模與客戶端要求，告訴他今年不用花這筆錢。<br><br>他愣了一下，然後把你介紹給了兩個同業。<em>這一行最好的行銷，是勸退不需要的人。</em>',trait:'勸退過客戶'}]},
+{id:'f_safety',pool:'p',w:13,freeOnly:1,t:'沒有人幫你提撥退休金',
+ cond:function(s){return s.freeYrs>=2},
+ x:'工會寄來的繳費單躺在桌上。<br><br>'
+  +'沒有雇主的人只能透過職業工會投保：<em>勞健保自付六成</em>（受僱者只要自付兩成），'
+  +'而且<strong>沒有雇主提繳的那 6% 勞退</strong>——除非你自己從口袋裡拿。<br><br>'
+  +'你也想起另一件事：工會與會員不是僱傭關係，所以<em>沒有失業給付、沒有育嬰留停津貼</em>。<br><br>'
+  +'自由的價格，是每個月都要繳的。',
+ o:[{l:'自提 6%，把退休金補起來',e:{cash:-8,sp:2,G:2,retireself:1},r:'你設了自動轉帳，每個月從自己的收入裡撥 6% 進勞退帳戶。<br><br>當下很有感，二十年後才會知道值不值得。<em>接案的人沒有人幫你想這件事，只有你自己會。</em>',trait:'自己提退休金'},
+    {l:'先不提。現金流優先',e:{cash:4,burn:4},r:'你把那筆錢留在手上。案源不穩的人，現金為王。<br><br><em>只是每年翻到那張繳費單，你都會想一下四十歲以後的事。</em>'},
+    {l:'買商業保險把缺口補上',e:{cash:-12,burn:-6,sp:1},r:'你買了失能與醫療險，把最壞的情況擋住。<br><br>保費不便宜，但你晚上睡得比較安穩——<em>一個人接案，最怕的不是沒案子，是生病。</em>',trait:'把風險擋住'}]}
+);
+
 /* ===== 產業聯盟／以大帶小（使用者需求 11）===== */
 CARDS.push(
 {id:'al_fin_pioneer',pool:'p',w:15,t:'金控要加入先行者聯盟',
@@ -2685,6 +2739,7 @@ function apply(e, out){
   if(e.rel){ const got=relAdd(e.rel); if(got||e.rel<0) add('rel',got,'關係力') }
   if(e.en){S.en+=e.en; add('en',e.en,'英文')}
   if(e.sp){S.sp+=e.sp}
+  if(e.lead){ S.lead=Math.max(0,(S.lead||0)+e.lead); d.push(['管理力', e.lead>0?'+'+e.lead:e.lead]) }
   if(e.uni){S.uniScore=(S.uniScore||0)+e.uni}
   if(e.dom){S.dom=Math.max(0,S.dom+e.dom)}
   if(e.burn){S.burn=Math.max(0,Math.min(100,S.burn+e.burn)); if(e.burn<0) d.push(['喘了口氣',e.burn])}
@@ -2727,6 +2782,8 @@ function apply(e, out){
     else { S.sp+=2 }
   }
   if(e.aiwatch){ S.aiWatched=1 }
+  if(e.agency){ S.agency=1 }                       // 靠行：有資格投比較大的案子了
+  if(e.retireself){ S.retireSelf=1 }               // 自提勞退
   if(e.quota!==undefined){ S.quota=e.quota }
   if(e.parental){
     /* 育嬰留停：公司永續做得好不好，決定你被怎麼對待（使用者需求） */
@@ -3079,6 +3136,13 @@ function tryPromote(){
     /* 位子是有限的：協理以上，小公司根本沒有那麼多層 */
     if(S.level>=3 && S.emp && S.emp.tier==='中後段' && !S.crossTitle) pr *= 0.45;
     if(S.level>=3 && isFreelance()) pr *= 0.6;
+    /* 往上是帶人的位子：管理力跟不上，專業再強也卡住（使用者需求） */
+    if(S.level>=2){
+      const want = 6 + (S.level-2)*8;               // 經理 6／協理 14／永續長 22
+      if((S.lead||0) < want*0.5) pr *= 0.72;
+      else if((S.lead||0) < want) pr *= 0.86;
+      else if((S.lead||0) >= want*1.6) pr *= 1.18;
+    }
     if(b4 && S.level<=2) pr += .14;     // 四大前段升遷制度化，快而穩
     if(b4 && S.level>=3) pr -= .10;     // 但協理以上位子少，多數人在這裡離開
     /* 永續長普及率（item 8）：2022 年僅 9% 企業專設永續長（金融 16.7% 最高）。
@@ -7831,7 +7895,7 @@ function newGameCore(){
      playerName:'', mbti:'', mbtiAx:{}, esgBoost:{}, galaSeen:0, galaCity:'', community:0, wfhDep:0, profitYrs:0, knownReq:{}, collapses:0, leaveNext:0, stampPath:'',
      soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0, skills:{}, rareSkills:0, big4Grp:'', big4GrpName:'',
      grades:[], gradeC:0, highBurnYrs:0, uniFun:'', partner:0, quota:0, endedEarly:'', scholarship:0, youthFund:0, polit:'', ccWarned:0, ccPushed:0, placeYrs:0, ballYrs:0, ngoEdu:0, indYrs:{}, apexTitle:0,
-     relFrac:0, learnedThisYear:0, staleYrs:0, decayed:0, expertOf:'', windfall:0, b4Grp2:'', grpSwitches:0};
+     relFrac:0, learnedThisYear:0, askedFocusThisYear:0, focusOverride:'', studyCount:0, phd:0, lead:0, leadIdle:0, agency:0, retireSelf:0, retireGap:0, staleYrs:0, decayed:0, expertOf:'', windfall:0, b4Grp2:'', grpSwitches:0};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
 }
@@ -7960,46 +8024,46 @@ const GRAD_FIELDS = [
 /* ===== 海外研究所（item 2）：國外選項多、科系雜、英文與國際線是硬優勢，
    但學費貴、回台要重接人脈。destination 決定風味。 ===== */
 const GRAD_OVERSEAS = [
- {id:'o_uk_env', n:'英國・環境政策', dest:'英國', axis:'制度', s:{G:7,S:2}, en:6, uni:14, hard:0, dom:0, cost:95,
+ {id:'o_uk_env', n:'英國・環境政策', dest:'英國', axis:'制度', s:{G:7,S:2}, en:6, uni:14, hard:0, dom:0, cost:165,
   d:'牛津／LSE 一年制。歐盟是環境法規的源頭，在現場待一年，你對法規往哪走的直覺會贏過讀二手摘要的人。',
   m:'你帶回一套對國際法規的敏感度，和一張很好用的英文學歷。<em>回台後最順的路是外商與國際顧問。</em>'},
- {id:'o_uk_biz', n:'英國・永續商業', dest:'英國', axis:'制度', s:{G:6,D:3}, en:6, uni:14, hard:-1, dom:1, cost:98,
+ {id:'o_uk_biz', n:'英國・永續商業', dest:'英國', axis:'制度', s:{G:6,D:3}, en:6, uni:14, hard:-1, dom:1, cost:175,
   d:'里茲／愛丁堡的 Sustainability & Business。把永續放回商業模式裡談，適合想走策略與永續長路線的人。',
   m:'你會用商業語言講永續，這在董事會裡很值錢。<em>但技術細節你還是得回來補。</em>'},
- {id:'o_nl_gov',n:'荷蘭・永續治理轉型', dest:'荷蘭', axis:'制度', s:{G:5,S:4}, en:5, uni:15, hard:0, dom:1, cost:70,
+ {id:'o_nl_gov',n:'荷蘭・永續治理轉型', dest:'荷蘭', axis:'制度', s:{G:5,S:4}, en:5, uni:15, hard:0, dom:1, cost:118,
   d:'瓦赫寧恩（Wageningen）——全球農食與環境研究龍頭。學費比英美低、英語授課、就在歐盟法規現場。',
   m:'你懂系統怎麼轉型，也懂農食供應鏈。<em>CP 值最高的一條國際路。</em>'},
- {id:'o_nl_econ',n:'荷蘭・永續經濟學', dest:'荷蘭', axis:'制度', s:{G:5,D:3}, en:5, uni:15, hard:0, dom:1, cost:72,
+ {id:'o_nl_econ',n:'荷蘭・永續經濟學', dest:'荷蘭', axis:'制度', s:{G:5,D:3}, en:5, uni:15, hard:0, dom:1, cost:122,
   d:'烏特勒支／瓦赫寧恩，兩年制。把環境外部性、碳定價、綠色金融用經濟學的語言拆開。',
   m:'你能把環境問題翻譯成錢的問題——這正是最缺的翻譯。'},
- {id:'o_nordic_env',n:'北歐・環境管理與政策', dest:'北歐', axis:'技術', s:{E:6,G:3}, en:5, uni:15, hard:1, dom:1, cost:60,
+ {id:'o_nordic_env',n:'北歐・環境管理與政策', dest:'北歐', axis:'技術', s:{E:6,G:3}, en:5, uni:15, hard:1, dom:1, cost:195,
   d:'隆德大學 IIIEE——循環經濟與生產者責任的重鎮。學費低、社會福利好、離永續最前沿最近。',
   m:'循環經濟、生產者延伸責任、生命週期，你是少數真的懂的人。<em>台灣才剛開始要這些。</em>'},
- {id:'o_nordic_energy',n:'北歐・能源系統', dest:'北歐', axis:'技術', s:{E:8}, en:5, uni:14, hard:2, dom:3, cost:62,
+ {id:'o_nordic_energy',n:'北歐・能源系統', dest:'北歐', axis:'技術', s:{E:8}, en:5, uni:14, hard:2, dom:3, cost:205,
   d:'DTU／KTH 的能源工程。風電、電網、儲能、氫能——北歐是能源轉型的實驗場。',
   m:'你會的是真本事，薪水也可能高過顧問業。<em>但你其實比較像能源工程師，不是 ESG 人。</em>'},
- {id:'o_us_climate',n:'美國・氣候學院', dest:'美國', axis:'制度', s:{G:6,E:2}, en:7, uni:16, hard:1, dom:0, cost:200,
+ {id:'o_us_climate',n:'美國・氣候學院', dest:'美國', axis:'制度', s:{G:6,E:2}, en:7, uni:16, hard:1, dom:0, cost:390,
   d:'哥倫比亞 Climate School／SIPA。品牌最強、學費最貴、簽證最不確定，政策＋金融兼修。',
   m:'招牌很亮，人脈很國際。<em>但兩百萬學費買的是機會、不是薪水——回台這個天花板打不破。</em>'},
- {id:'o_us_env',n:'美國・環境管理', dest:'美國', axis:'技術', s:{E:6,S:3}, en:7, uni:16, hard:1, dom:1, cost:185,
+ {id:'o_us_env',n:'美國・環境管理', dest:'美國', axis:'技術', s:{E:6,S:3}, en:7, uni:16, hard:1, dom:1, cost:340,
   d:'耶魯 YSE／密西根 SEAS。理論與實作都硬，環境與社會面並重。',
   m:'你受的是世界頂尖的環境訓練。<em>回台灣做的第一件事，卻可能是核對供應商的電費單。</em>'},
- {id:'o_us_finmba',n:'美國・永續金融 MBA', dest:'美國', axis:'制度', s:{G:5,D:4}, en:7, uni:15, hard:0, dom:1, cost:210,
+ {id:'o_us_finmba',n:'美國・永續金融 MBA', dest:'美國', axis:'制度', s:{G:5,D:4}, en:7, uni:15, hard:0, dom:1, cost:480,
   d:'杜克／密西根 Ross 的 MBA＋永續。影響力投資、ESG 整合、企業轉型金融。',
   m:'走外商金融與影響力投資最順的一張門票。<em>貴，但如果你的雇主是外國人，這筆很划算。</em>'},
- {id:'o_jp_env',n:'日本・環境學', dest:'日本', axis:'技術', s:{E:5,G:3}, en:3, uni:14, hard:1, dom:2, cost:70,
+ {id:'o_jp_env',n:'日本・環境學', dest:'日本', axis:'技術', s:{E:5,G:3}, en:3, uni:14, hard:1, dom:2, cost:110,
   d:'東大／京大環境學研究科。成本低、對想做日商供應鏈的人有獨特價值。日文是另一道門。',
   m:'你打開的是日商這條線——很多台廠的最終客戶就是日本品牌。<em>英文優勢比較小，換的是日文與亞洲人脈。</em>'},
- {id:'o_intdev',n:'國際發展 / 人權', dest:'英國', axis:'人', s:{S:8}, en:6, uni:12, hard:4, dom:0, cost:95, rare:1,
+ {id:'o_intdev',n:'國際發展 / 人權', dest:'英國', axis:'人', s:{S:8}, en:6, uni:12, hard:4, dom:0, cost:160, rare:1,
   d:'LSE／SOAS 的 Development。走向國際 NGO、多邊機構、公正轉型與人權盡職調查。',
   m:'你走的是影響力與國際組織這條線。<em>在台灣企業端很難變現，但 TISFD、人權、公正轉型來的時候，會的人只有你。</em>'},
- {id:'o_circular',n:'循環經濟（跨國學程）', dest:'歐洲', axis:'技術', s:{E:5,S:3}, en:6, uni:14, hard:2, dom:1, cost:80,
+ {id:'o_circular',n:'循環經濟（跨國學程）', dest:'歐洲', axis:'技術', s:{E:5,S:3}, en:6, uni:14, hard:2, dom:1, cost:150,
   d:'Erasmus Mundus 之類的跨國學程，在三四個歐洲國家輪流上課。把廢棄物變材料的整套邏輯。',
   m:'你在好幾個國家待過、看過不同的制度。<em>視野是真的寬，但回台灣要自己找到落地的題目。</em>'},
- {id:'o_marine',n:'海洋 / 自然保育', dest:'澳洲', axis:'技術', s:{E:7,S:1}, en:5, uni:12, hard:3, dom:0, cost:110, rare:1,
+ {id:'o_marine',n:'海洋 / 自然保育', dest:'澳洲', axis:'技術', s:{E:7,S:1}, en:5, uni:12, hard:3, dom:0, cost:300, rare:1,
   d:'澳洲的海洋與保育科學。藍碳、生態調查、TNFD 的棲地評估——碳排顧問完全不會的技能。',
   m:'TNFD 來的時候，全公司只有你講得出「生態系服務」。<em>但這條路在台灣的職缺總量很小。</em>'},
- {id:'o_futures',n:'策略遠見 / 未來學', dest:'歐洲', axis:'制度', s:{G:6,D:2}, en:6, uni:12, hard:4, dom:0, cost:88, rare:1,
+ {id:'o_futures',n:'策略遠見 / 未來學', dest:'歐洲', axis:'制度', s:{G:6,D:2}, en:6, uni:12, hard:4, dom:0, cost:150, rare:1,
   d:'歐洲少數的 Futures Studies 學程。情境規劃、回溯推演，正對應 TCFD／IFRS S2 最弱的一環。',
   m:'你能把不確定性做成一套方法。<em>只是「首席未來學家」這種職位，台灣還沒發明出來。</em>'}
 ];
@@ -8135,6 +8199,142 @@ function uniPick(y,i){
 }
 
 /* ============ 研究所科系選擇（item 1, 2）============ */
+/* ===== 中途出國念書（使用者需求 3）=====
+   一生最多兩次；每一次都重新挑領域；第二次、或已經有碩士學位的人，可以挑博士。
+   出國的錢是這個遊戲裡最貴的一筆消費——這正是它應該讓人猶豫的地方。 */
+function canPhD(){
+  return !S.phd && ((S.studyCount||0)>=1 || S.traits.indexOf('海外碩士')>=0 || !!S.gradField);
+}
+/* 博士不是「更貴的碩士」（依 2025-26 公開資料校準）：
+   荷蘭／北歐的博士是受薪職位、德國多為 65% E13 約聘、美國 STEM 多半全額資助——
+   這些路線幾乎不花錢，甚至存得下來。真正的代價是四到五年不在台灣的年資斷層。
+   真正昂貴的是英國自費博士（學費加生活費可達六、七百萬）。 */
+const PHD_TRACKS = [
+ {id:'p_climate', n:'氣候科學／地球系統', dest:'荷蘭或北歐', yrs:4, s:{E:16,G:4}, en:8, net:60, funded:1,
+  d:'受薪博士：你是被雇用的研究員，有薪水、有勞退、有年假。',
+  m:'你成了少數看得懂原始模式輸出、也講得出不確定性的人。<em>情境分析從此不再是別人給你的圖層。</em>'},
+ {id:'p_policy',  n:'環境與能源政策', dest:'德國或荷蘭', yrs:4, s:{G:16,S:5}, en:8, net:15, funded:1,
+  d:'多半是 65% 職缺的約聘研究員：薪水不高，但學費是零，日子過得去。',
+  m:'你把制度是怎麼長出來的讀了一遍。<em>回台後你講的話，公部門聽得懂，企業也不敢隨便反駁。</em>'},
+ {id:'p_finance', n:'永續金融與氣候風險', dest:'英國（自費）', yrs:4, s:{G:14,D:8}, en:8, net:-520, funded:0,
+  d:'沒有資助的自費博士。四年學費加生活費，是這個遊戲裡最貴的一筆決定。',
+  m:'你的論文在算轉型風險怎麼被定價。<em>這條路的終點通常不在企業，在資產管理與監理那一側。</em>'},
+ {id:'p_social',  n:'發展研究／勞動與人權', dest:'歐洲', yrs:5, s:{S:17,G:4}, en:8, net:0, funded:1,
+  d:'有獎助，但要跑田野，而且五年起跳。',
+  m:'你在田野裡待了很久，久到你再也沒辦法把「供應鏈的人」當成一個數字。'}
+];
+function studyOptions(){
+  const outs = GRAD_OVERSEAS.map(function(f,i){
+    return {kind:'ms', i:i, n:f.n, dest:f.dest, yrs:2, cost:f.cost||90, d:f.d};
+  });
+  return outs;
+}
+function screenStudyAbroad(){
+  const again = (S.studyCount||0)>=1;
+  const ms = studyOptions().map(function(o){
+    return '<button class="pick" onclick="pickStudy(&#39;ms&#39;,'+o.i+')">'
+      + '<span class="t">'+o.n+'</span>'
+      + '<span class="d">'+o.d+'</span>'
+      + '<span class="m">'+o.dest+'・'+(o.cost>=280?'兩年':'一至兩年')+'・學雜與生活費約 '+o.cost+' 萬'
+      + (o.cost > (S.cash + 120 + 60) ? '　<span style="color:var(--warn)">你湊不出這筆錢——貸款上限 120 萬，其餘要自己想辦法</span>' : '')
+      + '</span></button>';
+  }).join('');
+  const phd = canPhD() ? PHD_TRACKS.map(function(t,i){
+    return '<button class="pick" onclick="pickStudy(&#39;phd&#39;,'+i+')">'
+      + '<span class="t">博士｜'+t.n+'</span>'
+      + '<span class="d">'+t.m+'</span>'
+      + '<span class="m">'+t.dest+'・'+t.yrs+' 年・'
+      + (t.net>0 ? '受薪或全額資助，四年下來大約還能存 '+t.net+' 萬'
+         : t.net===0 ? '有獎助，收支大致打平'
+         : '完全自費，四年約 '+Math.abs(t.net)+' 萬')
+      + '</span></button>';
+  }).join('') : '';
+  shell('<div class="panel panel-pad fade">'
+    + '<span class="eyebrow">'+S.year+' 年 ・ '+(again?'再走一次':'出國念書')+'</span>'
+    + '<h2 class="card-title">'+(again?'你又要飛出去了。':'你要念什麼？')+'</h2>'
+    + '<div class="card-body" style="font-size:15px">'
+    + (again
+        ? '第二個學位跟第一個的意義不一樣：第一次是換履歷，<em>第二次是換方向</em>。'
+          + '你也很清楚代價——回來的時候，同期的人又往前走了幾年。'
+        : '辭職、繳學費、離開這個市場兩年。<em>回來時你的英文和視野會變，台灣的年資和人脈不會等你。</em>')
+    + '<span style="color:var(--ink-3)"><br><br>錢是真的問題：這是這一局裡最貴的一筆決定。獎學金申請得到的人不多，但值得試。</span></div>'
+    + '<div class="grouplab">碩士</div><div class="grid">'+ms+'</div>'
+    + (phd ? '<div class="grouplab">博士</div>'
+        + '<p class="note">你已經有一個學位了。博士是另一種東西——<em>四年，換的不是一份工作，是一種看事情的方式</em>。'
+        + '回台後最順的路是智庫、學界、國際組織與監理單位，企業端反而會覺得你太貴、太慢。</p>'
+        + '<div class="grid">'+phd+'</div>' : '')
+    + '</div>');
+}
+function pickStudy(kind, i){
+  S.studyCount = (S.studyCount||0) + 1;
+  S.studied = 1;
+  const isPhd = (kind==='phd');
+  const f = isPhd ? PHD_TRACKS[i] : GRAD_OVERSEAS[i];
+  const yrs = isPhd ? f.yrs : 2;
+  let cost = isPhd ? -(f.net||0) : (f.cost||90);   // 博士用「淨支出」：受薪路線是負的（等於存得到錢）
+  /* 第二個學位更貴：沒有應屆身分、年紀大了、多半要自費 */
+  if(S.studyCount>=2) cost = Math.round(cost*1.15);
+  /* 獎學金（已查證修正）：學海飛颺是「交換研修」不能拿來念學位；
+     Chevening 台灣名額是「部分資助」——只付學費與簽證費，不含生活費與機票。
+     所以獎學金在這個遊戲裡是「減輕」而不是「解決」。 */
+  let sch = 0;
+  const schP = isPhd ? (f.funded ? 0 : 0.22) : 0.30 + (S.en>=8?0.08:0) + S.luck*0.006;
+  if(schP>0 && rnd() < schP){
+    sch = isPhd ? 60+ri(0,80) : (rnd()<0.10 ? Math.round(cost*0.55) : 10+ri(0,14));
+    S.scholarship = (S.scholarship||0) + sch;
+    cost = Math.max(15, cost - sch);
+    if(!S.traits.includes('拿過獎學金')) S.traits.push('拿過獎學金');
+  }
+  S.cash = Math.round(S.cash - cost);
+  S.en += (f.en||6);
+  Object.keys(f.s).forEach(function(k){ S[k] += f.s[k] });
+  S.year += yrs; S.age += yrs; S.workYrs += yrs;
+  S.burn = Math.max(0, S.burn - (isPhd?20:35)) + (S.cash<0?12:0);
+  S.rel = Math.max(0, S.rel - (isPhd?4:2));          // 離開市場越久，圈子越冷
+  S.uniScore = (S.uniScore||0) + (isPhd?18:8);
+  S.gradField = f.id; S.gradFieldName = f.n;
+  const d = Object.keys(f.s).map(function(k){ return [({E:'環境力',S:'社會力',G:'治理力',D:'揭露力'})[k], f.s[k]] });
+  d.push(['英文', f.en||6], ['存款', -cost]);
+  if(sch) d.push(['獎學金','+'+sch+' 萬']);
+  let txt;
+  if(isPhd){
+    S.phd = 1;
+    if(!S.traits.includes('博士')) S.traits.push('博士');
+    if(!S.traits.includes('國際線')) S.traits.push('國際線');
+    S.ledger.push({y:S.year, t:'博士學位（'+f.dest+'・'+f.n+'）', p:'', mark:1});
+    txt = '你去念了<strong>'+f.n+'</strong>的博士。<br><br>'+f.m
+      + '<br><br>'+yrs+' 年。中間有一年你幾乎確定自己撐不完。<br><br>'
+      + (cost < 0
+          ? '錢反而不是問題——<em>你是被雇用的研究員，有薪水、有勞退</em>，四年下來還存了 '+Math.abs(cost)+' 萬。'
+            + '真正貴的是別的東西：這四年台灣的法規改了三輪、你同期的人升了兩階，'
+            + '而你的履歷上有一段空白，要用一整篇論文去解釋。'
+          : cost === 0
+            ? '獎助剛好打平了學費與生活費，帳面上沒有虧錢。<em>虧的是四年的台灣年資</em>——'
+              + '這段時間法規改了三輪，你同期的人升了兩階。'
+            : '而且完全沒有資助：四年學費加生活費 <strong>'+cost+' 萬</strong>，'
+              + (sch ? '雖然中途申請到 '+sch+' 萬的獎助，' : '')
+              + '你把存款掏空了，還欠了一些。<em>更貴的是那四年——台灣的法規改了三輪，你同期的人升了兩階。</em>')
+      + '<br><br>你回台灣的時候 '+S.age+' 歲。<em>你比同期的人晚了很久，但你會的東西他們一輩子不會有。</em>';
+  } else {
+    if(!S.traits.includes('海外碩士')) S.traits.push('海外碩士');
+    if(!S.traits.includes('國際線')) S.traits.push('國際線');
+    S.ledger.push({y:S.year, t:(S.studyCount>=2?'第二個碩士學位（':'海外碩士（')+f.dest+'・'+f.n+'）', p:'', mark:1});
+    txt = '你飛到<strong>'+f.dest+'</strong>念了<strong>'+f.n+'</strong>。<br><br>'+f.m
+      + '<br><br>兩年，學雜加生活費 '+cost+' 萬'+(sch?'（已扣掉 '+sch+' 萬獎學金）':'')+'。'
+      + (S.cash<0 ? '<em>存款見底，還借了一些。</em>' : '')
+      + (S.studyCount>=2
+          ? '<br><br><em>第二次出去，你比較知道自己要什麼了——但也比較知道回來要面對什麼。</em>'
+          : '<br><br><em>但台灣這兩年的法規和人脈都往前跑了，回來你得重新排隊。</em>');
+  }
+  /* 回台再就業的摩擦：三十幾歲、履歷上有兩年空白，投一百封才有回音是常態 */
+  if(S.age>=32){
+    S.burn = Math.min(100, S.burn + 8);
+    txt += '<br><br><em>回來找工作比你想的難。</em>三十幾歲、履歷上有一段空白，'
+        + '投出去的信十封有九封沒有回音——這一段沒有人在留學代辦的簡報裡講過。';
+  }
+  if(S.age>=40) return showOutcome(txt, d, function(){ ending() });
+  return showOutcome(txt, d, function(){ rehire() });
+}
 function screenGradField(kind){
   const ovs = kind==='ovs';
   const list = ovs ? GRAD_OVERSEAS : GRAD_FIELDS;
@@ -8420,6 +8620,7 @@ function yearStart(){
   if(S.age>=40) return ending();
   if(rollLifeShock()) return;          // 人生突然轉彎（35+ 機率升高）
   S.cardsLeft = 2;   // 一年兩張，避免單局太冗長
+  S.askedFocusThisYear = 0; S.focusOverride = '';   // 調職是一年一次的事，過了就歸零
   S.yearUsed = {};          // 同一年不重複抽同一張卡
   if(rollWindfall()) return;           // 中獎（極罕見）
   // 公司命運事件
@@ -8517,6 +8718,7 @@ function header(){
     <div class="h"><span class="hk">D 揭露</span><span class="hv">${S.D}</span></div>
     <div class="h acc"><span class="hk">綜合戰力</span><span class="hv">${cw()}</span></div>
     <div class="h"><span class="hk">關係力</span><span class="hv">${S.rel}</span></div>
+    ${S.level>=2||S.lead?`<div class="h"><span class="hk">管理力</span><span class="hv">${S.lead||0}</span></div>`:''}
     <div class="h"><span class="hk">運氣</span><span class="hv">${S.luck}</span></div>
     <div class="h"><span class="hk">產業專業</span><span class="hv">${S.dom}</span></div>
     <div class="h ${S.burn>=70?'warn':''}"><span class="hk">體力</span><span class="hv">${Math.max(0,100-S.burn)}</span></div>
@@ -8689,17 +8891,23 @@ function pickVariant(id,i){
   return list[0];
 }
 /* 性格對能力配置與卡片結果的連動（item 3, 7）：每一軸都在某處發酵 */
+/* 性格影響要「看得見」（使用者需求）：不只偷偷改數字，還要在結果裡說出來是哪一個軸在起作用。
+   回傳一句話，由 cardPick 併進當次事件的敘述。 */
 function mbtiTilt(e, isPlan){
-  if(mbtiHas('E') && e.rel>0) e.rel += 1;                     // E：社交收穫多
-  if(mbtiHas('I') && e.rel>0 && (e.burn||0)>0) e.burn += 2;   // I：社交耗電
-  if(mbtiHas('I') && (e.sp||0)>0) e.sp += 1;                  // I：獨處深耕
-  if(mbtiHas('S') && (e.E||e.D)){ if(e.E) e.E+=1; else if(e.D) e.D+=1; }  // S：吃數據，盤查揭露上手
-  if(mbtiHas('N') && e.G) e.G += 1;                           // N：看策略，治理有感
-  if(mbtiHas('T') && e.G) e.G += 1;                           // T：邏輯，方法學與治理
-  if(mbtiHas('F') && e.S) e.S += 1;                           // F：重人，社會面天生在行
-  if(isPlan && mbtiHas('J')){ e.sp=(e.sp||0)+1; if(e.G) e.G += 1; }   // J：善規劃
-  if(isPlan && mbtiHas('P') && (e.burn||0)>0) e.burn += 2;    // P：被時程追著跑
-  return e;
+  const why = [];
+  if(mbtiHas('E') && e.rel>0){ e.rel += 1; why.push('你是 <strong>E</strong>：同一場合，你比別人多認識幾個人。') }
+  if(mbtiHas('I') && e.rel>0 && (e.burn||0)>0){ e.burn += 2; why.push('你是 <strong>I</strong>：這種需要一直應對人的場合，散場後你要花更久才充得回來。') }
+  if(mbtiHas('I') && (e.sp||0)>0){ e.sp += 1; why.push('你是 <strong>I</strong>：一個人埋進去的時候，你走得比別人深。') }
+  if(mbtiHas('S') && (e.E||e.D)){
+    if(e.E){ e.E+=1 } else if(e.D){ e.D+=1 }
+    why.push('你是 <strong>S</strong>：面對數據與細節，你上手得比別人快。');
+  }
+  if(mbtiHas('N') && e.G){ e.G += 1; why.push('你是 <strong>N</strong>：你看得到這件事往後三年會長成什麼樣子。') }
+  if(mbtiHas('T') && e.G){ e.G += 1; why.push('你是 <strong>T</strong>：方法學與制度的邏輯，你拆得比別人清楚。') }
+  if(mbtiHas('F') && e.S){ e.S += 1; why.push('你是 <strong>F</strong>：牽涉到人的事，你天生知道該怎麼接。') }
+  if(isPlan && mbtiHas('J')){ e.sp=(e.sp||0)+1; if(e.G) e.G += 1; why.push('你是 <strong>J</strong>：這種要排時程、盯進度的事，正好是你的主場。') }
+  if(isPlan && mbtiHas('P') && (e.burn||0)>0){ e.burn += 2; why.push('你是 <strong>P</strong>：計畫趕不上變化的時候你很靈活，但被死線追著跑特別累。') }
+  return why.length ? why[0] : '';
 }
 function cardPick(id,i){
   const c=CARDS.find(x=>x.id===id), o=c.o[i], out={};
@@ -8724,7 +8932,7 @@ function cardPick(id,i){
         + '同事要從頭讀方法學的東西，對你來說只是換一套名詞。';
   }
   /* MBTI 連動（item 3, 7）：性格讓同一張卡對不同人產生不同結果 */
-  mbtiTilt(e, c.plan);
+  const mbtiNote = mbtiTilt(e, c.plan);
   if(mbtiHas('S') && (e.E||0)>0 && c.pool==='p') e.E += 1;       // S：數據實作上手快
   if(mbtiHas('F') && (e.S||0)>0) e.S += 1;                       // F：人的議題天生在行
   if(mbtiHas('T') && (e.co2||0)>0) e.co2 += 0;                   // （保留鉤子）
@@ -8738,9 +8946,20 @@ function cardPick(id,i){
   if(vtrait && !S.traits.includes(vtrait)) S.traits.push(vtrait);
   if(o.cert && !S.certs.includes(o.cert)){ S.certs.push(o.cert); const cf=CERTS.find(x=>x.id===o.cert); if(cf){S[cf.stat]+=cf.gain} }
   if(S.joinFlag){ S.joinFlag=0; S.inESG=true; S.esgYrs=0; d.push(['轉入永續','✓']) }
-  S.evOut={t:(v && v.r) || o.r, d:d, extra:[out.extra, boonNote].filter(Boolean).join('<br><br>')};
-  if(S.cardsLeft>0 && !S.quitFlag) return drawCard();
-  midYear();
+  S.evOut={t:(v && v.r) || o.r, d:d, extra:[out.extra, boonNote, mbtiNote].filter(Boolean).join('<br><br>')};
+  return showCardOutcome();
+}
+/* 每一張卡都要看得到結果，才進下一頁（使用者需求）。
+   原本結果是壓在下一張卡的上方，遇到轉場（非永續職、離職、年底結算）就會整段被跳過看不到。 */
+function showCardOutcome(){
+  const e = S.evOut; S.evOut = null;
+  const go = function(){ if(S.cardsLeft>0 && !S.quitFlag) return drawCard(); midYear() };
+  if(!e) return go();
+  /* 有些卡的敘述是效果自己生出來的（轉職、參政、駐站、育嬰留停…），o.r 是空的。
+     這種卡原本會整段被跳過——結果就是玩家做了選擇卻看不到發生什麼事。 */
+  const body = e.t || e.extra;
+  if(!body) return go();
+  showOutcome(body, e.d, go, e.t ? e.extra : '');
 }
 function fortuneCard(f){
   const boom = f.t==='boom';
@@ -9073,8 +9292,10 @@ function ratingUpdate(y){ return RATING_UPDATES[y] || null }
 const PROJ = [
  {k:'E',g:'專業',l:'碳盤查與減量專案',h:'技術含量高，AI 最難取代',e:{E:7,co2:1}},
  {k:'D',g:'專業',l:'報告書與資訊揭露',h:'最主流的工作，也最容易被追上',e:{D:8}},
- {k:'S',g:'專業',l:'供應鏈與社會面',h:'累人，但走向永續長一定要有',e:{S:7,burn:4,soc:1}},
+ {k:'S',g:'專業',l:'供應鏈與社會面',h:'累人，但走向永續長一定要有。範疇三收斂本身就是減量',e:{S:7,burn:4,soc:1,co2:1}},
  {k:'G',g:'專業',l:'治理、法遵與評比',h:'能讓你和董事會講上話',e:{G:7}},
+ {k:'L1',g:'帶人',l:'把時間拿去帶人',h:'管理力大增，但這一年你的專業會停在原地',e:{lead:8,rel:2,burn:5}},
+ {k:'L2',g:'帶人',l:'兩邊都顧：白天帶人，晚上自己補',h:'管理力和專業都長，代價是體力',e:{lead:5,burn:16}},
  {k:'R1',g:'經營自己',l:'到處認識永續圈的人',h:'關係力大增，但實作時間被吃掉',e:{rel:4,sp:-1,burn:3}},
  {k:'R2',g:'經營自己',l:'寫永續專欄',h:'邊寫邊逼自己讀，能見度也上來',e:{rel:2,D:3,sp:-1,burn:4,adv:1}},
  {k:'R3',g:'經營自己',l:'經營自己的社群帳號',h:'一旦開始就回不去了：曝光最快，也會解鎖只有創作者才遇得到的事',e:{rel:5,sp:-2,burn:5,adv:2}}
@@ -9105,6 +9326,37 @@ function skillOutcome(p){
   if(r > 0.90) return {q:1.6, note:'而且你這次是真的打通了——從資料源頭到對外說明，整條你都講得清楚。'};
   return {q:1, note:''};
 }
+/* ===== 你能碰到什麼，不是你決定的（使用者需求 6、7）=====
+   四大分到哪一組、企業給你的職缺是專職還是全包，決定了你每年能把時間放在哪。
+   社會創新組的人就是一直在做社會面——這正是分組真正的重量。
+   S.focusOverride 是「申請調整職務」成功後暫時拿到的方向。 */
+const B4_FOCUS = { fin:['G','D'], nonfin:['D','G'], carbon:['E','D'], supply:['S','E'], social:['S','G'] };
+function allowedFocus(){
+  const all = ['E','D','S','G'];
+  if(!S.inESG || isFreelance() || !S.emp) return all;
+  if(S.emp.id==='place' || S.emp.id==='polit' || S.emp.id==='ngo_edu') return all;
+  let ks = null;
+  if(S.emp.big4 && S.big4Grp && B4_FOCUS[S.big4Grp]) ks = B4_FOCUS[S.big4Grp].slice();
+  else {
+    const rf = roleFocus(S.emp);
+    if(rf && rf.k!=='all' && rf.stat) ks = [rf.stat, 'D'];      // 專職職缺：你的那一塊，加上人人都要碰的揭露
+  }
+  if(!ks) return all;                                            // 全包職缺：什麼都要做
+  /* 當上主管就沒有「這不是我的守備範圍」這種事了——底下每一塊你都要簽字（使用者需求） */
+  if(S.level>=2) return all;
+  if(S.focusOverride && ks.indexOf(S.focusOverride)<0) ks.push(S.focusOverride);
+  return all.filter(function(k){ return ks.indexOf(k)>=0 });
+}
+function focusLockNote(){
+  const ks = allowedFocus();
+  if(ks.length>=4) return '';
+  if(S.emp && S.emp.big4 && S.big4Grp)
+    return '<p class="note">你在<strong>'+(S.big4GrpName||'這一組')+'</strong>。所裡的案子是照組別分的——'
+      + '<em>你能練到什麼，很大一部分是分組那天就決定了。</em>（升上經理之後，每一塊你都要負責。）</p>';
+  const rf = S.emp ? roleFocus(S.emp) : null;
+  return '<p class="note">你的職缺是<strong>'+((rf&&rf.n)||'專職')+'</strong>。'
+    + '<em>公司只要你做這一塊</em>——其他的有別人管，輪不到你碰。</p>';
+}
 function midYear(){
   if(!S.inESG){ S.dom+=3; S.sp+=1; return yearEnd(); }
   const pb=pendingBlock();
@@ -9113,12 +9365,52 @@ function midYear(){
     <h2 class="card-title">你的時間要放在哪裡？</h2>
     <p class="note">這決定你的能力往哪長。走得太偏，後面會有代價。</p>
     <div class="grouplab">專業</div>
-    <div class="opts">${PROJ.filter(p=>p.g==='專業').map(p=>`<button class="opt" onclick="projPick(${PROJ.indexOf(p)})"><span class="lab">${p.l}</span><span class="hint">${p.h}</span></button>`).join('')}</div>
+    ${focusLockNote()}
+    <div class="opts">${PROJ.filter(p=>p.g==='專業'&&allowedFocus().indexOf(p.k)>=0).map(p=>`<button class="opt" onclick="projPick(${PROJ.indexOf(p)})"><span class="lab">${p.l}</span><span class="hint">${p.h}</span></button>`).join('')}
+    ${allowedFocus().length<4 && !S.askedFocusThisYear ? `<button class="opt" onclick="askFocus()"><span class="lab">跟主管申請：我想碰別的東西</span><span class="hint">一年一次。不一定會成功，而且問了主管就會記得</span></button>` : ''}</div>
+    ${S.level>=2 && S.inESG && !isFreelance() ? `<div class="grouplab">帶人</div>
+    <p class="note">你現在有下屬了。<em>帶人是一門要另外練的功夫</em>——而你一年就這麼多時間：
+    練管理，專業就會停下來甚至退步；兩邊都要，撐的是你的身體。</p>
+    <div class="opts">${PROJ.filter(p=>p.g==='帶人').map(p=>`<button class="opt" onclick="projPick(${PROJ.indexOf(p)})"><span class="lab">${p.l}</span><span class="hint">${p.h}</span></button>`).join('')}</div>` : ''}
     ${S.selfBrand
       ? `<div class="grouplab">經營自己</div><p class="note">你的帳號已經在跑了——更新、回訊息、接邀約已經是日常的一部分，不必再特別把一整年壓在上面。<em>它會自己長，也會自己找麻煩上門。</em></p>`
       : `<div class="grouplab">經營自己</div>
     <div class="opts">${PROJ.filter(p=>p.g==='經營自己').map(p=>`<button class="opt" onclick="projPick(${PROJ.indexOf(p)})"><span class="lab">${p.l}</span><span class="hint">${p.h}</span></button>`).join('')}</div>`}
   </div>`);
+}
+/* 申請調職：一年一次，不一定成功。談成了也只是「今年多碰一塊」，不是換工作。 */
+function askFocus(){
+  S.askedFocusThisYear = 1;
+  const cur = allowedFocus();
+  const want = ['E','D','S','G'].filter(function(k){ return cur.indexOf(k)<0 });
+  const pickK = want[Math.floor(rnd()*want.length)];
+  const NAME = {E:'碳盤查與減量',D:'報告書與揭露',S:'供應鏈與社會面',G:'治理、法遵與評比'};
+  let pr = 0.30 + S.rel*0.018 + Math.min(.12, S.esgYrs*0.012) + (S.level>=2?0.08:0);
+  if(S.emp && S.emp.big4) pr -= 0.06;                  // 事務所照組別接案，調度沒那麼自由
+  if(S.emp && S.emp.teamSwitch) pr += 0.12;            // 轉組文化開放的所
+  if((S.grades||[]).slice(-1)[0]==='A') pr += 0.10;    // 去年考績好，講話有份量
+  if(S.gradeC>=1) pr -= 0.12;
+  if(rnd() < pr){
+    S.focusOverride = pickK;
+    if(!S.traits.includes('自己要來的機會')) S.traits.push('自己要來的機會');
+    return showOutcome(
+      '你去敲了主管的門，說你想碰<strong>'+NAME[pickK]+'</strong>。<br><br>'
+      + '主管想了一下，說：「今年剛好有一個案子缺人，你要不要先跟著做？<em>但你原本的東西還是你的。</em>」<br><br>'
+      + '你答應了——這代表接下來一年你要做兩份工作的量。但這是你自己要來的。',
+      [['今年可做', NAME[pickK]]], function(){ midYear() });
+  }
+  S.burn = Math.min(100, S.burn + 4);
+  const excuse = [
+    '「那一塊有人在做了。」',
+    '「你先把手上的做好，明年再說。」',
+    '「客戶指名要你，你走不開。」',
+    '「你在這塊做得很好啊，為什麼要換？」'
+  ][Math.floor(rnd()*4)];
+  return showOutcome(
+    '你去敲了主管的門，說你想碰<strong>'+NAME[pickK]+'</strong>。<br><br>'
+    + '主管沒有拒絕得很難看，只是說了一句：'+excuse+'<br><br>'
+    + '<em>這一行很多人卡住不是因為不夠努力，是因為他們被放在一個只長一塊肌肉的位子上。</em>',
+    [['壓力','+4']], function(){ midYear() });
 }
 function projPick(i){
   const p=PROJ[i];
@@ -9181,6 +9473,22 @@ function applyProject(p, e, resultNote, trait){
       learned = learnSkill(use[Math.floor(rnd()*use.length)]);
     }
   }
+  /* 主管的時間是零和的（使用者需求）：把整年拿去帶人，專業就會停在原地甚至倒退。 */
+  if(p.g==='帶人'){
+    const arr=[['E',S.E],['S',S.S],['G',S.G],['D',S.D]].sort(function(a,b){return b[1]-a[1]});
+    const k=arr[0][0], drop = (p.k==='L1') ? 3 : 1;
+    if(S[k] > drop){
+      S[k] -= drop;
+      const kn=({E:'環境力',S:'社會力',G:'治理力',D:'揭露力'})[k];
+      e._leadNote = (p.k==='L1')
+        ? '這一年你幾乎沒有自己動手做。開會、面談、打考績、幫下屬擋事——'
+          + '<em>等你回頭想翻一下今年的新版準則，已經是十二月了</em>。'+kn+' <strong>-'+drop+'</strong>。'
+        : '你白天帶人、晚上補自己的東西。兩邊都沒有落掉太多，'
+          + '但'+kn+'還是掉了 <strong>'+drop+'</strong>——<em>而你的睡眠掉得更多</em>。';
+      e._leadDelta = [kn, -drop];
+    }
+    S.learnedThisYear = 1;   // 帶人也是在學東西，不算「停在舊版」
+  }
   const so = skillOutcome(p);
   if(so.q!==1){ ['E','S','G','D'].forEach(function(k){ if(e[k]) e[k]=Math.max(1,Math.round(e[k]*so.q)) }); }
   /* 邊際遞減：同一項能力越高，再往上長越慢（你已經是專家，多做一年學不到多少新的）*/
@@ -9223,6 +9531,7 @@ function applyProject(p, e, resultNote, trait){
     : '';
   S.projNote = (resultNote ? resultNote+' ' : `這一年你壓在<strong>${p.l}</strong>上。`) + learnNote
     + (so.note ? so.note : '')
+    + (e._leadNote ? '<br><br>'+e._leadNote : '')
     + (S.rel>=12 ? '不過你有一半時間在外面跑，實作的時間被吃掉了。' : '');
   yearEnd();
 }
@@ -9234,11 +9543,27 @@ function yearEnd(){
   /* 國際資歷：待在外商／國際組織或在海外工作的年數 */
   if((S.emp && S.emp.intl) || S.abroad) S.intlYrs = (S.intlYrs||0) + 1;
   if(S.bond>0) S.bond--;
-  if(S.cash<0){                                   // 負債：有利息、有壓力，但不會無限滾大
-    S.cash = Math.max(-180, Math.round(S.cash*1.02));
-    S.burn = Math.min(100, S.burn + (S.cash<-80?5:3));
+  if(S.cash<0){
+    /* 負債：留學貸款真的可以借到很大一筆（美國兩年制動輒三、四百萬），
+       所以上限要放到 -500 萬，而不是原本的 -180 萬——不然學費再貴也沒有痛感。
+       利息與壓力隨欠款規模上升；欠很多的人，日子是真的難過。 */
+    /* 教育部留學就學貸款：碩士上限 120 萬、博士 240 萬，利率約 2.8-3.1%，
+       碩士還款期 12 年（含 3 年寬限）。借不到更多的部分只能靠自己或家裡——
+       所以負債地板抓在 -300 萬，而不是無上限。 */
+    S.cash = Math.max(-300, Math.round(S.cash*1.03));
+    S.burn = Math.min(100, S.burn + (S.cash<-150?8:S.cash<-80?5:3));
+    if(S.cash<-120 && !S.traits.includes('背著留學貸款')) S.traits.push('背著留學貸款');
   }
-  if(S.inESG && S.level>=2 && !isFreelance()) S.G += 2;   // 帶人、跑法遵、進董事會報告，治理力自然累積
+  if(S.inESG && S.level>=2 && !isFreelance()){
+    S.G += 2;                                  // 帶人、跑法遵、進董事會報告，治理力自然累積
+    S.lead = (S.lead||0) + 2;                  // 光是坐在那個位子上，多少也會學到一點怎麼帶人
+  }
+  if(isFreelance()){
+    /* 職業工會投保：勞健保自付六成，每月約 3,000-4,700 元（依級距），一年 4-6 萬 */
+    const prem = 4 + Math.min(2, Math.floor(S.pay/120));
+    S.cash = Math.round(S.cash - prem);
+    if(!S.retireSelf) S.retireGap = (S.retireGap||0) + 1;   // 沒自提就是零成長的退休準備
+  }
   if(isFreelance()){                                      // 接案收入靠案源，人脈決定波動下緣
     const swing = 0.88 + rnd()*0.38 + Math.min(.18, S.rel*.012);
     S.pay = Math.round(S.pay * Math.min(1.35, Math.max(0.78, swing)));
@@ -9287,6 +9612,22 @@ function yearEnd(){
       S.gradeC = 0;
       events.push('年度考績 <strong>B</strong>。不好不壞，跟大多數人一樣。');
     }
+  }
+  /* ===== 主管不帶人的代價（使用者需求）=====
+     專業做得再好，底下的人不會自己長出來。管理力跟不上職級，團隊就會開始壞掉。 */
+  if(S.inESG && !isFreelance() && S.level>=2){
+    const need = (S.level-1)*10;
+    if((S.lead||0) < need){
+      S.leadIdle = (S.leadIdle||0) + 1;
+      if(S.leadIdle===2 || S.leadIdle===4){
+        S.burn = Math.min(100, S.burn + 8);
+        events.push(S.leadIdle>=4
+          ? '又一個人遞辭呈。你這才發現，<em>你這幾年一直在做事，沒有在帶人</em>——底下的人學不到東西，只好自己去別的地方學。'
+          : '團隊裡有人離職了。離職面談的紀錄上寫著一句很客氣的話：「希望有更多學習與指導。」');
+        if(S.leadIdle>=4 && !S.traits.includes('沒帶起人')) S.traits.push('沒帶起人');
+        if(S.leadIdle>=4) S.riskAcc += 0.10;
+      }
+    } else { S.leadIdle = 0 }
   }
   /* ===== 長期高工時 → 早衰（使用者需求）===== */
   if(S.burn>=72){ S.highBurnYrs = (S.highBurnYrs||0) + 1; }
@@ -9494,7 +9835,10 @@ function renderYearEnd(events, offers, certOffer){
     if(!S.abroad && S.inESG && !isFreelance() && S.en>=8 && S.esgYrs>=4 && S.dom>=8 && rnd()<0.22)
       opts.push({k:'goabroad',l:'一個海外的職缺找上你',h:'薪水翻倍、簽證未知。你在台灣'+S.domName+'累積的經驗，是他們要的'});
     opts.push({k:'quitblind',l:'裸辭',h:'壓力歸零，存款和起薪都要付代價'});
-    if(S.age<=34 && S.workYrs>=2 && !S.studied) opts.push({k:'study',l:'辭職出國念研究所',h:'兩年，學費不便宜；可申請獎學金。用在地年資換英文與視野'});
+    if(S.age<=36 && S.workYrs>=2 && (S.studyCount||0)<2)
+      opts.push({k:'study',
+        l:(S.studyCount?'再出國念一次書':'辭職出國念研究所'),
+        h:(canPhD()?'可以選碩士，也可以選博士。學費不便宜，可申請獎學金':'挑一個領域念，學費不便宜；可申請獎學金。用在地年資換英文與視野')});
     if(S.burn>=25) opts.push({k:'rest',l:(S.burn>=70?'⚠ 該停了：請長假把自己修好':'請長假，把自己修好'),h:'體力大幅回復，年度考評會難看一點——但你不會垮'});
     opts.push({k:'stay',l:'再做一年',h:''});
   }
@@ -9622,29 +9966,8 @@ function yePick(k){
   }
   if(k==='findnow'){ S.quitFlag=0; S.emp=null; S.year++; S.age++; if(S.age>=40) return ending(); return rehire() }
   if(k==='study'){
-    S.quitFlag=0; S.studied=1; S.emp=null; S.jobless=0;
-    let cost = 80 + ri(0,25);
-    if(S.cash < cost){ cost = Math.round(cost*0.72); }   // 半工半讀、申請補助，代價是更累
-    /* 獎學金（item 5）：學海飛颺等官方獎助——名目上最高 30 萬，多數人實拿 8–13 萬 */
-    let sch = 0;
-    if(rnd() < 0.32 + (S.en>=6?0.10:0) + S.luck*0.008){
-      sch = rnd()<0.12 ? 30 : 8+ri(0,5);
-      S.scholarship = sch; cost = Math.max(20, cost - sch);
-      if(!S.traits.includes('拿過獎學金')) S.traits.push('拿過獎學金');
-    }
-    S.cash = Math.round(S.cash - cost); S.en += 5; S.E+=4; S.S+=4; S.G+=4; S.D+=4; relAdd(2);
-    S.burn = Math.max(0, S.burn-35) + (S.cash<0?12:0);
-    S.year += 2; S.age += 2; S.workYrs += 2;
-    if(!S.traits.includes('海外碩士')) S.traits.push('海外碩士');
-    S.ledger.push({y:S.year,t:'辭職出國念書，兩年後回來'+(sch?'（獲獎學金 '+sch+' 萬）':''),p:'',mark:1});
-    const schTxt = sch ? (sch>=30
-      ? `<br><br>你申請到了整包的官方獎學金——<strong>${sch} 萬</strong>，等於少扛半年的生活費。寫申請書那幾個晚上，值了。`
-      : `<br><br>你申請到了 <strong>${sch} 萬</strong>的獎學金。不夠付學費，但夠付幾個月的房租——出國這種事，每一筆都算。`) : '';
-    const txt = (S.cash<0
-      ? `你把工作辭了，飛出去念書。<br><br>學費加生活費 ${cost} 萬，存款見底還借了一些。兩年後你帶著一張文憑、變好的英文，和<em>零在地年資</em>回到台灣。`
-      : `你把工作辭了，飛出去念書。<br><br>兩年，花了 ${cost} 萬。回來時你的英文變好了、看事情的角度變寬了，但台灣的法規和人脈都往前跑了兩年。`) + schTxt;
-    if(S.age>=40) return ending();
-    return showOutcome(txt, sch?[['英文',5],['獎學金','+'+sch+' 萬'],['存款',-cost],['壓力',-35]]:[['英文',5],['存款',-cost],['壓力',-35]], ()=>rehire());
+    S.quitFlag=0; S.emp=null; S.jobless=0;
+    return screenStudyAbroad();
   }
   if(k==='hunt' || k==='poach'){
     S._offers = genOffers(k); S._otype = k;
@@ -9960,6 +10283,10 @@ function ending(){
   else if(S.stampPath==='stall') t.push('集點集滿那年你選擇先不動。安穩了幾年，也錯過了幾扇只開一次的門。');
   if((S.adv||0)>=12) t.push('你的號召力是真的：因為你，有一群人走進了這個行業。這件事不會出現在任何報表上，但它可能是你做過最永續的事。');
   else if((S.soc||0)>=12) t.push('你在「人」的那一側留下了痕跡——供應商的工人、部落的窗口、團隊裡被你撐住的人。');
+  if((S.retireGap||0)>=6 && !S.retireSelf) t.push('接案的這些年，沒有人幫你提撥退休金——<em>而你也一直沒有自己提</em>。四十歲這年你翻了一次勞退帳戶，數字停在你離職那天。');
+  else if(S.retireSelf) t.push('你自己每個月提撥退休金。沒有人要求你這麼做，也沒有人會知道——<em>但這是接案的人唯一能給自己的那份保障。</em>');
+  if((S.lead||0)>=45) t.push('你帶起了一批人。<em>你自己的專業有幾年是停著的</em>——但現在有五、六個人會做你當年會做的事，而且做得比你當年好。');
+  else if(S.level>=3 && (S.lead||0)<20) t.push('你一路做到很高的位子，靠的一直是自己動手。<em>底下的人來了又走</em>，而你始終沒有學會怎麼把會的東西交出去。');
   if(S.collapses>=1) t.push('你垮過'+(S.collapses>1?(S.collapses+' 次'):'一次')+'。身體逼你停下來的那些日子提醒你：<em>做永續，自己的人生也要永續</em>，不然撐不到看見成果的那天。');
   if(S.polit) t.push(S.polit==='立委'?'你最後走進了國會。從寫建議書的人變成審預算的人——那些年你在報告書裡吵不贏的事，現在有機會寫進條文裡。':S.polit==='政務官'?'你被延攬進了內閣。專業進了體制，體制也磨了你的專業——這筆帳，要很多年後才算得清。':'你在地方議會有了一個位子。永續在中央是簡報，在地方是排水溝、行道樹和垃圾場——你選了離人最近的那一種。');
   if(S.traits.includes('回鄉駐站')||S.traits.includes('從地方回來')) t.push('你把幾年的人生放進了一個小地方。KPI 記不下來的那些改變，鎮上的人都記得。');
@@ -9981,6 +10308,7 @@ function ending(){
       <div><div class="k">永續年資</div><div class="v mono">${yrs} 年</div></div>
       <div><div class="k">綜合戰力</div><div class="v mono">${cw()}</div></div>
       <div><div class="k">實質減碳</div><div class="v mono">${S.co2}</div></div>
+      ${(S.lead||0)?`<div><div class="k">管理力</div><div class="v mono">${S.lead}</div></div>`:''}
       <div><div class="k">社會影響力</div><div class="v mono">${S.soc||0}</div></div>
       <div><div class="k">永續影響力</div><div class="v mono">${S.adv||0}</div></div>
       <div><div class="k">存款</div><div class="v mono">${S.cash} 萬</div></div>
