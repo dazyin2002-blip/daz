@@ -238,6 +238,12 @@ textarea.fbfield{min-height:80px; resize:vertical; line-height:1.6}
 .glossdef{font-size:14px;line-height:1.7;color:var(--ink-2)}
 .glossdef em{color:var(--ink)}
 @media (max-width:640px){.glossrow{grid-template-columns:1fr;gap:3px}}
+.foldbox{margin:6px 0 0}
+.foldbox summary{cursor:pointer;font-size:11px;letter-spacing:.08em;color:var(--ink-3);list-style:none;padding:3px 0}
+.foldbox summary::-webkit-details-marker{display:none}
+.foldbox summary::before{content:'＋ ';color:var(--accent)}
+.foldbox[open] summary::before{content:'－ '}
+.foldbox>div{margin-top:4px}
 .ctxbox{margin-top:14px;border-top:1px dashed var(--line-2);padding-top:10px}
 .ctxbox summary{cursor:pointer;font-size:12px;letter-spacing:.06em;color:var(--ink-3);list-style:none}
 .ctxbox summary::-webkit-details-marker{display:none}
@@ -305,10 +311,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v31';
+const GAME_VERSION = 'v32';
 /* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
    GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
-const BUILD_ID = '20260826-2233+4cb186e';
+const BUILD_ID = '20260826-2321+96dd1ec';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -679,7 +685,7 @@ const CARDS = [
 {id:'h25',pool:'h',yr:[2025,2026],w:12,t:'反 ESG 逆風',
  x:'全球反 ESG 聲浪升溫。公司通知：<em>永續預算砍三成</em>，你手上的專案暫停。',
  o:[{l:'撐著，等風向轉回來',e:{burn:14,G:4},r:'你把專案縮小規模繼續做。有些事不能停。',trait:'耐寒品種'},
-    {l:'轉去有預算的部門',e:{rel:3,pay:.03,dom:-3},r:'你轉到了法遵。永續變成履歷上的一段經歷。'},
+    {l:'轉去有預算的部門',e:{rel:3,pay:.03,offEsg:'法遵'},r:'你轉到了法遵。永續變成履歷上的一段經歷。'},
     {l:'開始找工作',e:{burn:5,leave:1},r:'你更新了履歷。獵頭的電話比想像中快——你打定主意，明年就走。'}]},
 {id:'h26',pool:'h',yr:[2026,2027],w:11,t:'IFRS S1／S2 上路',
  x:'永續資訊要和財報同時公告了。會計部門第一次正眼看你，也第一次<em>質疑你的數字</em>。',
@@ -746,7 +752,7 @@ const CARDS = [
 {id:'p_burn',pool:'p',w:16,t:'身體先舉白旗',
  cond:s=>s.burn>=70,
  x:'健檢報告紅字，醫生問你最近壓力是不是很大。你想起<em>已經三個月沒有好好吃過晚餐</em>。',
- o:[{l:'請長假休息',e:{burn:-40,pay:-.02,sp:-1},r:'你休了一個月。回來發現世界沒有你也轉得很好——有點傷人，也有點解脫。'},
+ o:[{l:'請長假休息',e:{burn:-40,pay:-.02,sp:-1,longLeave:9},r:'你休了一個月。回來發現世界沒有你也轉得很好——有點傷人，也有點解脫。'},
     {l:'裸辭',e:{burn:-52,cash:-25,quit:1},r:'你遞了辭呈，沒有下一份工作。這是你這輩子最勇敢也最害怕的決定。'},
     {l:'撐到年終再說',e:{burn:8,cash:15,health:1},r:'你領到了年終。也領到了一張慢性病診斷。'}]},
 {id:'p_boss',pool:'p',w:9,rep:1,t:'換主管了',
@@ -814,7 +820,7 @@ CARDS.push(
 {id:'h16',pool:'h',yr:[2016,2017],w:9,t:'太陽能業一家一家倒',
  x:'整條產業鏈流血競爭，同業合併的合併、下市的下市。<em>做對的事的公司，也會倒</em>。',
  o:[{l:'還是相信這個產業',e:{E:4,co2:1},r:'你留在綠能圈。薪水沒漲，但你看著它十年後又活過來。'},
-    {l:'轉去比較穩的地方',e:{rel:2,dom:-2},r:'你去了製造業。安全，也少了點什麼。'}]},
+    {l:'轉去比較穩的地方',e:{rel:2,goSector:'elec'},r:'你去了製造業。安全，也少了點什麼。'}]},
 {id:'h17',pool:'h',yr:[2017,2018],w:10,t:'TCFD 發布',
  x:'治理、策略、風險管理、指標與目標。<em>氣候從此不是 CSR 議題，是財務議題</em>。',
  o:[{l:'搶先鑽研氣候財務',e:{E:5,G:5,sp:1},r:'那時全台懂的人不到一百個。五年後這變成基本要求，而你早就會了。',trait:'早鳥'},
@@ -2279,7 +2285,7 @@ CARDS.push(
  x:'獵頭找你去一間公司做永續。<em>那間公司的產品，本身就背負著社會爭議</em>。<br><br>'
   +'薪水比你現在高四成，資源充足，而且他們是真的在找一個懂的人。<br><br>'
   +'你在回信之前坐了很久。',
- o:[{l:'去。爭議越大的地方，改變的空間越大',e:{pay:0.22,G:6,S:5,burn:14,soc:2,GP:2},
+ o:[{l:'去。爭議越大的地方，改變的空間越大',e:{goSector:{ind:'chem',raise:1.40},G:6,S:5,burn:14,soc:2,GP:2},
      r:'你去了。<br><br>你發現一件事：<em>越有爭議的產業，永續部門的權力越大</em>——'
       +'因為公司真的需要它。你在那裡推成的事，比你在一間乾淨的公司三年做的還多。<br><br>'
       +'只是每次朋友問你在哪高就，你會停頓半秒。',trait:'進了爭議產業'},
@@ -2294,7 +2300,7 @@ CARDS.push(
  x:'一個做倡議的組織來找你。他們要一個<em>懂企業怎麼想的人</em>——'
   +'因為他們談了三年，每一次都在同一個地方談不下去。<br><br>'
   +'薪水掉一半。但他們說的那個問題，你確實知道答案。',
- o:[{l:'過去，當那個翻譯的人',e:{S:8,soc:5,adv:4,pay:-0.42,rel:5,burn:12,GP:2},
+ o:[{l:'過去，當那個翻譯的人',e:{goEmp:'ngo',S:8,soc:5,adv:4,rel:5,burn:12,GP:2},
      r:'你花了兩年，把倡議的語言翻成企業聽得懂的話，也把企業的限制翻成倡議聽得懂的話。<br><br>'
       +'<em>雙方都覺得你不夠站在自己這邊。而那正是這個位子存在的意義。</em>',trait:'兩邊的翻譯'},
     {l:'不過去，但當他們的義務顧問',e:{S:5,soc:3,rel:4,adv:2,burn:10},
@@ -2921,7 +2927,7 @@ CARDS.push(
 {id:'pd_pivot',pool:'p',w:11,t:'如果沒有明天，我會想做什麼',
  cond:function(s){return !s.inESG&&s.workYrs>=4},
  x:'你在本業做得不差，但心裡有個問題揮之不去。有個前輩從科技業顧問轉去教育基金會當永續長，他說當初就是問自己：<em>「如果沒有明天，我會想做什麼工作？」</em>',
- o:[{l:'認真規劃轉進永續',e:{sp:2,rel:2,D:2},r:'你開始上課、找人聊、投履歷。轉過去要降薪，但你第一次覺得工作跟自己是同一個方向。'},
+ o:[{l:'認真規劃轉進永續',e:{sp:2,rel:2,D:2,hunt2esg:1},r:'你開始上課、找人聊、投履歷。轉過去要降薪，但你第一次覺得工作跟自己是同一個方向。'},
     {l:'先在本業裡找永續的切點',e:{dom:4,E:2,sp:1},r:'你不離職，先把本業和永續的交集做出來。這條路慢，但風險低。',trait:'從本業切進去'},
     {l:'想想就好，日子還是要過',e:{burn:3,dom:2},r:'你把念頭收起來。它不會消失，只是還沒到時候。'}]},
 {id:'pd_bcorp',pool:'p',w:10,t:'B 型企業的面試',
@@ -3067,7 +3073,7 @@ CARDS.push(
  x:'併購後的組織整併：兩家公司各有一個永續團隊，<em>合併後只需要一個主管</em>。<br><br>對方那位比你資深三年，但你比他懂這個集團的業務。',
  o:[{l:'爭取，把自己的價值講清楚',e:{G:5,rel:2,burn:12,relroll:1},r:'你準備了一份「我能為新集團做什麼」的簡報，直接找上決策者。'},
     {l:'提議兩人分工，不搶那個位子',e:{S:4,soc:2,G:3,rel:3},r:'你提了一個雙軌方案：他管制度與揭露，你管業務端整合。上面採納了——有時候不爭反而拿得多。',trait:'不爭而得'},
-    {l:'接受調任，去帶新併的廠區',e:{dom:6,E:4,burn:8},r:'你去了新廠區。離總部遠了，但你手上第一次有完整的一塊地盤。',trait:'外放歷練'}]}
+    {l:'接受調任，去帶新併的廠區',e:{dom:6,E:4,burn:8,lead:3},r:'你去了新廠區。離總部遠了，但你手上第一次有完整的一塊地盤。',trait:'外放歷練'}]}
 );
 
 
@@ -3270,7 +3276,7 @@ CARDS.push(
  x:'同期的人陸續離開了。留下來的位子越來越少，而你的名字沒有出現在今年的升遷名單上——<em>連續第二年</em>。<br><br>沒有人叫你走。這裡的做法是讓你自己覺得該走了。',
  o:[{l:'再撐一年，拚一次',e:{burn:20,G:3,relroll:1},r:'你把最後一年當作最後一年在拚。'},
     {l:'體面地談離開，帶著人脈走',e:{leave:1,rel:3,cash:6},r:'你好好地道別、好好地交接，也好好地把每一個客戶窗口的聯絡方式留下來。<em>四大真正給你的，是這些人。</em>',trait:'體面離開'},
-    {l:'轉去所裡別的組',e:{sp:2,rel:1,burn:8},r:'你換了一組重來。有時候問題不是你，是那個組的案源結構。'}]}
+    {l:'轉去所裡別的組',e:{sp:2,burn:8,grpswitch:1},r:'你換了一組重來。有時候問題不是你，是那個組的案源結構。'}]}
 );
 
 /* ===== 大學那年的彩蛋（使用者需求：大學選擇後面有回聲）===== */
@@ -4032,7 +4038,7 @@ function apply(e, out){
   if(e.rareboost){ S.rareSkills = (S.rareSkills||0) + 1 }   // 往深處鑽，多算一項稀缺
   if(e.goEmp){                                              // 卡片承諾「去某一種公司」就真的去
     const tgt = EMP.filter(function(x){ return x.id===e.goEmp })[0];
-    if(tgt){
+    if(tgt && (!S.emp || S.emp.id !== tgt.id)){
       S.emp = tgt; S.inESG = true; S.freelance = 0; S.quitFlag = 0;
       S.pay = Math.round(calcPay(tgt, S.level) * (0.95 + rnd()*0.12));
       clampPay();
@@ -4040,6 +4046,33 @@ function apply(e, out){
       d.push(['新東家', tgt.n], ['年薪', S.pay]);
     }
   }
+  if(e.offEsg && S.emp && S.inESG){
+    /* 同一家公司，換到非永續的部門：東家沒變，但永續年資從此停住 */
+    S.inESG = false; S.prevJob = S.emp.id;
+    S.domName = e.offEsg; S.dom += 5;
+    if(!S.traits.includes('轉出永續')) S.traits.push('轉出永續');
+    d.push(['轉出永續', e.offEsg]);
+    S.ledger.push({y:S.year, t:'內部轉調到'+e.offEsg+'（非永續）', p:S.pay, mark:1});
+  }
+  if(e.goSector){
+    /* 卡片說「你去了某個產業」就真的去：在那個產業裡挑一家搆得上的公司。
+       帶 raise 的話，代表卡片承諾過「薪水比你現在高幾成」——那個承諾要兌現。 */
+    const spec = (typeof e.goSector === 'string') ? {ind:e.goSector} : e.goSector;
+    const pool = EMP.filter(function(x){
+      return x.ind===spec.ind && !x.big4 && x.id!=='ngo' && ELITE.indexOf(x.id)<0 && (!S.emp || x.id!==S.emp.id);
+    });
+    if(pool.length){
+      const tgt = pool[Math.floor(rnd()*pool.length)], before = S.pay;
+      S.emp = tgt; S.inESG = true; S.freelance = 0; S.jobless = 0; S.quitFlag = 0;
+      S.dom = Math.round(S.dom*0.7); S.domName = IND[tgt.ind].n;
+      S.pay = Math.round(calcPay(tgt, S.level) * (0.94 + rnd()*0.10));
+      if(spec.raise) S.pay = Math.max(S.pay, Math.round(before * spec.raise));
+      clampPay();
+      d.push(['新東家', tgt.n], ['年薪', S.pay]);
+      S.ledger.push({y:S.year, t:'轉職到 '+tgt.n, p:S.pay, mark:1});
+    }
+  }
+  if(e.longLeave){ S.leaveGrade = (S.leaveGrade||0) + e.longLeave }   // 長假的帳，隔年的考績才付
   if(e.retrack){ S.reTrack = e.retrack }                    // 綠電支線的進度
   if(e.remode){ S.reMode = e.remode }                       // 你選的那一條履行方式
   if(e.bmod){ pushBonusMod(e.bmod.v, e.bmod.y, e.bmod.w);   // 這個選擇會在未來幾年的年終裡結算
@@ -4054,6 +4087,7 @@ function apply(e, out){
     S.burn = Math.max(0, S.burn - 30);
     if(sc !== null && sc >= 58){
       S.pay = Math.round(S.pay * 0.99);
+      S.leaveGradePend = (S.leaveGradePend||0) + 7;    // 就算制度接得住，在職期間短還是會反映在考績上
       d.push(['育嬰留停','一年'],['體力','+30']);
       out.extra = '公司的制度接住了你：職代安排得清楚、留停期間主管持續跟你同步近況，回來時你的位子還在。'
         + '<br><br><em>那一年你終於明白，報告書裡寫的「員工照顧」是真的還是假的，請一次育嬰假就知道。</em>';
@@ -4061,6 +4095,7 @@ function apply(e, out){
     } else {
       S.pay = Math.round(S.pay * 0.93);
       S.level = Math.max(0, S.level - (rnd()<0.4 ? 1 : 0));
+      S.leaveGradePend = (S.leaveGradePend||0) + 19;   // 沒有制度接住的公司，這一刀砍在隔年的考績上
       d.push(['育嬰留停','一年'],['體力','+30'],['職涯','受影響']);
       out.extra = '你請了留停，回來後發現位子被「調整」了：專案分給了別人，你被安排去做「比較不吃緊」的事。'
         + '<br><br><em>沒有人違法，但每個細節都在告訴你：這家公司的永續，寫在報告書裡，沒有寫在制度裡。</em>';
@@ -4487,6 +4522,9 @@ function tryPromote(){
   if(cw()>=needCw && S.esgYrs>=needYr && (!n.G||S.G>=n.G) && (!n.rel||S.rel>=n.rel)){
     let pr = .30 + S.luck*.010 + S.rel*.008 + (S.level===3?.06:0);
     if(S.crossTitle) pr += .14;      // 本業 x 永續 = 不可取代
+    /* 當過主管的人要再當一次主管，比第一次容易——你已經證明過一次，
+       而且面試官問得出來的問題你都答過。但位子還是要有人空出來。 */
+    if((S.leadPeak||0) >= S.level+1) pr += .10;
     if(S.stampPath==='strategy') pr += .12;   // 破關後走策略線 → 升遷邏輯站你這邊
     if(S.stampPath==='stall') pr -= .12;      // 停在原地 → 難再往上
     if(isAdrift()) pr -= .22;        // 全方位但無定位
@@ -4640,47 +4678,89 @@ function pendingBlock(){
 function statBar(n,label,max){ const p=Math.min(100,Math.round(n/max*100));
   return `<div class="stat"><span class="n">${label}</span><span class="bar"><i style="width:${p}%"></i></span><span class="val mono">${n}</span></div>` }
 
+/* 摺疊區塊：把「想查才看」的東西收起來，但一個數字都不拿掉 */
+function fold(label, inner){
+  return inner ? `<details class="foldbox"><summary>${label}</summary><div>${inner}</div></details>` : '';
+}
+function chipRow(list){ return `<div class="traits">${list.join('')}</div>` }
+/* ===== 資訊欄（v32 分層）=====
+   常駐＝你這一年做決定時真的會看的：能力、體力、錢、預算/案量、會的事、市場。
+   其餘收進「更多數字」；特質、技能、總帳超過門檻才摺疊。 */
 function sidebar(){
   if(!S.emp && S.phase!=='career') return '';
   const m = mk(S.year);
+  const kv = (k,v,st) => `<div class="kv"><span class="k">${k}</span><span class="v ${st||'mono'}">${v}</span></div>`;
+
+  /* --- 收進「更多數字」的那些 --- */
+  const more = [
+    (S.PW||S.GP) ? kv('能源力 / 地緣力', (S.PW||0)+' / '+(S.GP||0)) : '',
+    kv('產業專業', S.dom + (S.domName?' · '+S.domName:'')),
+    (S.soc||S.adv) ? kv('社會影響力 / 永續影響力', (S.soc||0)+' / '+(S.adv||0)) : '',
+    (S.region&&S.region!=='台北') ? kv('據點', S.region, '') : '',
+    (S.emp&&S.emp.esg&&!isFreelance()&&companyESG(S.emp,S.year)!==null)
+      ? kv('公司 ESG（E/S/G）', companyESG(S.emp,S.year)+' · '+esgDims(S.emp,S.year).e+'/'+esgDims(S.emp,S.year).s+'/'+esgDims(S.emp,S.year).g) : '',
+    (S.emp&&S.emp.esg&&!isFreelance()&&csaState(S.emp)===0)
+      ? `<div class="kv"><span class="k" style="color:var(--warn)">評比參與</span><span class="v" style="font-size:11px;color:var(--warn)">未參與（可推動）</span></div>` : '',
+    (deptOf(S.emp)&&!isFreelance()) ? kv('永續隸屬', deptOf(S.emp).n, '') : '',
+    `<div class="note" style="margin-top:6px">每月綠領職缺 <span class="mono">${m[0].toLocaleString()}</span> 個</div>`,
+    aiLv(S.year) ? `<div class="note" style="margin-top:4px">AI 成熟度 <span class="mono">${aiLv(S.year)}/9</span>${aiLv(S.year)>=6?'　<span style="color:var(--warn)">初階職缺萎縮中</span>':''}</div>` : ''
+  ].join('');
+
+  /* --- 會的事：超過八項就把比較早學的收起來 --- */
+  const skillIds = Object.keys(S.skills||{});
+  const skillChip = function(id){ const k=skillById(id); return k?`<span class="trait" title="${k.d}">${k.n}${S.skills[id]>1?' Lv'+S.skills[id]:''}</span>`:'' };
+  const skHead = skillIds.slice(-8).map(skillChip), skRest = skillIds.slice(0,-8).map(skillChip);
+  const skillBlock = skillIds.length
+    ? `<hr class="rule"><span class="eyebrow">會的事 ${skillCount()} 項${S.rareSkills?'（稀缺 '+S.rareSkills+'）':''}</span>`
+      + chipRow(skHead) + fold('更早學的技能', skRest.length?chipRow(skRest):'')
+    : '';
+
+  /* --- 特質：超過八個就把比較早的收起來 --- */
+  const tHead = S.traits.slice(-8), tRest = S.traits.slice(0,-8);
+  const chip = t => `<span class="trait">${t}</span>`;
+  const traitBlock = S.traits.length
+    ? `<hr class="rule"><span class="eyebrow">特質</span>` + chipRow(tHead.map(chip))
+      + fold('更早的特質', tRest.length?chipRow(tRest.map(chip)):'')
+    : '';
+
+  /* --- 總帳：常駐最近六筆 --- */
+  const lrow = r => `<div class="lrow ${r.mark?'mark':''}"><span class="yr mono">${r.y}</span><span class="ev">${r.t}</span><span class="pay mono">${r.p?r.p+'萬':''}</span></div>`;
+  const led = S.ledger.slice().reverse();
+  const ledBlock = led.length
+    ? `<div class="ledger">${led.slice(0,6).map(lrow).join('')}</div>`
+      + fold('更早的紀錄', led.length>6?`<div class="ledger">${led.slice(6).map(lrow).join('')}</div>`:'')
+    : '<div class="note">還沒有紀錄。</div>';
+
   return `
   <div class="panel panel-pad">
     <span class="eyebrow">能力</span>
     <div class="stats" style="margin-top:10px">
       ${statBar(S.E,'環境 E',60)}${statBar(S.S,'社會 S',60)}
       ${statBar(S.G,'治理 G',60)}${statBar(S.D,'揭露 D',60)}
-      ${(S.PW||S.GP)?`${statBar(S.PW||0,'能源 P',40)}${statBar(S.GP||0,'地緣 I',40)}`:''}
       ${statBar(S.rel,'關係力',50)}${statBar(S.luck,'運氣',20)}
     </div>
     <hr class="rule">
-    ${(S.playerName||S.mbti)?`<div class="kv"><span class="k">${playerRef()}</span><span class="v mono">${S.mbti||''}</span></div>`:''}
-    <div class="kv"><span class="k">綜合戰力</span><span class="v mono">${cw()}</span></div>
-    <div class="kv"><span class="k">產業專業</span><span class="v mono">${S.dom} ${S.domName?'· '+S.domName:''}</span></div>
-    <div class="kv"><span class="k">存款</span><span class="v mono">${S.cash} 萬</span></div>
-    ${(S.soc||S.adv)?`<div class="kv"><span class="k">社會影響力 / 永續影響力</span><span class="v mono">${S.soc||0} / ${S.adv||0}</span></div>`:''}
-    ${S.region&&S.region!=='台北'?`<div class="kv"><span class="k">據點</span><span class="v">${S.region}</span></div>`:''}
-    <div class="kv"><span class="k">體力</span><span class="v mono" style="${S.burn>=70?'color:var(--warn)':''}">${stamina()} / 100${S.burn>=88?' ⚠ 快崩了':S.burn>=70?' ⚠':''}</span></div>
+    ${(S.playerName||S.mbti)?kv(playerRef(), S.mbti||''):''}
+    ${kv('體力', `<span style="${S.burn>=70?'color:var(--warn)':''}">${stamina()} / 100${S.burn>=88?' ⚠ 快崩了':S.burn>=70?' ⚠':''}</span>`)}
     ${(S.emp&&!isFreelance()&&!S.polit)?(S.emp.big4
-      ? `<div class="kv"><span class="k">所裡案量</span><span class="v mono" style="${dealFlow()<40?'color:var(--warn)':''}">${dealFlow()} / 100</span></div>`
-      : `<div class="kv"><span class="k">部門預算</span><span class="v mono" style="${curBudget()<44?'color:var(--warn)':''}">${curBudget()} / 100</span></div>
-         <div class="kv"><span class="k">公司的狀態</span><span class="v" style="font-size:11.5px">${coModeLabel()}</span></div>`):''}
-    <div class="kv"><span class="k">永續年資</span><span class="v mono">${S.esgYrs} 年</span></div>
-    ${(S.emp&&S.emp.esg&&!isFreelance()&&companyESG(S.emp,S.year)!==null)?`<div class="kv"><span class="k">公司 ESG（E/S/G）</span><span class="v mono">${companyESG(S.emp,S.year)} · ${esgDims(S.emp,S.year).e}/${esgDims(S.emp,S.year).s}/${esgDims(S.emp,S.year).g}</span></div>`:''}
-    ${(S.emp&&S.emp.esg&&!isFreelance()&&csaState(S.emp)===0)?`<div class="kv"><span class="k" style="color:var(--warn)">評比參與</span><span class="v" style="font-size:11px;color:var(--warn)">未參與（可推動）</span></div>`:''}
-    ${(deptOf(S.emp)&&!isFreelance())?`<div class="kv"><span class="k">永續隸屬</span><span class="v" style="font-size:11.5px">${deptOf(S.emp).n}</span></div>`:''}
-    ${skillCount()?`<hr class="rule"><span class="eyebrow">會的事 ${skillCount()} 項${S.rareSkills?'（稀缺 '+S.rareSkills+'）':''}</span><div class="traits">${Object.keys(S.skills).map(function(id){const k=skillById(id);return k?`<span class="trait" title="${k.d}">${k.n}${S.skills[id]>1?' Lv'+S.skills[id]:''}</span>`:''}).join('')}</div>`:''}
-    ${S.certs.length?`<hr class="rule"><span class="eyebrow">證照</span><div class="traits">${S.certs.map(c=>`<span class="trait">${CERTS.find(x=>x.id===c).n.split('（')[0]}</span>`).join('')}</div>`:''}
-    ${S.traits.length?`<hr class="rule"><span class="eyebrow">特質</span><div class="traits">${S.traits.map(t=>`<span class="trait">${t}</span>`).join('')}</div>`:''}
+      ? kv('所裡案量', `<span style="${dealFlow()<40?'color:var(--warn)':''}">${dealFlow()} / 100</span>`)
+      : kv('部門預算', `<span style="${curBudget()<44?'color:var(--warn)':''}">${curBudget()} / 100</span>`)
+        + kv('公司的狀態', coModeLabel(), 'v')):''}
+    ${kv('綜合戰力', cw())}
+    ${kv('永續年資', S.esgYrs + ' 年')}
+    ${kv('存款', S.cash + ' 萬')}
+    ${fold('更多數字', more)}
+    ${skillBlock}
+    ${S.certs.length?`<hr class="rule"><span class="eyebrow">證照</span>${chipRow(S.certs.map(c=>`<span class="trait">${CERTS.find(x=>x.id===c).n.split('（')[0]}</span>`))}`:''}
+    ${traitBlock}
     <hr class="rule">
     <span class="eyebrow">市場熱度 ${m[2]}</span>
     <div class="meter"><i style="width:${m[1]}%"></i></div>
-    <div class="note" style="margin-top:6px">${S.year} 年　每月綠領職缺 <span class="mono">${m[0].toLocaleString()}</span> 個</div>
-    ${aiLv(S.year)?`<div class="note" style="margin-top:4px">AI 成熟度 <span class="mono">${aiLv(S.year)}/9</span>${aiLv(S.year)>=6?'　<span style="color:var(--warn)">初階職缺萎縮中</span>':''}</div>`:''}
+    <div class="note" style="margin-top:6px">${S.year} 年</div>
   </div>
   <div class="panel panel-pad" style="margin-top:16px">
     <span class="eyebrow">職涯總帳</span>
-    <div class="ledger">${S.ledger.slice().reverse().map(r=>`
-      <div class="lrow ${r.mark?'mark':''}"><span class="yr mono">${r.y}</span><span class="ev">${r.t}</span><span class="pay mono">${r.p?r.p+'萬':''}</span></div>`).join('')||'<div class="note">還沒有紀錄。</div>'}</div>
+    ${ledBlock}
   </div>`;
 }
 
@@ -4743,9 +4823,13 @@ try{ const sv=localStorage.getItem('sustalent_lang'); if(sv) LANG=sv }catch(e){}
    台灣在地梗保留原味，必要時在英文裡加一句括號說明。 */
 const TR = {};
 let TR_KEYS = [];
+let TR_FIRST = [];       // 每個 key 的第一個字元碼
+let TR_PRE2  = [];       // 每個 key 的前兩個字元（合成一個數字），用來快速跳過不可能命中的 key
 function trRegister(map){
   Object.keys(map).forEach(function(k){ TR[k] = map[k] });
   TR_KEYS = Object.keys(TR).sort(function(a,b){ return b.length - a.length });   // 長字串優先，避免部分覆蓋
+  TR_FIRST = TR_KEYS.map(function(k){ return k.charCodeAt(0) });
+  TR_PRE2  = TR_KEYS.map(function(k){ return k.length>1 ? k.charCodeAt(0)*65536 + k.charCodeAt(1) : -1 });
 }
 function tr(str){
   if(LANG!=='en' || !str) return str;
@@ -4768,12 +4852,29 @@ function localizeMoney(html){
     return 'NT$' + Math.round(nt);
   });
 }
+/* 六千多個 key 每一頁都對整段 HTML 做一次 indexOf，是英文版最慢的一段
+   （實測一頁 29ms，手機上會感覺得到）。
+   做法：先把這一頁出現過的字元記進一張表，**第一個字元不在表裡的 key 直接跳過**。
+   每替換成功一次，就把替換進去的英文字元也記進表裡（只加不減），
+   所以「會命中的 key」一個都不會被跳掉——輸出完全一樣，只是省掉必定落空的比對。 */
+const TR_SEEN = new Uint8Array(65536);
+let TR_BG = new Set();
+function trBigrams(t){ for(let i=0;i+1<t.length;i++) TR_BG.add(t.charCodeAt(i)*65536 + t.charCodeAt(i+1)) }
 function localizeHTML(html){
   if(LANG!=='en' || !html || !TR_KEYS.length) return html;
   let out = html;
+  TR_SEEN.fill(0);
+  for(let i=0;i<out.length;i++) TR_SEEN[out.charCodeAt(i)] = 1;
+  TR_BG = new Set(); trBigrams(out);
   for(let i=0;i<TR_KEYS.length;i++){
+    if(TR_PRE2[i] >= 0 ? !TR_BG.has(TR_PRE2[i]) : !TR_SEEN[TR_FIRST[i]]) continue;
     const k = TR_KEYS[i];
-    if(out.indexOf(k) >= 0) out = out.split(k).join(TR[k]);
+    if(out.indexOf(k) >= 0){
+      const v = TR[k];
+      out = out.split(k).join(v);
+      for(let j=0;j<v.length;j++) TR_SEEN[v.charCodeAt(j)] = 1;
+      trBigrams(v);
+    }
   }
   return localizeMoney(out);
 }
@@ -11013,6 +11114,28 @@ trRegister({
 "砍到只剩真的": "Cut Down to What Is Real",
 "把沒錢寫出來": "Wrote the Shortfall Down",
 "圈內情報": "Inside Word",
+"每月綠領職缺 <span class=\"mono\">": "Green-collar openings/month <span class=\"mono\">",
+"法遵": "Compliance",
+"更多數字": "More numbers",
+"更早學的技能": "Learned earlier",
+"更早的特質": "Earlier traits",
+"更早的紀錄": "Earlier entries",
+"能源力 / 地緣力": "Energy / Geopolitics",
+"體力大幅回復。<em>明年</em>的考績會難看一點——但你不會垮": "Stamina recovers a lot. <em>Next year's</em> rating will look worse — but you will not break",
+"考績表上多了一欄：<em>「本年度在職期間未達完整考核期間」</em>。": "A new line appears on your appraisal form: <em>\"time in post this year fell short of a full review period.\"</em>",
+"主管很客氣地解釋了一次計算方式，也說了「這不是針對你」。<br>": "Your manager politely walks you through how it is calculated, and adds that \"this isn't about you.\"<br>",
+"<em>請假的成本，是在隔年才付的。</em>": "<em>The cost of taking leave is paid the following year.</em>",
+"<br><br>最後一輪面試問的不是你會什麼，是你帶過幾個人、走掉幾個、當時怎麼處理。<em>你答得出來。</em><br>到職職稱是 <strong>": "<br><br>The final interview round wasn't about what you can do. It was about how many people you led, how many left, and what you did about it. <em>You had answers.</em><br>You start with the title <strong>",
+"</strong>——<em>帶過人這件事，是可以帶著走的。</em>": "</strong> — <em>having led people is something you carry with you.</em>",
+"<br><br>你談回了帶人的位子：<strong>": "<br><br>You negotiated your way back into a role that leads people: <strong>",
+"</strong>。<em>空窗會讓起薪打折，但不會讓你忘記怎麼帶人。</em>": "</strong>. <em>A gap discounts your starting salary, but it doesn't make you forget how to lead.</em>",
+"<br><br><em>帶人的位子這次沒談成。</em>對方說那個編制已經有人了，先以個人貢獻者進來，「表現好隨時可以談」。<br>這句話你聽過。": "<br><br><em>The role leading people didn't come through this time.</em> They said that headcount is already filled, so you come in as an individual contributor — \"we can revisit it any time you're performing.\"<br>You have heard that sentence before.",
+"<br><br><em>不過這次是以個人貢獻者進去的。</em>離開市場的那段時間，「帶過人」這件事的說服力會隨著時間打折。": "<br><br><em>You went in as an individual contributor this time.</em> While you were out of the market, \"has led people\" kept losing a little of its force each year.",
+"但兩年下來，你認識了整個政策圈的人，也知道了明年的預算會往哪裡走。": "But over two years you came to know everyone in the policy circle — and to know where next year's budget is headed.",
+"你在報告書裡寫了整整一段，解釋為什麼數字變差。<br><br>有投資人在法說會上問了，你答得出來。": "You wrote a full passage in the report explaining why the numbers got worse.<br><br>An investor asked about it on the earnings call, and you had the answer.",
+"這件事沒有任何一張證照會教。": "No certificate teaches you this.",
+"內部轉調到": "Internal transfer to ",
+"轉出永續": "Moved out of sustainability",
 "所裡的案量掉下來了。<em>你手上的案子做完之後，沒有新的接上來</em>——而在事務所，沒有案子可以掛時數這件事，比做錯事還嚴重。": "Deal flow at the firm has dropped. <em>When the jobs on your desk finish, nothing new comes in behind them</em> — and at a firm, having no engagement to charge your hours to is worse than getting something wrong.",
 "案子多到接不完。<em>所裡開始搶人，也開始留不住人</em>——同期有三個人在同一個月遞了辭呈，而你的專案還要再撐半年。": "There is more work than anyone can take. <em>The firm starts poaching, and starts losing people</em> — three from your intake hand in their notice in the same month, and your project still has six months to run.",
 "主管找你談產能利用率。他沒有說重話，只是把你這一年的時數表印出來放在桌上。<em>那張紙比任何一句話都清楚。</em>": "Your manager sits you down about utilization. He says nothing harsh; he just prints out your timesheet for the year and lays it on the desk. <em>That sheet of paper is clearer than anything he could have said.</em>",
@@ -11179,7 +11302,7 @@ function newGameCore(seedIn){
      soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0, skills:{}, rareSkills:0, big4Grp:'', big4GrpName:'',
      grades:[], gradeC:0, highBurnYrs:0, uniFun:'', partner:0, quota:0, endedEarly:'', scholarship:0, youthFund:0, polit:'', ccWarned:0, ccPushed:0, placeYrs:0, ballYrs:0, ngoEdu:0, indYrs:{}, apexTitle:0,
      misfitYrs:0, fitBonus:0, bonusMods:[], humYrs:0, humLow:0, titleEraUp:0, titleEraDown:0,
-     budget:55, budgetPrev:55, deal:55, layoffWarn:0, intel:{}, dealLowSeen:0, dealHighSeen:0, b4CutSeen:0, b4NoJuniorSeen:0,
+     budget:55, budgetPrev:55, deal:55, layoffWarn:0, intel:{}, dealLowSeen:0, dealHighSeen:0, b4CutSeen:0, b4NoJuniorSeen:0, leadPeak:0, leaveGrade:0, leaveGradePend:0,
      selfDoneYrs:0, consultYrs:0, failedIv:0, reTrack:0, reMode:'', repat:0, repatSev:0, ovsId:'', ovsPassed:0, ovsFail:0, ovsPolSeen:{}, ovsHomeYrs:0, relFrac:0, learnedThisYear:0, gradePush:0, bonusLast:0, bonusSum:0, lastSeen:{}, lastFocus:'', eraNext:undefined, eraDir:0, eraMood:0, askedFocusThisYear:0, focusOverride:'', studyCount:0, phd:0, lead:0, leadIdle:0, agency:0, retireSelf:0, retireGap:0, staleYrs:0, decayed:0, expertOf:'', windfall:0, b4Grp2:'', grpSwitches:0};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
@@ -11834,17 +11957,27 @@ function endEarly(tag, title, body){
   S.ledger.push({y:S.year, t:'【'+title+'】這一局在這裡結束', p:'', mark:1});
   return ending();
 }
+/* ===== 提早結局的年齡保護（使用者要求）=====
+   **35 歲以前一律不會提早結束**——這一局至少要玩得完前半段，
+   不然玩家還沒累積出任何東西就被一場車禍收走，那不是敘事，是懲罰。
+   36 歲起才開始有機會，38 歲之後略微升高，但**每一年的上限是 15%**。
+   回傳 0 代表「這一年不可能提早結束」。 */
+function earlyRiskCap(){
+  if(S.age <= 35) return 0;
+  return S.age >= 38 ? 0.15 : 0.09;
+}
 /* 每年開始時擲一次：年紀越大、體力越差，越可能出事 */
 function rollLifeShock(){
   if(S.endedEarly) return false;
-  if(S.age < 33) return false;
-  /* 這些是「人生突然轉彎」，不該是常態。玩家實測顯示原本的機率讓半數的局提早結束，
-     所以基礎值大幅調低——只有真的把自己操壞的人，才會明顯感受到風險上升。 */
-  const late = S.age >= 35;
-  let p = late ? 0.016 : 0.006;
+  const cap = earlyRiskCap();
+  if(!cap) return false;
+  /* 這些是「人生突然轉彎」，不該是常態。只有真的把自己操壞的人，
+     才會明顯感受到風險上升——而且不管怎麼操，一年也不會超過 cap。 */
+  let p = S.age >= 38 ? 0.055 : 0.030;
   if(S.burn >= 75) p += 0.030;
   if((S.highBurnYrs||0) >= 4) p += 0.026;
   if(S.health) p += 0.012;
+  p = Math.min(cap, p);
   if(rnd() > p) return false;
 
   const pool = [];
@@ -11983,7 +12116,7 @@ function rollWindfall(){
   if(S.windfall || S.age < 24) return false;
   if(rnd() > 0.004) return false;
   S.windfall = 1;
-  if(rnd() < 0.25){
+  if(rnd() < 0.25 && earlyRiskCap()){
     S.cash += 20000;
     return endEarly('lotto', '財富自由（但不是靠永續）',
       '那天你在超商買咖啡，順手花兩百塊帶了一張。<br><br>'
@@ -13145,6 +13278,8 @@ function yearEnd(){
   S.burn = Math.max(0, S.burn + Math.round((S.emp?S.emp.burn:1)*5 + lvBurn) - recov);
   // 存款（固定薪的部分先入帳；年終等考績出來之後另算）
   S.cash = Math.round(S.cash + (isFreelance() ? S.pay*0.20 : fixedPay()*0.10));
+  /* 帶過人這件事會被記住：之後換工作時可以拿出來談（見 leadCarryP） */
+  if(S.inESG && S.emp && !isFreelance() && S.level >= 2) S.leadPeak = Math.max(S.leadPeak||0, S.level);
   const events=[];
   /* ===== 年度考績 A／B／C（使用者需求）=====
      看你今年的投入、能見度、體力與運氣。C 連兩年會被盯上。 */
@@ -13159,9 +13294,19 @@ function yearEnd(){
     if(S.big4Grp) gs += 2;
     if(S.gradeC>=1) gs += 4;                        // 被談過話之後，多數人會撐起來一點
     if(S.gradePush){ gs += S.gradePush * 16; S.gradePush = 0 }   // 今年出過的事（例如稽核沒過）直接反映在考績上
+    /* 長假的帳是隔年才付的：考績表上會多一欄「未達完整考核期間」。
+       先結算去年掛著的，再把今年請的假掛到明年——所以請假的當年不受影響。 */
+    if(S.leaveGradePend){ gs -= S.leaveGradePend; S._leaveNote = 1; S.leaveGradePend = 0 }
+    if(S.leaveGrade){ S.leaveGradePend = S.leaveGrade; S.leaveGrade = 0 }
     gs += ri(-13, 13);
     const g = gs >= 72 ? 'A' : gs >= 44 ? 'B' : 'C';
     S.grades.push(g);
+    if(S._leaveNote){
+      S._leaveNote = 0;
+      events.push('考績表上多了一欄：<em>「本年度在職期間未達完整考核期間」</em>。'
+        + '主管很客氣地解釋了一次計算方式，也說了「這不是針對你」。<br>'
+        + '<em>請假的成本，是在隔年才付的。</em>');
+    }
     if(g==='A'){
       S.gradeC = 0;
       const bonus = Math.round(S.pay * 0.06);
@@ -13707,7 +13852,7 @@ function renderYearEnd(events, offers, certOffer){
       opts.push({k:'study',
         l:(S.studyCount?'再出國念一次書':'辭職出國念研究所'),
         h:(canPhD()?'可以選碩士，也可以選博士。學費不便宜，可申請獎學金':'挑一個領域念，學費不便宜；可申請獎學金。用在地年資換英文與視野')});
-    if(S.burn>=25) opts.push({k:'rest',l:(S.burn>=70?'⚠ 該停了：請長假把自己修好':'請長假，把自己修好'),h:'體力大幅回復，年度考評會難看一點——但你不會垮'});
+    if(S.burn>=25) opts.push({k:'rest',l:(S.burn>=70?'⚠ 該停了：請長假把自己修好':'請長假，把自己修好'),h:'體力大幅回復。<em>明年</em>的考績會難看一點——但你不會垮'});
     opts.push({k:'stay',l:'再做一年',h:''});
   }
   S._certOffer=certOffer;
@@ -13840,9 +13985,12 @@ function yePick(k){
   if(k==='rest'){
     S.quitFlag=0;
     S.pay = Math.round(S.pay*0.985); S.sp = Math.max(0,S.sp-1);
+    /* 選項的提示一直寫著「年度考評會難看一點」——這一行才是它真的發生的地方。
+       而且是隔年才算：今年的考績已經結完了。 */
+    S.leaveGrade = (S.leaveGrade||0) + 11;
     /* 長假不只一種過法（item 2）：多數時候有休到，偶爾出意外，極少數人走上山就沒有回來 */
     const roll = rnd();
-    if(roll < 0.02 && (S.burn>=60 || (S.gw||0)>=3)){
+    if(roll < 0.02 && earlyRiskCap() && (S.burn>=60 || (S.gw||0)>=3)){
       // 原本只是請個長假——出家六十天，這一局在這裡結束
       return endEarly('awaken', '出家六十天',
         '你原本只是請了長假，想去山上住幾天，把自己修好再回來。<br><br>'
@@ -14011,6 +14159,20 @@ function interviewP(emp){
 function interviewCost(){
   return (S.emp && !S.jobless) ? (6 + ri(0,5)) : (2 + ri(0,3));
 }
+/* ===== 帶過人的人，換工作時能不能談回帶人的位子 =====
+   面試最後那一輪問的不是你會什麼，是你帶過幾個人、走掉幾個、怎麼處理的。
+   所以真正在談的是管理力與口碑——而不是你上一張名片上的頭銜。
+   **不保證**：編制有沒有那一層、對不對盤、有沒有人替你說話，都算數。 */
+function leadCarryP(emp){
+  if((S.leadPeak||0) < 2) return 0;
+  let p = 0.24 + Math.min(0.20, (S.lead||0)*0.012) + Math.min(0.12, S.rel*0.004);
+  if(S.esgYrs >= 2) p += (jobFit(emp) - 0.5) * 0.28;
+  if(emp && emp.tier === '中後段') p -= 0.12;       // 小公司的組織圖上根本沒有那一層
+  if(emp && emp.big4) p -= 0.16;                    // 事務所的職級是自己一套
+  if(S.jobless) p -= 0.10 + Math.min(0.14, S.jobless*0.05);
+  if((S.leadIdle||0) >= 3) p -= 0.14;               // 掛著主管但沒真的帶起人，問三句就露餡
+  return Math.max(0.05, Math.min(0.82, p));
+}
 /* ===== 關係力換情報 =====
    認識夠多人的人，在進去之前就知道這間公司的永續有沒有錢、老闆買不買單。
    這是預算制度上路之後，關係力最實際的價值。 */
@@ -14094,13 +14256,23 @@ function takeOffer(v, idx){
      顧問經理≠企業經理，除非去的是中後段／小公司。 */
   let b4Drop = 0;
   if(S.emp && S.emp.big4 && S.level>=2 && emp.tier!=='中後段' && !emp.big4){
-    if(rnd() < 0.72){ b4Drop = 1; S.level = Math.max(1, S.level-1); }
+    /* 真的帶過人的人，比較有機會把職級談過去——但一樣不保證 */
+    const keep = Math.min(0.40, (S.lead||0)*0.016 + Math.min(0.10, S.rel*0.004));
+    if(rnd() < 0.72 - keep){ b4Drop = 1; S.level = Math.max(1, S.level-1); }
   }
   /* v29：進去之後才是真的。對不上就硬進去，前兩年要用加班補回來。 */
   const fitNow = S.esgYrs>=2 ? jobFit(emp) : 0.6;
   S.misfitYrs = fitNow < 0.34 ? 2 : 0;
   S.fitBonus  = fitNow >= 0.8 ? 1 : 0;
   S.emp=emp; S.inESG=true; S.freelance=0; S.burn=Math.max(0,S.burn-8);
+  /* 當過主管的人，換工作時可以爭取回到帶人的位子——最多往上談一階 */
+  const wantLv = Math.min(S.leadPeak||0, S.level + 1);
+  const triedLead = !b4Drop && wantLv >= 2 && wantLv > S.level;
+  let leadBack = 0;
+  if(triedLead && rnd() < leadCarryP(emp)){
+    S.level = wantLv; leadBack = 1;
+    S.pay = Math.max(S.pay, Math.round(calcPay(emp, S.level) * 1.02));
+  }
   /* ⚠️ 天花板一定要在「新東家 + 新職級」都定案之後才套。
      原本 clampPay() 是在換 emp 與四大降職級之前呼叫的，用的是舊公司、舊職級的上限——
      結果從四大跳到產業係數較低的公司又被降一階時，薪水會停在遠高於新上限的地方。 */
@@ -14116,6 +14288,8 @@ function takeOffer(v, idx){
     : (S.fitBonus ? `<br><br>面試的時候你發現，他們列的每一項你都做過。<em>這種對盤，一輩子不會遇到幾次。</em>` : '');
   const fineTxt = (S.bondFine ? `<br><br>你還沒跑完服務約，賠了 <strong>${S.bondFine} 萬</strong>違約金。公司出的那筆訓練費，最後還是你自己付了。` : '')
     + (b4Drop ? `<br><br><em>不過職級沒有接過去</em>——你在事務所是${LEVELS[S.level+1].t}，到了企業端從 <strong>${LEVELS[S.level].t}</strong> 開始。顧問的經理和企業的經理，管的不是同一件事。` : '')
+    + (leadBack ? `<br><br>最後一輪面試問的不是你會什麼，是你帶過幾個人、走掉幾個、當時怎麼處理。<em>你答得出來。</em><br>到職職稱是 <strong>${LEVELS[S.level].t}</strong>——<em>帶過人這件事，是可以帶著走的。</em>` : '')
+    + ((triedLead && !leadBack) ? `<br><br><em>帶人的位子這次沒談成。</em>對方說那個編制已經有人了，先以個人貢獻者進來，「表現好隨時可以談」。<br>這句話你聽過。` : '')
     + fitTxt;
   S.bondFine=0;
   /* 中途跳進四大的人，一樣要被分組——原本只有應屆進去的人會分組，
@@ -14255,6 +14429,10 @@ function rehirePick(k, idx){
       [['年薪',S.pay]], function(){ nextYear() });
   }
   const emp = S._rehire[idx||0];
+  const wantLv2 = Math.min(S.leadPeak||0, S.level + 1);
+  const triedLead2 = wantLv2 >= 2 && wantLv2 > S.level;
+  let leadBack2 = 0;
+  if(triedLead2 && rnd() < leadCarryP(emp)){ S.level = wantLv2; leadBack2 = 1 }
   S.emp=emp; S.inESG=true; S.freelance=0; S.jobless=0;
   S.pay=Math.round(calcPay(emp,S.level)*S._penalty*(S.traits.includes('海外碩士')&&!S.readjusted?0.95:1));
   clampPay();   // calcPay 吃公司倍率、payCap 只吃產業係數，高倍率公司算出來會超過上限
@@ -14262,7 +14440,9 @@ function rehirePick(k, idx){
   S.burn=Math.max(0,S.burn-5);
   S.ledger.push({y:S.year,t:'重新入職 '+emp.n,p:S.pay,mark:1});
   showOutcome('<strong>'+emp.n+'</strong>（'+IND[emp.ind].n+'・'+emp.tier+'）<br>'+emp.f
-    + '<br><br>年薪 <strong>'+S.pay+' 萬</strong>。'+(S._penalty<1?'空窗讓起薪打了一點折，但你回來了。':''),
+    + '<br><br>年薪 <strong>'+S.pay+' 萬</strong>。'+(S._penalty<1?'空窗讓起薪打了一點折，但你回來了。':'')
+    + (leadBack2 ? '<br><br>你談回了帶人的位子：<strong>'+LEVELS[S.level].t+'</strong>。<em>空窗會讓起薪打折，但不會讓你忘記怎麼帶人。</em>' : '')
+    + (triedLead2 && !leadBack2 ? '<br><br><em>不過這次是以個人貢獻者進去的。</em>離開市場的那段時間，「帶過人」這件事的說服力會隨著時間打折。' : ''),
     [['年薪',S.pay]], function(){ nextYear() });
 }
 
