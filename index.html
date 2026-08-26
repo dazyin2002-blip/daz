@@ -311,10 +311,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v33';
+const GAME_VERSION = 'v34';
 /* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
    GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
-const BUILD_ID = '20260826-2343+ebdbe9c';
+const BUILD_ID = '20260827-0008+3a55adc';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -663,7 +663,7 @@ const FORTUNE = {
 const CARDS = [
 /* --- 歷史池 --- */
 {id:'h14',pool:'h',yr:[2014,2015],w:10,t:'報告書強制上路',
- x:'食品、化工、金融和資本額百億以上的公司被要求編永續報告書。市場上突然到處在找<em>會寫報告書的人</em>。',
+ x:'食品、化工、金融和資本額百億以上的公司被要求編企業社會責任報告書。市場上突然到處在找<em>會寫報告書的人</em>。',
  o:[{l:'跳進去卡位',e:{D:8,sp:2},r:'你成了公司第一個寫報告書的人。沒人教你，但也沒人管你。'},
     {l:'再觀望一年',e:{sp:1,rel:1},r:'你想再看看。一年後，位子已經有人坐了。'}]},
 {id:'h15',pool:'h',yr:[2015,2016],w:8,t:'SDGs 與巴黎協定',
@@ -998,7 +998,7 @@ CARDS.push(
     {l:'先不動，把手上的做好',e:{sp:2,burn:4,path:'stall'},r:'你決定再看看。每年的行事曆還是那個行事曆——<em>五年後你可能會後悔今天沒選</em>。',trait:'停在原地'}]},
 {id:'m_ceiling',pool:'p',w:20,t:'看見天花板',
  cond:function(s){return s.inESG&&s.esgYrs>=6&&s.level>=2&&!s.crossTitle},
- x:'制度建好了，組織也上軌道了。接下來每年就是<em>按表操課</em>：報告書、評鑑、盤查、確信。<br><br>你算了一下：照這個速度，五年後的薪水大概是現在的一點二倍。',
+ x:'制度建好了，組織也上軌道了。接下來每年就是<em>按表操課</em>：報告書、評鑑、盤查、查證。<br><br>你算了一下：照這個速度，五年後的薪水大概是現在的一點二倍。',
  o:[{l:'把本業補起來，做跨領域',e:{dom:6,sp:2,burn:6},r:'你開始補財務、補供應鏈、補資料分析。不是為了離開永續，是為了讓永續有地方去。'},
     {l:'往同產業鏈的上下游跳',e:{hunt:1,dom:3},r:'你發現上游的供應商、下游的品牌商都在找懂永續的人。市場比你以為的大。'},
     {l:'轉去供應鏈、採購或人資',e:{crossjump:1},r:''},
@@ -1547,7 +1547,7 @@ CARDS.push(
 
 /* ── 金融 ── */
 {id:'q_fin_pcaf',pool:'p',w:13,t:'你們的碳排不在自己身上',
- cond:function(s){return s.emp&&s.emp.ind==='fin'&&s.year>=2022},
+ cond:function(s){return s.emp&&s.emp.ind==='fin'&&s.year>=2023},
  x:'銀行自己的用電排碳很少，<em>但放款和投資組合背後的碳排是它的幾百倍</em>。<br><br>要算，就得跟每一個借款戶要資料。',
  o:[{l:'導入投融資碳排盤查',e:{G:7,E:4,burn:14},r:'你花了一年建立資料庫，把授信部位的碳排算出來。那個數字讓經營層安靜了很久。',trait:'算過投融資碳排'},
     {l:'先做重點產業就好',e:{G:4,E:2},r:'你先算了電力、鋼鐵、水泥三個產業。是個開始。'},
@@ -1687,9 +1687,9 @@ CARDS.push(
    每張卡都是同一個結構——先一句「遠方發生了什麼」，再一句「你桌上發生了什麼」。
    這一行的人為什麼要讀國際新聞？不是為了博學，是為了預測自己的報表。 */
 CARDS.push(
-{id:'gp_cbam_bill',ctx:'邊境碳費把碳管理的單位從「公司一年排多少」變成「這一批貨排多少」。台灣的碳費理論上可以扣抵，<em>但對方尚未認可我國碳價，實際上抵不到</em>——所以台灣出口商等於被課了兩次。',pool:'h',yr:[2026,2027,2028],w:12,plan:1,t:'一批貨的碳含量',
+{id:'gp_cbam_bill',ctx:'碳邊境調整機制把碳管理的單位從「公司一年排多少」變成「這一批貨排多少」。台灣的碳費理論上可以扣抵，<em>但對方尚未認可我國碳價，實際上抵不到</em>——所以台灣出口商等於被課了兩次。',pool:'h',yr:[2026,2027,2028],w:12,plan:1,t:'一批貨的碳含量',
  cond:s=>s.emp&&['steel','chem','elec','semi','text'].indexOf(s.emp.ind)>=0,
- x:'你最大的出口市場開始收邊境碳費：<em>每一批貨都要附上這批貨的碳含量，而且要別人來驗</em>。<br><br>'
+ x:'你最大的出口市場開始實施碳邊境調整機制（CBAM）：<em>每一批貨都要附上這批貨的碳含量，而且要別人來驗</em>。<br><br>'
   +'你以前算的是「公司一年排多少」。現在要算的是「這一櫃鋼捲排多少」——單位從公司變成一批貨的時候，'
   +'工作量不是多一倍，是多一個數量級。',
  o:[{l:'先用產業平均值頂過去，賭對方不細查',e:{D:4,burn:8,GP:2,gwrisk:1},
@@ -1713,7 +1713,7 @@ CARDS.push(
       +'<em>沒有法規推的時候，能自己說出價值的人才活得下來。</em>',trait:'把永續講成錢'}]},
 
 {id:'gp_early',pool:'p',w:10,plan:1,t:'早做的人被懲罰',
- cond:s=>s.esgYrs>=4,
+ cond:s=>s.esgYrs>=4&&s.year>=2024,
  x:'你花了兩年把原料溯源系統建起來。<em>然後上路日期又被延後一年。</em><br><br>'
   +'沒做的同業省下這筆錢，報價比你低。採購在會議上問：「所以我們為什麼要早做？」',
  o:[{l:'把系統當賣點，對客戶收費',e:{G:5,cash:10,rel:2,burn:9,GP:2},
@@ -1781,7 +1781,7 @@ CARDS.push(
      r:'被點名的機率下降了，被檢視的標準拉高了。<em>你選了一條不能回頭的路。</em>',trait:'先講出來'}]},
 
 {id:'gp_route',ctx:'台灣多數公司在別人的供應鏈裡，範疇三（上下游排放）佔比極高。<em>這代表你要為別人的地緣政治後果負責</em>：一條航線因為衝突改道，你的運輸排放就上升，而你什麼都沒做錯。',pool:'p',w:11,t:'遠方的航線斷了',
- cond:s=>s.esgYrs>=3&&s.emp&&s.emp.ind!=='ngo',
+ cond:s=>s.esgYrs>=3&&s.emp&&s.emp.ind!=='ngo'&&s.year>=2024,
  x:'一條主要海運航線因為武裝衝突走不了，船隻全部繞遠路。<br><br>'
   +'三個月後你打開範疇三的表：<em>運輸排放上升了兩成，而你什麼都沒做錯。</em><br><br>'
   +'年度目標的達成率，因為地球另一端的一場衝突，掉了下來。',
@@ -1830,8 +1830,8 @@ CARDS.push(
     {l:'提前布局補貼沒受影響的技術別',e:{E:6,PW:4,co2:2,burn:14,GP:3},
      r:'你把資源移到能提供穩定電力的那幾種。<em>三年後，那條線變成公司的主力。</em>',trait:'押對技術別'}]},
 
-{id:'gp_news',ctx:'台灣的永續工作者比多數國家的同行更需要讀國際新聞——因為<em>推動這份工作的規則多半不是在台灣寫的</em>：客戶的市場、邊境碳費、國際準則，每一項都在別人的立法程序裡。',pool:'p',w:8,rep:1,t:'你開始讀國際新聞了',
- cond:s=>s.esgYrs>=2,
+{id:'gp_news',ctx:'台灣的永續工作者比多數國家的同行更需要讀國際新聞——因為<em>推動這份工作的規則多半不是在台灣寫的</em>：客戶的市場、碳邊境調整機制、國際準則，每一項都在別人的立法程序裡。',pool:'p',w:8,rep:1,t:'你開始讀國際新聞了',
+ cond:s=>s.esgYrs>=2&&s.year>=2021,
  x:'開會的時候，有人隨口說了一句「聽說那邊選完之後政策要轉彎」，<em>全場只有你不知道那是什麼</em>。<br><br>'
   +'那天晚上你訂閱了兩份國際新聞的電子報。',
  o:[{l:'每週固定花兩小時讀完',e:{GP:4,G:2,burn:5,sp:1},
@@ -1887,7 +1887,7 @@ CARDS.push(
 
 {id:'re3_exec',season:'h1',ctx:'憑證認列有三個階段：購買 → 持有 → <em>到憑證中心完成使用宣告</em>。多數人只做前兩個。而且台灣的憑證年份規則比國際嚴，沒有跨年度緩衝；台灣也沒有官方的剩餘電力組合係數，這是查證時最常被要求補述的地方。',pool:'p',chain:'re',w:13,plan:1,t:'憑證被退件了',
  cond:s=>s.reTrack===3,
- x:'確信單位翻你的綠電資料翻了兩天，然後指著一批憑證說：<em>這批不能算。</em><br><br>'
+ x:'查證單位翻你的綠電資料翻了兩天，然後指著一批憑證說：<em>這批不能算。</em><br><br>'
   +'原因很細：轉供的期間對不上、憑證的發電月份和你申報的用電月份不同、'
   +'還有一批的電是自發自用的，本來就不該再重複計算。<br><br>'
   +'你以為買到憑證就結束了。<em>買到只是開始，能不能被承認才是結束。</em>',
@@ -2091,7 +2091,7 @@ CARDS.push(
       +'<em>這些事很慢、很累、很難寫進 KPI——但它們也是這一行最後不會被自動化的部分。</em>',trait:'處理人的事'}]},
 
 {id:'hum_ask',pool:'p',w:9,t:'那個沒有標準答案的問題',
- cond:s=>s.major&&s.major.id==='hum'&&s.esgYrs>=3,
+ cond:s=>s.major&&s.major.id==='hum'&&s.esgYrs>=3&&s.year>=2028,
  x:'減碳路徑圖攤在桌上，數字全部對得起來。<br><br>'
   +'然後有人問：<em>「我們把產線移到那個國家，我們的排放降了，全球的排放有降嗎？」</em><br><br>'
   +'房間安靜下來。這個問題不在任何一份準則裡。',
@@ -2139,7 +2139,7 @@ CARDS.push(
       +'<em>後來業務拿它去跟客戶解釋，採購拿它去跟供應商解釋。</em>你寫的東西，開始自己走路。',trait:'寫過內部教材'}]},
 
 {id:'pw_sea',pool:'p',w:9,t:'綠領不一定是坐辦公室',
- cond:s=>s.inESG&&s.emp&&(s.emp.ind==='green'||s.emp.ind==='util')&&s.esgYrs>=2,
+ cond:s=>s.inESG&&s.emp&&(s.emp.ind==='green'||s.emp.ind==='util')&&s.esgYrs>=2&&s.year>=2021,
  x:'你被排進風場的現場查核。<br><br>'
   +'出發前你才知道這件事長什麼樣子：<em>要出海、要住在海上的作業平台、'
   +'能不能施工全看天氣窗口</em>——一年能動工的天數有限，一個颱風季就能讓整個時程延一年。<br><br>'
@@ -2823,7 +2823,7 @@ CARDS.push(
 {id:'l_budget',pool:'p',w:12,plan:1,t:'替團隊要預算',
  cond:function(s){return s.inESG&&s.level>=2&&!s.freelance},
  x:'明年度預算會議。永續部門的數字被列在「支出」欄，<em>而每個人都在問這筆錢換到什麼</em>。',
- o:[{l:'用省下的碳費和罰款風險算給他們看',e:{G:6,D:4,sp:1,burn:8,bmod:{v:0.10,y:3,w:'財務長第一次把永續的數字放進了預算會議'}},r:'你把減量投資換算成碳費節省、CBAM 成本與客戶訂單風險。財務長第一次點頭。',trait:'把永續講成錢'},
+ o:[{l:'用省下的能源成本和罰款風險算給他們看',e:{G:6,D:4,sp:1,burn:8,bmod:{v:0.10,y:3,w:'財務長第一次把永續的數字放進了預算會議'}},r:'你把減量投資換算成能源成本、出口合規成本與客戶訂單風險。財務長第一次點頭。',trait:'把永續講成錢'},
     {l:'訴諸品牌與形象',e:{G:2,D:2,rel:1},r:'預算保住了七成。你知道這套說法撐不了太久。'},
     {l:'不爭了，把現有的做好',e:{sp:2,soc:-1},r:'預算被砍了三成。你把最想做的那個案子往後推了一年。'}]},
 {id:'l_quitteam',pool:'p',w:11,t:'留不住人',
@@ -2840,7 +2840,7 @@ CARDS.push(
    高雄的中小企業多半不想養專職永續，整包丟給事務所，窗口常常是董事長特助。 */
 CARDS.push(
 {id:'r_move',pool:'p',w:15,t:'所裡要開中南部分點',
- cond:function(s){return s.emp&&s.emp.big4&&s.esgYrs>=2&&s.region==='台北'},
+ cond:function(s){return s.emp&&s.emp.big4&&s.esgYrs>=2&&s.region==='台北'&&s.year>=2016},
  x:'所裡宣布要在<em>台中與高雄各開一個據點</em>，就近服務中南部客戶。<br><br>主管問你要不要去——去的人少，位子空得快。',
  o:[{l:'去台中：傳產的大本營',e:{dom:6,E:4,rel:2,burn:6,region:'台中'},r:'你搬到台中。這裡的客戶多半不在強制編報告書的名單上，<em>但品牌客戶壓著要 SBTi 目標與產品碳足跡</em>——沒有報告書要寫，卻有更硬的東西要交。',trait:'中部戰場'},
     {l:'去高雄：整包接下來',e:{D:5,G:4,rel:3,burn:8,region:'高雄'},r:'你搬到高雄。這裡的中小企業<em>多半不想養專職永續</em>，索性把整包業務丟給事務所。你一個人同時是五家公司的永續部門。',trait:'南部戰場'},
@@ -2937,7 +2937,7 @@ CARDS.push(
     {l:'欣賞但婉拒，現實要顧',e:{sp:1,rel:1},r:'你謝謝他們，選了薪水高的那個。偶爾你會想起那場很不一樣的面試。'}]},
 {id:'pd_thinktank',pool:'p',w:10,t:'智庫的位子',
  cond:function(s){return s.G>=20&&s.esgYrs>=4},
- x:'一間綠色智庫在找研究員：做政策研究、跑淨零路徑模型、當政府與產業之間的橋。<em>看得到全局，但碰不到執行；影響力很大，薪水很普通</em>。',
+ x:'一間綠色智庫在找研究員：做政策研究、跑減碳路徑模型、當政府與產業之間的橋。<em>看得到全局，但碰不到執行；影響力很大，薪水很普通</em>。',
  o:[{l:'去做政策研究',e:{G:6,adv:3,dom:-2,burn:4},r:'你的名字開始出現在政府的委辦報告和公聽會上。你影響的是規則本身——只是那影響很慢才看得見。',trait:'進了智庫'},
     {l:'留在企業端做執行',e:{E:3,co2:1,dom:2},r:'你選擇繼續做看得到成果的事。智庫的宏觀視野很誘人，但你喜歡把東西真的做出來。'}]},
 {id:'pd_circular',pool:'p',w:10,t:'循環經濟新創找共同創辦人',
@@ -3191,7 +3191,7 @@ CARDS.push(
 {id:'mg_fight',pool:'p',w:13,plan:1,t:'跟別的部門搶資源',
  cond:function(s){return s.inESG&&s.level>=2&&!s.freelance},
  x:'年度預算會議。<em>永續、資訊、行銷同時要那一筆錢</em>，而資訊部門的簡報做得比你好看很多。',
- o:[{l:'把永續換算成錢：省下的碳費與訂單風險',e:{G:6,D:4,sp:1,burn:9},r:'你把減量投資換算成碳費節省與客戶訂單風險。財務長第一次點頭——這一課你學到的是：<em>不會算錢的永續，永遠排在最後。</em>',trait:'把永續講成錢'},
+ o:[{l:'把永續換算成錢：省下的能源成本與訂單風險',e:{G:6,D:4,sp:1,burn:9},r:'你把減量投資換算成能源成本節省與客戶訂單風險。財務長第一次點頭——這一課你學到的是：<em>不會算錢的永續，永遠排在最後。</em>',trait:'把永續講成錢'},
     {l:'去跟資訊部門談合作，一起提',e:{G:4,rel:4,S:2},r:'你把碳數據平台跟他們的系統升級綁在一起提。兩邊都拿到錢了，你也多了一個盟友。',trait:'結盟高手'},
     {l:'不爭，把現有的做好',e:{sp:2,soc:-1,esg:-1},r:'預算被砍了四成。你把最想做的那個案子往後推了一年。'}]},
 {id:'mg_ai_budget',pool:'p',w:12,t:'不給人，給你 AI',
@@ -3325,7 +3325,7 @@ CARDS.push(
  cond:function(s){return s.inESG&&!s.freelance&&s.esgYrs>=3&&s.emp&&!s.emp.big4},
  x:'調薪會議上，你的部門又被放在最後討論。<br><br>'
   +'理由沒有人明講，但每個人都知道：<em>你們不創造營收</em>。業務單位的獎金看業績，你們的績效看「有沒有出事」。<br><br>'
-  +'你手上有一份資料：今年因為你推的節能與碳費優惠，公司實際省下的錢，比你整個部門的年度預算還多。',
+  +'你手上有一份資料：今年因為你推的節能與能源補助，公司實際省下的錢，比你整個部門的年度預算還多。',
  o:[{l:'把省下來的錢算清楚，做成一頁給財務長',e:{G:6,pay:.07,rel:2,burn:9},r:'你用財務聽得懂的語言重寫了一次：投入多少、省下多少、回收期幾年。<br><br>財務長看完只說了一句：「這個怎麼沒有早點給我看。」<em>從那年起，你的預算不用再用拜託的。</em>',trait:'把永續講成錢'},
     {l:'接受現實，把力氣放在做事上',e:{E:3,co2:1,sp:1},r:'你不爭了。反正爭也爭不贏，不如把事情做好。<br><br>這個選擇讓你晚上睡得著，也讓你的薪水停在原地。'}]},
 {id:'v_ladder',pool:'p',w:12,t:'專員之上是什麼？',
@@ -3443,7 +3443,7 @@ CARDS.push(
   +'公司先凍結招募，再來是取消年終的一部分，接著人資寄來一封信，'
   +'標題是<em>「關於實施減班休息之說明」</em>。<br><br>'
   +'你的部門是成本中心。走廊上沒有人明講，但大家都在算同一件事。',
- o:[{l:'主動把部門的產出換算成錢，證明自己不是成本',e:{G:6,pay:.03,burn:12},r:'你把這幾年省下的能源費、避開的碳費、拿到的補助、免掉的罰款全部列成一張表。<br><br>裁員名單公布時，你的部門少了一個人——原本的版本是三個。<em>你救不了所有人，但你救了兩個。</em>',trait:'證明過自己'},
+ o:[{l:'主動把部門的產出換算成錢，證明自己不是成本',e:{G:6,pay:.03,burn:12},r:'你把這幾年省下的能源費、拿到的補助、免掉的罰款全部列成一張表。<br><br>裁員名單公布時，你的部門少了一個人——原本的版本是三個。<em>你救不了所有人，但你救了兩個。</em>',trait:'證明過自己'},
     {l:'接受減班，把時間拿去補技能',e:{cash:-14,D:4,E:3,burn:-4,learnDeep:1},r:'你每週少上一天班，薪水跟著少。<br><br>那些空出來的日子你拿去把一直沒時間學的東西學完。<em>景氣總會回來，而回來的時候你比別人多會一樣東西。</em>',trait:'在低谷補課'},
     {l:'開始找下一份工作',e:{hunt:1,leave:1,burn:8},r:'你判斷這艘船會漂很久。<br><br>履歷投出去才發現，寒冬裡整個市場的缺都少——<em>大家都在同一個時候想跳。</em>'}]},
 {id:'x_delivery_era',pool:'p',w:15,t:'他們不要會訂目標的人了',
@@ -5449,7 +5449,7 @@ trRegister({
 "一輪敬酒下來，手機多了二十個聯絡人。更值錢的是——<em>哪家公司在找人、開什麼條件、要求什麼，你一個晚上全問到了</em>。": "One round of toasts, and your phone had twenty new contacts. More valuable still — <em>which companies are hiring, what they're offering, what they require: you got it all in one night</em>.",
 "一通電話就接到案子，還是急件，報價可以開高一點。": "One phone call landed a project — a rush job, too, so the quote could go a little higher.",
 "一開始你以為自己是去「做好事」。第三個月你才弄懂那套規則：<em>成績沒到、行為登記不好看，教練就不讓你上場</em>。": "At first you thought you were going there to \"do good.\" It took until the third month to work out the rule: <em>if the grades aren't there, or the conduct record doesn't look good, the coach doesn't let you on the field</em>. ",
-"一間綠色智庫在找研究員：做政策研究、跑淨零路徑模型、當政府與產業之間的橋。<em>看得到全局，但碰不到執行；影響力很大，薪水很普通</em>。": "A green think tank is hiring researchers: policy research, net-zero pathway modeling, being the bridge between government and industry. <em>You see the whole board but never touch execution; the influence is large, the salary ordinary</em>.",
+"一間綠色智庫在找研究員：做政策研究、跑減碳路徑模型、當政府與產業之間的橋。<em>看得到全局，但碰不到執行；影響力很大，薪水很普通</em>。": "A green think tank is hiring researchers: policy research, decarbonization pathway modeling, being the bridge between government and industry. <em>You see the whole board but never touch execution; the influence is large, the salary ordinary</em>.",
 "一項一項比對到底": "Cross-check every single item",
 "一項關鍵技術突然成熟，整條減碳路徑要重算。": "A key technology matures overnight. The entire decarbonization pathway has to be recalculated.",
 "三個人分掉所有的事。你什麼都碰得到，但沒有一項碰得夠深。": "Three people splitting everything. You get to touch it all, but nothing deeply enough.",
@@ -6036,7 +6036,7 @@ trRegister({
 "你戒掉了熬夜。有些債要還很久，但至少你開始還了。": "You quit the all-nighters. Some debts take a long time to repay — but at least you've started repaying.",
 "你戴上耳機繼續做。效率確實比在辦公室高。": "You put on your headphones and kept working. You really are more productive than at the office.",
 "你手上剛好有一個卡在預算的設備升級案。": "And you happen to have an equipment upgrade stuck on budget.",
-"你手上有一份資料：今年因為你推的節能與碳費優惠，公司實際省下的錢，比你整個部門的年度預算還多。": "You have a figure in hand: this year, the energy savings and the carbon fee discount you pushed through saved the company more money than your department's entire annual budget.",
+"你手上有一份資料：今年因為你推的節能與能源補助，公司實際省下的錢，比你整個部門的年度預算還多。": "You have a figure in hand: this year, the energy savings and the utility rebates you pushed through saved the company more money than your department's entire annual budget.",
 "你打一份報告花多久。他們說這是為了找出流程瓶頸。<br><br>": "how long you took to write a report. They said it was to find bottlenecks in the process.<br><br>",
 "你打了一段回覆，他回了謝謝。群組很快就洗過去了。": "You typed out a reply; he said thanks. The group chat scrolled past it soon enough.",
 "你打了七通電話，沒有一個位子留給你。": "You made seven phone calls. Not one seat had been kept for you.",
@@ -6174,8 +6174,8 @@ trRegister({
 "你把派遣比例、外籍移工的居住條件、供應商的工時全部攤開。那份報告沒有對外，但那場會議開了三個小時。": "You laid it all out: the dispatch-labor ratio, migrant workers' housing conditions, supplier working hours. The report never went public. But that meeting ran three hours.",
 "你把流程精簡到只剩必要項目，團隊終於喘了一口氣。<br><br>兩年後有客戶問起其中一個指標，你們已經沒有在收了。": "You trimmed the process down to the essentials and the team finally got to breathe.<br><br>Two years later a customer asked about one of the indicators. You'd stopped collecting it.",
 "你把減碳重心移到包裝與運輸。也是有效的，只是慢一點。": "You shifted the decarbonization focus to packaging and transport. It works too. Just slower.",
-"你把減量投資換算成碳費節省、CBAM 成本與客戶訂單風險。財務長第一次點頭。": "You converted the reduction investments into carbon-fee savings, CBAM costs, and customer order risk. The CFO nodded for the first time.",
-"你把減量投資換算成碳費節省與客戶訂單風險。財務長第一次點頭——這一課你學到的是：<em>不會算錢的永續，永遠排在最後。</em>": "You converted the reduction investment into carbon-fee savings and client-order risk. The CFO nodded for the first time — and the lesson you took away: <em>sustainability that can't count money always goes last.</em>",
+"你把減量投資換算成能源成本、出口合規成本與客戶訂單風險。財務長第一次點頭。": "You converted the reduction investments into energy-cost savings, export-compliance costs, and customer order risk. The CFO nodded for the first time.",
+"你把減量投資換算成能源成本節省與客戶訂單風險。財務長第一次點頭——這一課你學到的是：<em>不會算錢的永續，永遠排在最後。</em>": "You converted the reduction investment into carbon-fee savings and client-order risk. The CFO nodded for the first time — and the lesson you took away: <em>sustainability that can't count money always goes last.</em>",
 "你把減量目標往上拉到一個內部吵了三個月的數字。<br><br>第一年就沒達標，報告書上要寫落後說明。<em>但分數上去了——因為評鑑要看的是你敢不敢承認自己還差得遠。</em>": "You pulled the reduction target up to a number the company argued about for three months.<br><br>You missed it in year one and had to write an explanation for falling behind into the sustainability report. <em>But the score went up — because what the rating wants to see is whether you dare admit how far you still have to go.</em>",
 "你把減量路徑、投資計畫、分年目標整包送審，內部吵了三個月才簽下去。<br><br>審過的那天，你第一次感覺到<em>「排碳有價」這四個字讓你在公司裡變得有份量</em>——因為你直接省下的是錢。": "You filed the whole package — abatement pathway, investment plan, year-by-year targets — and it took three months of internal argument to get signed.<br><br>The day it was approved, you felt for the first time that <em>\"carbon has a price\" had given you real weight inside the company</em> — because what you were saving was money.",
 "你把煤炭收入占比的門檻一階一階訂下去，寫進政策、對外公告。業務單位恨你半年，國際評比給了你們最好的一次分數。": "You set the coal-revenue thresholds down step by step, wrote them into policy, announced them publicly. The business units hated you for half a year. The international ratings gave you your best score ever.",
@@ -7019,7 +7019,7 @@ trRegister({
 "到處敬酒、狂換名片": "Toast every table, swap business cards",
 "到處認識永續圈的人": "Meet people around the sustainability scene",
 "制度": "Systems",
-"制度建好了，組織也上軌道了。接下來每年就是<em>按表操課</em>：報告書、評鑑、盤查、確信。<br><br>你算了一下：照這個速度，五年後的薪水大概是現在的一點二倍。": "The systems are built, the organization runs on rails. From here, every year is <em>going through the drill</em>: report, ratings, inventory, assurance.<br><br>You do the math: at this rate, your salary in five years will be about 1.2 times what it is now.",
+"制度建好了，組織也上軌道了。接下來每年就是<em>按表操課</em>：報告書、評鑑、盤查、查證。<br><br>你算了一下：照這個速度，五年後的薪水大概是現在的一點二倍。": "The systems are built, the organization runs on rails. From here, every year is <em>going through the drill</em>: report, ratings, inventory, verification.<br><br>You do the math: at this rate, your salary in five years will be about 1.2 times what it is now.",
 "刻意選一個題目往深處鑽，做到別人取代不了": "Pick one topic and dig until nobody can replace you",
 "前三個月你改他們的東西改到想哭。第四個月開始，你發現自己有時間思考了。": "For the first three months you corrected their work until you wanted to cry. From the fourth month on, you found you had time to think.",
 "前公司回頭找你": "Your Old Company Comes Back",
@@ -7835,7 +7835,7 @@ trRegister({
 "把永續 KPI 綁進薪酬委員會——稀缺技能。": "Tie sustainability KPIs into the compensation committee — a scarce skill.",
 "把永續帶進電競": "Brought Sustainability to Esports",
 "把永續往別的職能推：讓自己變成有預算有人的人": "Push sustainability into other functions: get budget and people",
-"把永續換算成錢：省下的碳費與訂單風險": "Convert Sustainability to Money: Carbon Fees Saved, Order Risk Averted",
+"把永續換算成錢：省下的能源成本與訂單風險": "Convert Sustainability to Money: Energy Costs Saved, Order Risk Averted",
 "把永續當風險在管。治理與揭露很硬，減碳專案要用搶的。": "Sustainability managed as risk. Strong on governance and disclosure; carbon reduction projects you have to fight for.",
 "把永續講成錢": "Speaks Money",
 "把永續資訊接進財報流程": "Wire ESG data into financial reporting",
@@ -8492,7 +8492,7 @@ trRegister({
 "用產業係數推估交差": "Estimate with industry factors, move on",
 "用產業別財務重大指標強化投資人溝通。": "Sharpen investor communication with sector-specific financially material metrics.",
 "用產業平均值填": "Fill it in with industry averages",
-"用省下的碳費和罰款風險算給他們看": "Show the savings in carbon fees and fines",
+"用省下的能源成本和罰款風險算給他們看": "Show the savings in energy costs and fines",
 "用電大戶條款來了": "The Large Electricity User Clause Arrives",
 "甲方最愛": "Client's Favorite",
 "甲醇雙燃料、綠色物流方案、總部行為準則、英文精通": "Methanol dual-fuel; green logistics solutions; head office code of conduct; fluent English",
@@ -9168,7 +9168,7 @@ trRegister({
 "課程團報": "Group Sign-Up for a Course",
 "調查跑了四個月，結論是查無實據——<em>但那時你已經被要求「自行離職以維持雙方體面」</em>。<br><br>一年後真相才出來：檢舉的人搞錯了對象。而你已經找了半年工作，沒有一家願意問清楚。": "The investigation ran four months and found no evidence — <em>but by then you had already been asked to \"resign voluntarily, to preserve everyone's dignity\"</em>.<br><br>The truth came out a year later: the accuser had the wrong person. By then you had been job-hunting for six months, and not one company was willing to hear the full story.",
 "調薪會議上，你的部門又被放在最後討論。<br><br>": "At the salary review meeting, your department is once again left until last.<br><br>",
-"調薪會議上，你的部門又被放在最後討論。<br><br>理由沒有人明講，但每個人都知道：<em>你們不創造營收</em>。業務單位的獎金看業績，你們的績效看「有沒有出事」。<br><br>你手上有一份資料：今年因為你推的節能與碳費優惠，公司實際省下的錢，比你整個部門的年度預算還多。": "At the salary review meeting, your department is once again left until last.<br><br>Nobody says why out loud, but everyone knows: <em>you don't generate revenue</em>. Sales bonuses track the numbers; your performance review tracks whether anything blew up.<br><br>You have a figure in hand: this year, the energy savings and the carbon fee discount you pushed through saved the company more money than your department's entire annual budget.",
+"調薪會議上，你的部門又被放在最後討論。<br><br>理由沒有人明講，但每個人都知道：<em>你們不創造營收</em>。業務單位的獎金看業績，你們的績效看「有沒有出事」。<br><br>你手上有一份資料：今年因為你推的節能與能源補助，公司實際省下的錢，比你整個部門的年度預算還多。": "At the salary review meeting, your department is once again left until last.<br><br>Nobody says why out loud, but everyone knows: <em>you don't generate revenue</em>. Sales bonuses track the numbers; your performance review tracks whether anything blew up.<br><br>You have a figure in hand: this year, the energy savings and the utility rebates you pushed through saved the company more money than your department's entire annual budget.",
 "調適與韌性": "Adaptation and Resilience",
 "調適韌性": "Adaptation & Resilience",
 "談分階段付款再接": "Negotiate staged payments first",
@@ -9654,7 +9654,7 @@ trRegister({
 "風電開發商": "Wind Power Developer",
 "風頭過了。什麼都沒有改變。": "The storm passed. Nothing changed.",
 "食品": "Food & Beverage",
-"食品、化工、金融和資本額百億以上的公司被要求編永續報告書。市場上突然到處在找<em>會寫報告書的人</em>。": "Food, chemicals, finance, and every company with over NT$10 billion in capital are now required to produce a sustainability report. Suddenly the whole market is looking for <em>people who can write one</em>.",
+"食品、化工、金融和資本額百億以上的公司被要求編企業社會責任報告書。市場上突然到處在找<em>會寫報告書的人</em>。": "Food, chemicals, finance, and every company with over NT$10 billion in capital are now required to produce a corporate social responsibility report. Suddenly the whole market is looking for <em>people who can write one</em>.",
 "食安與農產供應鏈、報告書（評比參與度低，制度待建）": "Food safety and agricultural supply chain; reporting (low rating participation, systems still to be built)",
 "香腸科技": "Sausage Tech",
 "馬上開始找": "Start looking right away",
@@ -9713,7 +9713,7 @@ trRegister({
 "出發前，代表團的行程被公開了。<br><br>然後就出事了：<em>整團的觀察員證被取消</em>，人到了現場進不去，只能在場外的咖啡廳把原本要開的會開完。<br><br>新聞在台灣吵了兩天，然後就過去了。而你手上還有一份要交的出差報告。": "Before departure, the delegation's itinerary becomes public.<br><br>Then it happens: <em>the whole delegation's observer badges are revoked</em>. You arrive and cannot get in, and the meetings end up finished in a cafe outside the venue.<br><br>The news runs in Taiwan for two days and then moves on. You still have a trip report due.",
 "你把產線拆到每一道製程，逐一算電、算蒸汽、算原料。<br><br>今年的考績因為你「延誤出貨支援」被扣了一點。<em>兩年後客戶要求實測值時，全公司只有你們拿得出來——那一年的訂單，是靠這張表拿到的。</em>": "You break the line down process by process and count the electricity, the steam, the raw material, one at a time.<br><br>Your review that year takes a hit for \"delaying shipping support.\" <em>Two years later, when the customer asks for measured values, yours is the only team in the company that has them—that year's orders are won on that one spreadsheet.</em>",
 "減碳路徑圖攤在桌上，數字全部對得起來。<br><br>然後有人問：<em>「我們把產線移到那個國家，我們的排放降了，全球的排放有降嗎？」</em><br><br>房間安靜下來。這個問題不在任何一份準則裡。": "The decarbonization pathway is spread across the table and every number reconciles.<br><br>Then someone asks: <em>\"We moved the line to that country. Our emissions went down. Did global emissions go down?\"</em><br><br>The room goes quiet. The question appears in no standard.",
-"你把這幾年省下的能源費、避開的碳費、拿到的補助、免掉的罰款全部列成一張表。<br><br>裁員名單公布時，你的部門少了一個人——原本的版本是三個。<em>你救不了所有人，但你救了兩個。</em>": "You put it all on one sheet: the energy costs saved these past years, the carbon fees avoided, the subsidies won, the fines never paid.<br><br>When the layoff list comes out, your department loses one person—the earlier version said three. <em>You could not save everyone. You saved two.</em>",
+"你把這幾年省下的能源費、拿到的補助、免掉的罰款全部列成一張表。<br><br>裁員名單公布時，你的部門少了一個人——原本的版本是三個。<em>你救不了所有人，但你救了兩個。</em>": "You put it all on one sheet: the energy costs saved these past years, the subsidies won, the fines never paid.<br><br>When the layoff list comes out, your department loses one person—the earlier version said three. <em>You could not save everyone. You saved two.</em>",
 "你們引用了多年的那套國際淨零方法學，<em>主辦的聯盟宣布停止運作</em>——只留下一份不再更新的公開指引。<br><br>你翻開公司的政策文件，發現裡面有十四處引用了那個聯盟的名字。": "The international net-zero methodology you have cited for years: <em>the alliance behind it announces it is ceasing operations</em>, leaving only a public guidance document that will never be updated again.<br><br>You open the company's policy file and find the alliance's name cited in fourteen places.",
 "下午兩點多，整條產線停了。<em>不是你們的問題，是電網的問題。</em><br><br>損失統計出來的那天，總經理在會議上問：「我們的韌性計畫在哪裡？」<br><br>所有人看著你。": "A little after two in the afternoon, the whole line stops. <em>Not your problem. The grid's problem.</em><br><br>The day the loss figures come in, the general manager asks in the meeting: \"Where is our resilience plan?\"<br><br>Everyone looks at you.",
 "你帶著團隊寫了一份自己的。可比性沒有了，但邏輯是你們自己的。<br><br><em>國際的「軟性規範」是可以整個消失的——把公司制度綁在單一聯盟上，是一種沒被評估過的風險。</em>": "You and your team write your own. Comparability is gone, but the logic is yours.<br><br><em>International \"soft norms\" can disappear entirely—tying a company's internal system to a single alliance is a risk nobody ever assessed.</em>",
@@ -9855,7 +9855,7 @@ trRegister({
 "資料中心一座一座蓋，<em>你排隊要買的綠電，被用更高的價錢標走了</em>。<br><br>減碳目標沒有變，分母卻一直在長；而市場上出現了一種很難說出口的分層——<em>付得起的公司先拿到，付不起的排在後面</em>。<br><br>你在會議上要解釋的，不是技術，是這件事為什麼不是你的錯。": "Data centers go up one after another, and <em>the green power you were queuing for is bid away at a higher price</em>.<br><br>The reduction target has not changed, but the denominator keeps growing; and a tiering has appeared in the market that nobody wants to say out loud—<em>the companies that can pay get it first, the ones that cannot wait at the back</em>.<br><br>What you have to explain in the meeting is not the technology. It is why this is not your fault.",
 "你第一次看懂那張曲線：<em>中午太陽最好的時候，電多到要棄光；傍晚太陽下山、用電還沒降，缺口最深。</em><br><br>廠務問你：所以我們的綠電到底夠不夠？<br><br>你發現這個問題沒有一句話的答案——<em>「有沒有電」和「什麼時候有電」，是兩件事。</em>": "For the first time you actually read the curve: <em>at midday, when the sun is at its best, there is so much power that some of it has to be curtailed; in the evening, when the sun is gone and demand has not dropped, the gap is deepest.</em><br><br>Facilities asks you: so is our green power enough or not?<br><br>You find the question has no one-sentence answer—<em>whether there is power and when there is power are two different things.</em>",
 "信箱裡躺著五封邀請：公會的、協會的、媒體辦的、顧問公司辦的、還有一場是某個新成立的聯盟。<br><br>全部免費，全部有茶點，全部在上班時間。<br><br><em>景氣好的時候，永續是一門辦活動的生意。</em>而你要決定的是：這些場合到底是人脈，還是時間黑洞。": "Five invitations sit in your inbox: one from a trade guild, one from an association, one run by a media outlet, one by a consulting firm, and one from some newly founded alliance.<br><br>All free, all with refreshments, all during working hours.<br><br><em>When the economy is good, sustainability is an events business.</em> What you have to decide is whether these rooms are a network, or a hole where time goes.",
-"你最大的出口市場開始收邊境碳費：<em>每一批貨都要附上這批貨的碳含量，而且要別人來驗</em>。<br><br>你以前算的是「公司一年排多少」。現在要算的是「這一櫃鋼捲排多少」——單位從公司變成一批貨的時候，工作量不是多一倍，是多一個數量級。": "Your largest export market begins charging a border carbon fee: <em>every shipment has to carry its own carbon content, and someone else has to verify it</em>.<br><br>You used to calculate how much the company emits in a year. Now you calculate how much this container of steel coil emits—when the unit changes from a company to a shipment, the work does not double, it goes up an order of magnitude.",
+"你最大的出口市場開始實施碳邊境調整機制（CBAM）：<em>每一批貨都要附上這批貨的碳含量，而且要別人來驗</em>。<br><br>你以前算的是「公司一年排多少」。現在要算的是「這一櫃鋼捲排多少」——單位從公司變成一批貨的時候，工作量不是多一倍，是多一個數量級。": "Your largest export market starts applying its Carbon Border Adjustment Mechanism (CBAM): <em>every shipment has to carry its own carbon content, and someone else has to verify it</em>.<br><br>You used to calculate how much the company emits in a year. Now you calculate how much this container of steel coil emits—when the unit changes from a company to a shipment, the work does not double, it goes up an order of magnitude.",
 "緩衝期的最後一年。<em>你們差 18%。</em><br><br>屋頂鋪滿了，長約簽了，儲能也裝了——但這五年公司多開了兩條產線，<em>分母一直在長</em>。你追的是一個會自己往前跑的目標。<br><br>距離申報只剩四個月。": "The last year of the grace period. <em>You are 18% short.</em><br><br>The roofs are covered, the long-term contracts are signed, the storage is installed—but the company opened two more production lines in those five years, and <em>the denominator kept growing</em>. You are chasing a target that runs ahead of you.<br><br>Four months until filing.",
 "一個最高層級的國際司法機構發表意見：<em>國家有義務規範私人企業的排放</em>，違反者要負責任、要賠償。<br><br>法務同事把新聞轉給你，附了一句：「這跟我們有關嗎？」<br><br>你想了三秒，回：有。": "A court at the highest international level issues an opinion: <em>states have an obligation to regulate the emissions of private companies</em>, and those in breach bear responsibility and owe compensation.<br><br>A colleague in legal forwards you the news with one line: does this have anything to do with us?<br><br>You think for three seconds and reply: yes.",
 "一開始你只是為了不要在會議上尷尬。<br><br>三個月後你發現，你開始<em>能預測自己的報表</em>——哪一條航線會斷、哪個市場的規則會鬆、哪一年的補貼會落日。<em>這不是博學，這是專業。</em>": "At first you only did it so you would not be caught out in meetings.<br><br>Three months later you notice you can <em>predict your own numbers</em>—which route will be cut, which market will loosen its rules, which year a subsidy will sunset. <em>This is not erudition. This is expertise.</em>",
@@ -9997,7 +9997,7 @@ trRegister({
 "先頂過去": "Held the line for now",
 "場場都到": "At every single one",
 "記者會上有人把「備用容量率」和「備轉容量率」講成同一件事，<em>而全場沒有人糾正</em>。<br><br>你知道差別：一個是年度規劃指標——裝置容量夠不夠；一個是當天的調度指標——今天真的發得出來的電夠不夠。<em>要判斷今天供電緊不緊，看的是後面那個。</em><br><br>隔天你們公司的簡報引用了錯的那一個。": "At the press conference someone talks about the \"reserve capacity margin\" and the \"operating reserve margin\" as if they were the same thing, <em>and nobody in the room corrects it</em>.<br><br>You know the difference. One is an annual planning metric — is there enough installed capacity; the other is a same-day dispatch metric — is there enough power that can actually be generated today. <em>To judge whether supply is tight today, you look at the second one.</em><br><br>The next day your company's slides cite the wrong one.",
-"確信單位翻你的綠電資料翻了兩天，然後指著一批憑證說：<em>這批不能算。</em><br><br>原因很細：轉供的期間對不上、憑證的發電月份和你申報的用電月份不同、還有一批的電是自發自用的，本來就不該再重複計算。<br><br>你以為買到憑證就結束了。<em>買到只是開始，能不能被承認才是結束。</em>": "The assurance team goes through your green power records for two days, then points at one batch of certificates and says: <em>these don't count.</em><br><br>The reasons are fine-grained: the wheeling periods don't line up, the generation month on the certificates doesn't match the consumption month you reported, and one batch was self-generated for own use, which should never have been counted twice in the first place.<br><br>You thought buying the certificates was the end of it. <em>Buying them is only the beginning. Being allowed to count them is the end.</em>",
+"查證單位翻你的綠電資料翻了兩天，然後指著一批憑證說：<em>這批不能算。</em><br><br>原因很細：轉供的期間對不上、憑證的發電月份和你申報的用電月份不同、還有一批的電是自發自用的，本來就不該再重複計算。<br><br>你以為買到憑證就結束了。<em>買到只是開始，能不能被承認才是結束。</em>": "The assurance team goes through your green power records for two days, then points at one batch of certificates and says: <em>these don't count.</em><br><br>The reasons are fine-grained: the wheeling periods don't line up, the generation month on the certificates doesn't match the consumption month you reported, and one batch was self-generated for own use, which should never have been counted twice in the first place.<br><br>You thought buying the certificates was the end of it. <em>Buying them is only the beginning. Being allowed to count them is the end.</em>",
 "面試一開始，對方沒有問你的理念，也沒有問你怎麼看淨零。<br><br>他問的是：<em>「你上一份工作，實際降下來多少？怎麼算的？誰驗證的？」</em><br><br>然後是第二個問題：「那個專案，最後有沒有做完？」<br><br>你發現這幾年準備好的那套說法，一句都用不上。": "The interview opens without a question about your philosophy, and without a question about how you see net zero.<br><br>What he asks is: <em>\"In your last job, how much did you actually bring down? How was it calculated? Who verified it?\"</em><br><br>Then the second question: \"That project — did it ever get finished?\"<br><br>You find that the answers you spent these years preparing are of no use at all. Not one line.",
 "公司在海外的新廠被當地執法單位大規模突襲，<em>好幾個從總部派去的技術人員因為簽證身分被拘留</em>，事情上了國際新聞。<br><br>你打開報告書的檔案，翻到「勞工人權」那一章——<em>你才發現這一章你一直在寫供應商，從來沒寫過自己人。</em>": "The company's new overseas plant is raided at scale by local enforcement, <em>and several engineers sent out from headquarters are detained over their visa status</em>. It reaches the international news.<br><br>You open the report file and turn to the chapter on labor and human rights — <em>and only then do you notice that the chapter has always been about suppliers, and never once about your own people.</em>",
 "公司要派人去 COP。你被選上了。<br><br>然後你才知道要怎麼進場：<em>台灣不是締約方</em>，所以你掛的是一個取得聯合國認證的環保團體的觀察員名額——連隨行的官員也是這樣進去的。<br><br>議場裡有一百九十幾個國家的名牌。沒有你們的。": "The company is sending someone to COP. You are the one chosen.<br><br>Then you learn how you actually get in: <em>Taiwan is not a Party to the convention</em>, so you go on an observer slot belonging to a UN-accredited environmental group — even the officials traveling with you enter the same way.<br><br>The hall has nameplates for a hundred and ninety-odd countries. None of them is yours.",
@@ -10803,11 +10803,11 @@ trRegister({
 "都很會做某一件具體的事": "each of them is very good at one specific, concrete thing",
 "碳費的費率由費率審議會決定，一般費率與優惠費率的差距很大——<em>這讓「做真的減量」在財務上第一次划得來</em>。這也是台灣的碳定價與歐盟排放交易制度最大的差別：台灣走的是收費，不是總量管制。": "The carbon fee rate is set by a rate review committee, and the gap between the standard rate and the preferential rate is wide — <em>which is what makes real emission cuts pay off financially for the first time</em>. It is also the biggest difference between Taiwan's carbon pricing and the EU Emissions Trading System: Taiwan charges a fee rather than capping total emissions.",
 "台灣九成以上是中小企業，但用電大戶條款、分階段接軌的準則、報告書義務，<em>全部從大公司開始</em>。中小企業卡在「客戶要求已經到了、法規還沒到、資源完全不夠」的夾層。": "More than ninety percent of Taiwanese firms are small and medium-sized enterprises, but the large electricity user clause, the phased roadmap for adopting international standards and the reporting obligations <em>all start with the big companies</em>. SMEs are caught in between: the customer demands have already arrived, the regulations have not, and the resources are nowhere near enough.",
-"邊境碳費把碳管理的單位從「公司一年排多少」變成「這一批貨排多少」。台灣的碳費理論上可以扣抵，<em>但對方尚未認可我國碳價，實際上抵不到</em>——所以台灣出口商等於被課了兩次。": "A border carbon fee shifts the unit of carbon management from how much a company emits in a year to how much this particular shipment emits. Taiwan's carbon fee can in theory be credited against it, <em>but the importing side has not yet recognized Taiwan's carbon price, so in practice the credit never lands</em> — which means Taiwanese exporters are charged twice.",
+"碳邊境調整機制把碳管理的單位從「公司一年排多少」變成「這一批貨排多少」。台灣的碳費理論上可以扣抵，<em>但對方尚未認可我國碳價，實際上抵不到</em>——所以台灣出口商等於被課了兩次。": "The Carbon Border Adjustment Mechanism (CBAM) shifts the unit of carbon management from how much a company emits in a year to how much this particular shipment emits. Taiwan's carbon fee can in theory be credited against it, <em>but the importing side has not yet recognized Taiwan's carbon price, so in practice the credit never lands</em> — which means Taiwanese exporters are charged twice.",
 "2025 到 2026 年最大的轉折不是法規變嚴，是<em>法規變鬆</em>：主要市場大幅拉高揭露門檻，八成以上的公司被移出適用範圍。對台灣的永續工作者來說這不是好消息——因為推著這份工作走的從來不是本國法規，是客戶的採購條款。": "The biggest turn between 2025 and 2026 was not regulation getting stricter, it was <em>regulation getting looser</em>: major markets raised their disclosure thresholds sharply, moving more than eighty percent of companies out of scope. For sustainability professionals in Taiwan that is not good news, because what drives this job has never been domestic law. It is the clauses in the customer's purchase contract.",
 "台灣多數公司在別人的供應鏈裡，範疇三（上下游排放）佔比極高。<em>這代表你要為別人的地緣政治後果負責</em>：一條航線因為衝突改道，你的運輸排放就上升，而你什麼都沒做錯。": "Most Taiwanese companies sit inside someone else's supply chain, and Scope 3 (upstream and downstream emissions) makes up an enormous share of their footprint. <em>That means carrying the consequences of other people's geopolitics</em>: a shipping lane reroutes because of a conflict, your transport emissions go up, and you did nothing wrong.",
 "台灣企業的外派調查裡，超過一半沒有明訂回任制度。國際研究則顯示：多數回任者返國前不知道自己要去哪個位子，<em>而且接到的職位常常比外派時低一階</em>。": "In Taiwanese surveys of overseas postings, more than half of companies have no written repatriation policy. International research adds that most returnees do not know which position they are coming back to before they fly home, <em>and the job they are given is often a rung lower than the one they left</em>.",
-"台灣的永續工作者比多數國家的同行更需要讀國際新聞——因為<em>推動這份工作的規則多半不是在台灣寫的</em>：客戶的市場、邊境碳費、國際準則，每一項都在別人的立法程序裡。": "Sustainability professionals in Taiwan have to follow international news more closely than their peers in most countries, because <em>the rules that drive this work are mostly not written in Taiwan</em>: the customer's market, border carbon fees, international standards. Every one of them is moving through somebody else's legislature.",
+"台灣的永續工作者比多數國家的同行更需要讀國際新聞——因為<em>推動這份工作的規則多半不是在台灣寫的</em>：客戶的市場、碳邊境調整機制、國際準則，每一項都在別人的立法程序裡。": "Sustainability professionals in Taiwan have to follow international news more closely than their peers in most countries, because <em>the rules that drive this work are mostly not written in Taiwan</em>: the customer's market, the Carbon Border Adjustment Mechanism, international standards. Every one of them is moving through somebody else's legislature.",
 "台灣的《再生能源發展條例》規定：跟公用售電業簽的<em>契約容量達五千瓩以上</em>的用電戶，要在被通知後五年內，設置相當於契約容量一成的再生能源。四種履行方式可以組合：自建、買綠電加憑證、設儲能，或繳代金。主管機關 2025 年檢討過門檻，決定<em>維持不下修</em>，理由之一是「已經開徵碳費」。": "Taiwan's Renewable Energy Development Act provides that an electricity user whose <em>contract capacity with the public utility reaches 5,000 kW</em> must, within five years of being notified, install renewable capacity equal to ten percent of that contract capacity. Four compliance routes can be combined: build your own, buy green power plus certificates, install storage, or make a payment in lieu. The competent authority reviewed the threshold in 2025 and decided to <em>leave it where it is</em>, partly on the grounds that the carbon fee is already being collected.",
 "離岸風電的長期購電合約，第一道關卡不是價格，是<em>買方的信用評等</em>——風場靠無追索權的專案融資借錢，銀行團只看未來二十年的售電現金流。國內符合國際信評標準、能直接簽的買方極少，政府因此推了信用保證機制當補丁。": "For an offshore wind farm's long-term power purchase agreement, the first hurdle is not the price, it is <em>the buyer's credit rating</em>. The wind farm borrows through non-recourse project finance, and the bank syndicate looks only at twenty years of future electricity cash flows. Very few domestic buyers meet international rating standards and can sign directly, so the government built a credit guarantee mechanism as a patch.",
 "憑證認列有三個階段：購買 → 持有 → <em>到憑證中心完成使用宣告</em>。多數人只做前兩個。而且台灣的憑證年份規則比國際嚴，沒有跨年度緩衝；台灣也沒有官方的剩餘電力組合係數，這是查證時最常被要求補述的地方。": "Claiming a certificate has three stages: buy it, hold it, and <em>complete the usage declaration at the certificate center</em>. Most people only do the first two. Taiwan's rules on certificate vintage are also stricter than international practice, with no cross-year buffer, and Taiwan has no official residual electricity mix factor, which is the point verifiers most often ask you to explain.",
@@ -11131,7 +11131,7 @@ trRegister({
 "砍到只剩真的": "Cut Down to What Is Real",
 "把沒錢寫出來": "Wrote the Shortfall Down",
 "圈內情報": "Inside Word",
-"　<span style=\"color:var(--accent)\">面試上的機率大約 ": "　<span style=\"color:var(--accent)\">chance of getting the offer: about ",
+"　<span style=\"color:var(--accent)\">錄取機率大約 ": "　<span style=\"color:var(--accent)\">chance of an offer: about ",
 "回信寫得很客氣。<em>你自己知道卡在哪裡</em>——他們問的那幾題，剛好都在你做過的事情之外。": "The reply is politely worded. <em>You know where it stuck</em> — the questions they asked all sat just outside what you have actually done.",
 "每月綠領職缺 <span class=\"mono\">": "Green-collar openings/month <span class=\"mono\">",
 "法遵": "Compliance",
@@ -12602,7 +12602,7 @@ const FOCUS_CARDS = {
   {t:'綠電要從哪裡來',x:'客戶要求用再生能源。你算了用電量，發現<em>市場上的綠電根本不夠、憑證早被大廠包走</em>。',
    o:[{l:'簽長約，也從省電這端下手',e:{E:9,co2:2,burn:10},r:'你參與了長期購電案，也跟廠務把冰水主機重調——省下來的電比買到的還多。',trait:'先省再買'},
       {l:'先買憑證達標就好',e:{E:3,co2:-1},r:'數字達標了。但你知道那不等於你們的機台真的用到了綠電。'}]},
-  {t:'範疇三這面牆',x:'品牌客戶要供應鏈碳數據。你的三百家供應商裡，<em>有兩百家連電費單都找不齊</em>。',
+  {t:'範疇三這面牆',cond:s=>s.year>=2013,x:'品牌客戶要供應鏈碳數據。你的三百家供應商裡，<em>有兩百家連電費單都找不齊</em>。',
    o:[{l:'辦說明會，一家家帶著做',e:{E:7,S:3,co2:3,burn:16},r:'半年後八成供應商交出了第一份盤查表。這是你最有成就感的一年。',trait:'把供應商帶起來'},
       {l:'用產業係數推估交差',e:{E:2,D:3,co2:-1,gwrisk:1},r:'數字補齊了。你知道那不是真的，客戶大概也知道。'}]},
   {t:'碳費帳單第一次寄到公司',cond:function(s){return s.year>=2026},
@@ -12623,7 +12623,7 @@ const FOCUS_CARDS = {
    o:[{l:'先做需量管理與節電，把分母壓下來',e:{E:8,co2:3,cash:4,burn:11,learn:'ppa'},r:'你帶著廠務把空壓機、冰水主機、照明重新盤了一遍。用電量掉了一成二——<em>綠電比例自動上升，而且省的是真的錢。</em>',trait:'先把分母壓下來'},
       {l:'簽長約，鎖住未來的量',e:{E:6,co2:2,cash:-8,G:2},r:'你簽了十年 PPA。單價比台電貴，但你替公司鎖住了一件會越來越難買的東西。'},
       {l:'買憑證補足帳面比例',e:{E:2,D:3,co2:-1,gwrisk:1},r:'比例達標了，客戶問卷也交了。你心裡清楚：<em>機台用的還是同一度電。</em>'}]},
-  {t:'今年要不要訂一個硬的減量目標',x:'主管問你：<em>要訂一個 SBTi 等級、外部會盯的目標，還是訂一個穩穩達得到的？</em>',
+  {t:'今年要不要訂一個硬的減量目標',cond:s=>s.year>=2016,x:'主管問你：<em>要訂一個 SBTi 等級、外部會盯的目標，還是訂一個穩穩達得到的？</em>',
    o:[{l:'訂科學基礎的硬目標',e:{E:8,G:3,co2:2,burn:9},r:'你送了 SBT 申請，審了十四個月才過。從此每一年的減量都有人在看。',trait:'訂了硬目標'},
       {l:'訂一個容易達成的',e:{E:3,D:2,co2:-1},r:'目標很漂亮、每年都達標。只是那個達標，本來就不需要你做什麼。'}]}
  ],
@@ -12698,7 +12698,7 @@ const FOCUS_CARDS = {
   {t:'漂綠風險，每個數字都要交代基期',x:'內稽進來了，會計師開始查你的永續數字。<em>成長了百分之十？基期是什麼？怎麼算的？</em>',
    o:[{l:'替每個對外數字建立完整軌跡',e:{G:8,D:3,burn:11},r:'你替每個數字都留了計算底稿與出處。三年後有人來查舊帳，你三分鐘就調得出來。',trait:'留得住底稿'},
       {l:'先把今年的交出去',e:{G:3,co2:-1,gwrisk:1},r:'今年過關了。明年換人接手時，那些數字沒人說得清楚怎麼來的。'}]},
-  {t:'永續金融評鑑要公布了',x:'金管會的評鑑結果快公布，<em>同業都在比排名，你們去年落在中段</em>。',
+  {t:'永續金融評鑑要公布了',cond:s=>s.year>=2023,x:'金管會的評鑑結果快公布，<em>同業都在比排名，你們去年落在中段</em>。',
    o:[{l:'照指標逐項補強',e:{G:8,D:4,esg:3,burn:12},r:'你把每一個扣分項拆開處理。名次上去了，你也把整套治理架構補完了。',trait:'評鑑打底'},
       {l:'挑分數最好拉的補',e:{G:3,D:2,esg:1,co2:-1},r:'名次進步了幾名。真正難的那幾項還留在原地。'}]},
   {t:'我們得獎了，但環團點名了我們',cond:function(s){return s.year>=2026},
@@ -12844,7 +12844,7 @@ function fitLine(e){
      所以維持「可以整句翻譯」的形狀。 */
   return '這個職缺要求的' + g.total + '項裡，你符合' + g.have.length + '項，'
        + fitWord(f)
-       + '　<span style="color:var(--accent)">面試上的機率大約 ' + Math.round(interviewP(e)*100) + '%</span>';
+       + '　<span style="color:var(--accent)">錄取機率大約 ' + Math.round(interviewP(e)*100) + '%</span>';
 }
 function skillById(id){ for(const k of SKILLS) if(k.id===id) return k; return null }
 function hasSkill(id){ return !!(S.skills && S.skills[id]) }
@@ -14766,7 +14766,7 @@ function regPressure(y){
 }
 function regPressureFor(emp, y){
   let p = regPressure(y);
-  if(emp && EU_EXPOSED.indexOf(emp.ind) >= 0 && y >= 2023) p += 1;   // 塑膠、包裝、邊境碳費
+  if(emp && EU_EXPOSED.indexOf(emp.ind) >= 0 && y >= 2023) p += 1;   // 塑膠、包裝、碳邊境調整機制
   return p;
 }
 
