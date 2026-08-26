@@ -311,10 +311,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v32';
+const GAME_VERSION = 'v33';
 /* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
    GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
-const BUILD_ID = '20260826-2321+96dd1ec';
+const BUILD_ID = '20260826-2343+ebdbe9c';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -3900,6 +3900,21 @@ const LEVELS = [
 /* ===== 薪資天花板 =====
    這一行真實的薪資是有頂的：職級 × 產業係數決定上限，超過的部分視為一次性獎金，
    隔年會被拉回。沒有這道閘門，靠跳槽複利可以滾到不合理的數字。 */
+/* ===== 年紀本身就是天花板 =====
+   職級天花板擋得住「職稱不夠高卻領太多」，擋不住「二十五歲就領到資深經理的錢」。
+   真實世界裡薪水是跟著年資往上爬的：跳槽讓你在那條線上往前挪，不會讓你整段跳過去。
+   三十四歲之後解除——那時候職級天花板已經夠嚴了，而且高薪本來就該在那之後發生。 */
+function agePayCap(){
+  const a = S.age || 22;
+  if(a >= 34) return 99999;
+  let c = 88 + Math.max(0, a - 22) * 13;      // 22→88、25→127、28→166、30→192、33→231
+  if(S.abroad){
+    const oh = (S.ovsId && typeof ovsById === 'function') ? ovsById(S.ovsId) : null;
+    c *= (oh ? oh.pay : 1.6);                 // 在別人的國家領別人的薪水，本來就不受這條線約束
+  }
+  if(isFreelance()) c *= 1.12;                // 接得動就有，但也不會憑空翻倍
+  return Math.round(c);
+}
 function payCap(){
   const lv = LEVELS[Math.max(0,Math.min(LEVELS.length-1,S.level))];
   const ind = (S.emp && IND[S.emp.ind]) || {c:1};
@@ -3915,9 +3930,11 @@ function payCap(){
     const oh = (typeof ovsById==='function' && S.ovsId) ? ovsById(S.ovsId) : null;
     c = lv.cap * (oh ? oh.pay : 1.6) * 1.25;
   }
-  if(!S.inESG) c = 235;                      // 非永續職另計
+  /* 非永續職原本是一條寫死的 235——結果變成一個洞：level 0 的人轉出永續就能領到 235。
+     改成跟總年資走。 */
+  if(!S.inESG) c = Math.min(235, 108 + (S.workYrs||0)*10);
   if(S.polit) c = 260;                       // 公職薪資法定，不套企業職級天花板
-  return Math.round(c);
+  return Math.round(Math.min(c, agePayCap()));
 }
 function clampPay(){
   const cap = payCap();
@@ -11114,6 +11131,8 @@ trRegister({
 "砍到只剩真的": "Cut Down to What Is Real",
 "把沒錢寫出來": "Wrote the Shortfall Down",
 "圈內情報": "Inside Word",
+"　<span style=\"color:var(--accent)\">面試上的機率大約 ": "　<span style=\"color:var(--accent)\">chance of getting the offer: about ",
+"回信寫得很客氣。<em>你自己知道卡在哪裡</em>——他們問的那幾題，剛好都在你做過的事情之外。": "The reply is politely worded. <em>You know where it stuck</em> — the questions they asked all sat just outside what you have actually done.",
 "每月綠領職缺 <span class=\"mono\">": "Green-collar openings/month <span class=\"mono\">",
 "法遵": "Compliance",
 "更多數字": "More numbers",
@@ -11905,6 +11924,7 @@ function doHunt(i){
     S.emp = {id:d.id,n:d.n,ind:d.ind,tier:'中後段',mult:d.mult,bar:0,burn:1.0,pre:5,f:d.f};
     S.inESG=false; S.prevJob=d.id;
     S.pay = Math.round(LEVELS[0].base*(IND[d.ind]?IND[d.ind].c:1)*d.mult*(.85+m/280));
+    clampPay();
     S.domName = IND[d.ind].n; S.dom += 4;
     S.ledger.push({y:S.year,t:'進入 '+d.n+'（非永續）',p:S.pay,mark:1});
     return showOutcome('你先找了別的工作：<strong>'+d.n+'</strong>。'+d.f
@@ -11914,6 +11934,7 @@ function doHunt(i){
   const emp = of.emp;
   S.emp=emp; S.inESG=true; S.domName=IND[emp.ind].n; S.dom+=3;
   S.pay = Math.round(calcPay(emp,0) * (of.k==='intern'?0.95:1));
+  clampPay();     // 新鮮人也要吃天花板：金融業的係數一度讓起薪算到 143 萬
   const tz = teamSize(emp);
   const teamLine = tz ? '<br><br>永續團隊 <strong>'+teamWord(tz)+'</strong>。'+teamNote(tz) : '';
   const dp = deptOf(emp);
@@ -12136,6 +12157,7 @@ function rollWindfall(){
 
 function yearStart(){
   if(S.age>=40) return ending();
+  clampPay();                          // 年初先夾一次：不讓任何路徑把超標的數字掛在畫面上一整年
   if(rollLifeShock()) return;          // 人生突然轉彎（35+ 機率升高）
   S.cardsLeft = 2;   // 一年兩張，避免單局太冗長
   S.askedFocusThisYear = 0; S.focusOverride = '';   // 調職是一年一次的事，過了就歸零
@@ -12816,11 +12838,13 @@ function fitWord(f){
 function fitLine(e){
   const g = jobGap(e), f = jobFit(e);
   if(!g.total) return '';
-  /* 這一行原本用五六個碎片接起來，每一段都短到會被更長的既有 key 咬走。
-     改成兩個可以整句翻譯的形狀。 */
+  /* 使用者要求：不要把「你還缺哪幾項」寫出來——現實裡沒有人會列給你看。
+     把同一件事換成你唯一真的會知道的形式：**這一場面試上得了的機率**。
+     這一行原本用五六個碎片接起來，每一段都短到會被更長的既有 key 咬走，
+     所以維持「可以整句翻譯」的形狀。 */
   return '這個職缺要求的' + g.total + '項裡，你符合' + g.have.length + '項，'
        + fitWord(f)
-       + (g.miss.length ? '　<span style="color:var(--warn)">還缺的是：' + g.miss.join('、') + '</span>' : '');
+       + '　<span style="color:var(--accent)">面試上的機率大約 ' + Math.round(interviewP(e)*100) + '%</span>';
 }
 function skillById(id){ for(const k of SKILLS) if(k.id===id) return k; return null }
 function hasSkill(id){ return !!(S.skills && S.skills[id]) }
@@ -13259,7 +13283,7 @@ function yearEnd(){
   /* v30：每年重算部門預算與（四大的）案量 */
   /* 兜底：不論薪水是從哪一條路徑長出來的，每年都夾一次，
      讓溢出在一年內回歸。（逐條追 45 個 S.pay= 賦值太容易漏。） */
-  if(S.inESG && S.emp) clampPay();
+  clampPay();          // 不分在職與否、不分做不做永續，一年夾一次
   S.budgetPrev = S.budget || 0;
   S.budget = deptBudget();
   S.deal   = dealFlow();
@@ -13946,6 +13970,7 @@ function yePick(k){
     const oh = ovsHere();
     S.ovsHomeYrs = S.abroadYrs||0;
     S.abroad=0; S.emp=null; S.quitFlag=1; S.jobless=0; S.ovsId='';
+    clampPay();   // 離開那個薪資市場的當下，天花板就換回台灣的了——不要讓海外數字在畫面上多掛一年
     S.rel=Math.max(0,S.rel-2);
     if(!S.traits.includes('回來了')) S.traits.push('回來了');
     /* ===== 回任（v29）=====
@@ -13974,7 +13999,11 @@ function yePick(k){
     S.quitFlag=0; S.leaveNext=0; S.freelance=1; S.inESG=true;   // foundFlag 要撐滿三年才算（goalMet 判 freeYrs>=3）
     S.emp={id:'free',n:'自己接案',ind:'cons',tier:'自僱',mult:.9,bar:0,burn:.8,pre:5,f:'沒有年終，沒有勞健保補助，但也沒有人管你幾點下班。'};
     const seniority = 1 + Math.min(.55, S.esgYrs*.045) + Math.min(.30, S.rel*.018);
+    const was = S.pay || 0;
     S.pay=Math.round(LEVELS[Math.max(0,S.level)].base*.95*seniority*(0.85+rnd()*0.45));
+    /* 原本這個數字完全不看你上一份薪水，導致從 NGO 跳出去接案會直接翻四倍。
+       接案的行情確實比受雇高，但它是從你原本的身價往上長的，不是重新發牌。 */
+    if(was > 0) S.pay = Math.min(S.pay, Math.round(Math.max(was*1.8, 55)));
     clampPay();
     if(!S.traits.includes('跳出去了')) S.traits.push('跳出去了');
     S.ledger.push({y:S.year,t:'離職，跳出去自己接案／創業',p:S.pay,mark:1});
@@ -14230,7 +14259,7 @@ function takeOffer(v, idx){
       if(S.failedIv === 3 && !S.traits.includes('被拒絕過很多次')) S.traits.push('被拒絕過很多次');
       const g = jobGap(emp);
       const why = (S.esgYrs>=2 && g.miss.length)
-        ? '回信寫得很客氣。<em>你自己知道卡在哪裡</em>——他們問的那幾題，剛好是你沒真的做過的：' + g.miss.join('、') + '。'
+        ? '回信寫得很客氣。<em>你自己知道卡在哪裡</em>——他們問的那幾題，剛好都在你做過的事情之外。'
         : (ELITE.indexOf(emp.id)>=0
             ? '最後一關是三個人一起面。你答得不差，但他們要的是「做過一模一樣的事」的人。'
             : '面試那天你狀態普通，對方也沒有很想聊。<em>有時候就是不對盤。</em>');
@@ -14283,7 +14312,6 @@ function takeOffer(v, idx){
   S.ledger.push({y:S.year,t:`跳槽到 ${emp.n}`,p:S.pay,mark:1});
   const fitTxt = S.misfitYrs
     ? `<br><br><em>不過你自己心裡有數</em>——那張職缺說明上的東西，你有一半沒真的做過。`
-      + `${jobGap(emp).miss.length?'（缺的是：'+jobGap(emp).miss.join('、')+'）':''}`
       + `接下來兩年，你要一邊做一邊補，補的時間是從你的睡眠裡挖出來的。`
     : (S.fitBonus ? `<br><br>面試的時候你發現，他們列的每一項你都做過。<em>這種對盤，一輩子不會遇到幾次。</em>` : '');
   const fineTxt = (S.bondFine ? `<br><br>你還沒跑完服務約，賠了 <strong>${S.bondFine} 萬</strong>違約金。公司出的那筆訓練費，最後還是你自己付了。` : '')
@@ -14406,10 +14434,13 @@ function rehirePick(k, idx){
     return rehire();
   }
   if(k==='give'){
-    const d = pick(DETOUR);
+    const d = pick(DETOUR), was = S.pay || 0;
     S.emp = {id:d.id,n:d.n,ind:d.ind,tier:'中後段',mult:d.mult,bar:0,burn:1.0,pre:5,f:d.f};
     S.inESG=false; S.jobless=0; S.prevJob=d.id;
     S.pay = Math.round(LEVELS[0].base*(IND[d.ind]?IND[d.ind].c:1)*d.mult*(.85+m/280)*(1+Math.min(.35,S.workYrs*.04)));
+    /* 這是「先找份有收入的工作」，不是升遷。金融業的產業係數 1.63 乘上年資加成之後，
+       一度讓空窗的人轉出永續反而加薪兩倍多——那不是這個選項的意思。 */
+    if(was > 0) S.pay = Math.min(S.pay, Math.round(Math.max(was*1.35, LEVELS[0].base*0.9)));
     clampPay();
     S.domName = IND[d.ind].n; S.dom += 4;
     S.ledger.push({y:S.year,t:'轉去 '+d.n+'（非永續）',p:S.pay,mark:1});
