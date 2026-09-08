@@ -283,10 +283,10 @@ function pick(arr){return arr[Math.floor(rnd()*arr.length)]}
 
 /* ============================================================
    ▼▼▼ 回饋表單設定（item 13, 19：後續追蹤）▼▼▼
-   收玩家回饋與結果的 Google 表單，連結到 dazyin2002@gmail.com。
+   收玩家回饋與結果的 Google 表單，連結到開發者自己的 Google 帳號。
 
    設定步驟（做一次就好）：
-   1. 用 dazyin2002@gmail.com 到 forms.google.com 建一個表單，欄位建議：
+   1. 用開發者的 Google 帳號到 forms.google.com 建一個表單，欄位建議：
       名字(簡答)、MBTI(簡答)、遊戲結果(段落)、想對開發者說的話(段落)、Email(簡答)。
    2. 右上「⋮」→「取得預先填入的連結」，每個欄位隨便填個字→產生連結→複製。
    3. 那條連結長得像：
@@ -310,10 +310,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v35';
+const GAME_VERSION = 'v36';
 /* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
    GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
-const BUILD_ID = '20260829-1759+81651e3';
+const BUILD_ID = '20260908-2258+c86b757';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -3464,9 +3464,7 @@ CARDS.push(
     {l:'講大的：那個影響整個集團的策略藍圖',e:{G:2,rel:-1},r:'你講了那份漂亮的藍圖。<br><br>對方聽完問：「所以現在執行到哪裡了？」你答不上來。'}]}
 );
 
-/* ===== Podcast 素材卡（四個台灣永續 podcast 的公開節目資訊，全部去識別化改寫）=====
-   一口甜甜圈（2021-2023，輕鬆訪談／職涯故事）、永續荒唐鏡（2025-，職場荒唐）、
-   台灣永續圖鑑（2025-，中小企業與技術）、永續會（2022，企業高層視角）。
+/* ===== Podcast 素材卡（取材自數個台灣永續 podcast 的公開節目資訊，全部去識別化改寫）=====
    只取「情境與兩難」，不引用逐字內容，不留任何來賓、主持人與公司的名字；
    每張卡的年份門檻對齊該集播出的年代與制度背景。 */
 CARDS.push(
@@ -4851,7 +4849,7 @@ function applyLangChrome(){
   const b=document.getElementById('langBtn'); if(b) b.textContent = en ? '中文' : 'EN';
   const h=document.querySelector('.mast h1'); if(h) h.textContent = t('title');
   const a=document.querySelector('.mast a.lin'); if(a) a.textContent = t('devlink');
-  const r=document.getElementById('restartBtn'); if(r) r.textContent = t('restart');
+  const r=document.getElementById('restartBtn'); if(r){ r.textContent = t('restart'); r.title = en ? 'Start a new run' : '重新開始一局'; }
   try{ document.title = t('title') }catch(e){}
 }
 try{ const sv=localStorage.getItem('nzl_lang'); if(sv) LANG=sv }catch(e){}

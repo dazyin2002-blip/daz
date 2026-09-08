@@ -69,7 +69,7 @@ git push -u origin main
 拿到正式網址後，編輯上層的 `build-site.py`，把最上方的
 
 ```python
-SITE_URL = "https://daz-esg.dazyin.workers.dev"
+SITE_URL = "https://你的專案名.pages.dev"
 ```
 
 改成你實際的網址，然後重新 `python build-site.py` 並推一次。
