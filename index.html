@@ -310,10 +310,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v36';
+const GAME_VERSION = 'v37';
 /* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
    GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
-const BUILD_ID = '20260908-2258+c86b757';
+const BUILD_ID = '20260923-2326+3da8c0e';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -348,11 +348,11 @@ const TREND = {
 2023:'★★ 準則大爆發的一年：ISSB 六月正式發布 IFRS S1／S2；TNFD 九月發布最終建議 v1.0，把 TCFD 的四支柱從氣候擴大到自然；金管會八月發布我國接軌藍圖，採直接採用。同年一月氣候變遷因應法三讀、二月公布施行（2050 淨零正式入法，碳費有了法源），八月環境部升格、十月 CBAM 進入過渡期、台灣碳權交易所成立並開國際碳權交易。GCSF 主軸「全球變遷中的加速轉型」。報告書首度破千，1,006 本。',
 2024:'★ 碳費三項子法八月底公告、費率十月底拍板：一般費率每噸 300 元。台灣碳權交易所國內減量額度 10 月上路。年底永續經濟活動認定指引出到第二版，涵蓋的金融機構授信餘額從 28.4% 拉到 64.3%。永續經濟活動認定指引出到第二版。TCFD 任務結束，監測責任移交 ISSB——會 TCFD 的人得改口說 S2 了。九月 TISFD 正式啟動，把「不平等與人」納入財務揭露。GCSF 主軸轉向「公正、有序、公平的轉型」。當年出版報告書中 73.2% 取得第三方確信。',
 2025:'★ 碳費費率 1/1 生效（一般 300 元／噸，有自主減量計畫可享 50 或 100 元優惠費率）。資本額 20 億以下上市櫃納入，全體上市櫃都要編永續報告書。<br>歐盟二月拋出 <em>Omnibus 簡化草案</em>，要大砍 CSRD／CSDDD 的適用範圍——歐洲客戶問的問題，一夜之間從「你們揭露了嗎」變成「這還要不要做」。美國那邊反 ESG 聲浪同步升溫。全球企業永續論壇（GCSF）今年主軸轉向「邁向自然正向未來」。綠領職缺 29,305 個。',
-2026:'★★ 碳費首度開徵，240 家企業、461 座工廠五月底前繳費，首輪收了 49.7 億。IFRS S1／S2 第一階段上路：資本額百億以上 119 家（含 14 家金控、24 家本國銀行）適用，永續資訊與財報同規格。CBAM 正式徵收；台灣碳費理論上可扣抵，但歐盟尚未認可我國碳價，實際上抵不到。ETS 試行平台預計下半年上線。<br>歐盟 Omnibus <em>二月正式通過</em>：CSRD 適用家數大砍（門檻拉到員工千人＋營收 4.5 億歐元）、盡職調查只留最大型企業。美國退出巴黎協定生效、SEC 提案廢止氣候揭露規則——「漂綠」變成「漂靜」，做還是照做，只是不敢大聲說。顧問圈的關注重心換了邊：人權與勞動的討論度首度超過淨零。綠領職缺 29,733 個，技能缺口 23 萬人，但徵才明顯轉為「低招募、低解僱」。',
+2026:'★★ 碳費首度開徵，240 家企業、461 座工廠五月底前繳費，首輪收了 49.7 億。IFRS S1／S2 第一階段上路：資本額百億以上 119 家（含 14 家金控、24 家本國銀行）適用，永續資訊與財報同規格。CBAM 正式徵收；台灣碳費理論上可扣抵，但歐盟尚未認可我國碳價，實際上抵不到。ETS 試行平台預計下半年上線。<br>歐盟 Omnibus <em>二月正式通過</em>：CSRD 適用家數大砍（門檻拉到員工千人＋營收 4.5 億歐元）、盡職調查只留最大型企業。美國退出巴黎協定生效、SEC 提案廢止氣候揭露規則——「漂綠」變成「漂靜」，做還是照做，只是不敢大聲說。顧問圈的關注重心換了邊：人權與勞動的討論度首度超過淨零。綠領職缺 29,733 個，技能缺口 23 萬人，但徵才明顯轉為「低招募、低解僱」。<br>九月，金管會與環境部宣布調整 IFRS 永續揭露準則的適用範圍：強制適用從 1,970 家縮到約 560 家（實收資本額 20 億以上，加上環境部納管應盤查及查驗者），占上市櫃市值逾 87%。其餘公司仍要揭露氣候治理、風險管理與範疇一、二排放，溫室氣體確信改為自願。',
 2027:'★ 路徑圖目標年：全體上市櫃完成溫室氣體盤查。IFRS S 第二階段：資本額 50–100 億的 107 家公司適用，年報與財報同時申報。範疇三最快自本年起強制揭露。TISFD 首個公開版框架問世，國際客戶的問卷開始出現「人」的欄位。<br>台灣的總量管制與交易（ETS）試行計畫已經排定 2028 年啟動，碳交所的交易平台先行上線——碳有價正要從「繳費」走向「交易」，會算碳的人開始學怎麼買賣碳。會做溫盤的人也開始變多。',
-2028:'IFRS S1／S2 第三階段：其餘 1,553 家上市櫃公司全數納入。年報第四章正式成為「永續相關財務資訊專章」。揭露義務全面到位。',
-2029:'★ 全體上市櫃公司揭露 IFRS 永續資訊，含溫室氣體盤查及確信。查驗證機構人力需求高峰。三張揭露框架至此到齊：氣候看 S2、自然看 TNFD、人看 TISFD。',
-2030:'法規紅利結束。報告書撰寫高度自動化。這個行業已經從「報告書產業」變成「風險治理與市場准入產業」——做的不再是揭露，是讓公司進得了別人的市場。',
+2028:'IFRS S1／S2 第三階段上路，但名單在 2026 年改過：強制適用的是資本額 20 億以上、以及環境部納管要盤查查驗的公司，金融、保險、證券期貨業則不論規模照原規劃。其餘一千四百多家只要揭露氣候治理、風險管理與範疇一、二。第三階段頭兩年只做氣候，母公司個體的溫室氣體確信也不用做了。',
+2029:'★ 原本排定全體上市櫃在這一年揭露 IFRS 永續資訊並完成確信；2026 年的調整之後，強制做的只剩約 560 家，其餘公司的溫室氣體確信改為自願。查驗與確信的高峰沒有來。三張揭露框架至此到齊：氣候看 S2、自然看 TNFD、人看 TISFD。',
+2030:'金管會預計在這一年重新檢討小型上市櫃的接軌措施。法規紅利結束。報告書撰寫高度自動化。這個行業已經從「報告書產業」變成「風險治理與市場准入產業」——做的不再是揭露，是讓公司進得了別人的市場。',
 2031:'揭露型職缺持續萎縮，策略與技術型職缺增加。',
 2032:'減碳戰場從自家工廠移到供應鏈與投融資組合。',
 2033:'轉型金融成為主戰場。',
@@ -580,8 +580,8 @@ const EMP = [
  {id:'b4o',  n:'橘色所',     ind:'cons', tier:'顧問',mult:1.00,bar:26,burn:1.9,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'orange',wfh:1,quitStress:1,f:'同事像家人，帶你的人是真的在帶你。溫暖到當你想走時，那份人情會變成壓力。'},
  {id:'b4g',  n:'綠色所',     ind:'cons', tier:'顧問',mult:1.02,bar:28,burn:2.05,pre:8,esg:{e:54,s:58,g:62},csa:1,dept:'consult',big4:1,firm:'green',wfh:1,teamSwitch:1,f:'組別多、轉組容易，你可以一直換到喜歡的題目。代價是加班在四大裡數一數二。'},
  {id:'b4b',  n:'藍色所',     ind:'cons', tier:'顧問',mult:1.04,bar:28,burn:1.95,pre:8,esg:{e:56,s:58,g:64},csa:1,dept:'consult',big4:1,firm:'blue',teamSwitch:1,f:'案子接得凶、分潤制度好，做得好年終很可觀。轉組也相對自由。'},
- {id:'bout', n:'小而美顧問', ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.4,pre:5,esg:{e:46,s:48,g:50},csa:-1,dept:'consult',f:'什麼案子都接、什麼都要會。學得廣，名片不夠亮。'},
- {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg:{e:50,s:52,g:58},csa:1,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。'},
+ {id:'bout', smallCons:1, n:'小而美顧問', ind:'cons', tier:'顧問',mult:.80,bar:20,burn:1.4,pre:5,esg:{e:46,s:48,g:50},csa:-1,dept:'consult',f:'什麼案子都接、什麼都要會。學得廣，名片不夠亮。'},
+ {id:'cert', n:'查驗證機構', ind:'cons', tier:'顧問',mult:.95,bar:34,burn:1.0,pre:6,esg:{e:50,s:52,g:58},csa:1,dept:'office',f:'拿著查證清單讓企業瑟瑟發抖的人。2026 年改制之前是賣方市場。'},
  {id:'tank', n:'國家級智庫', ind:'pub',  tier:'公部門',mult:.90,bar:36,burn:1.0,pre:6,esg:{e:58,s:60,g:62},csa:-1,dept:'office',f:'編國家溫室氣體清冊。看得到全局，碰不到執行。'},
  {id:'usr',  n:'大學永續辦公室',ind:'pub', tier:'學校',mult:.68,bar:26,burn:.75,pre:6,esg:{e:58,s:74,g:60},csa:-1,dept:'office',req:'USR 計畫申請與結案、大學社會責任報告書、跨系所協調',f:'留在校園做大學社會責任（USR）。薪水是這一行最低的一群，但你認識整個地方的人——地方創生、社區、學生、教授、公部門，全在你的通訊錄裡。'},
  {id:'semi3', n:'封測老大哥', ind:'semi', tier:'中後段',mult:1.06,bar:40,burn:1.15,pre:7,esg:{e:70,s:66,g:70},csa:1,dept:'ehs',req:'ISO 14064-1 盤查、廢水與化學品管理、客戶稽核、RE 使用率',f:'封裝測試的規模全球數一數二。製程用水用電都兇，減碳的每一步都很具體。'},
@@ -590,17 +590,17 @@ const EMP = [
  {id:'elec11',n:'面板雙雄之一',ind:'elec',tier:'中後段',mult:.94,bar:36,burn:1.15,pre:6,esg:{e:66,s:58,g:62},csa:1,dept:'ehs',req:'ISO 50001、水回收率、產品碳足跡、CDP',f:'面板廠。用水用電是出了名的兇，但也因此把節能做得很深。'},
  {id:'fin4',  n:'外商銀行台灣分行',ind:'fin',tier:'外商',mult:1.30,bar:52,burn:1.05,pre:8,esg:{e:76,s:74,g:84},apex:1,csa:1,dept:'risk',req:'總部氣候風險框架、TCFD、赤道原則、英文精通',intl:true,f:'總部的永續政策直接套用，標準比在地銀行高一截。薪水好，但你只是執行總部決定的事。'},
  {id:'fin5',  n:'投信龍頭',   ind:'fin',  tier:'中後段',mult:1.12,bar:44,burn:1.0,pre:7,esg:{e:64,s:64,g:76},csa:1,dept:'risk',req:'ESG 基金揭露、盡職治理、責任投資、投票權行使',f:'管的是別人的錢。ESG 基金要怎麼分類、怎麼揭露、會不會被說漂綠，全是你的事。'},
- {id:'steel3',n:'螺絲扣件廠', ind:'steel',tier:'中後段',mult:.84,bar:26,burn:1.0,pre:4,esg:{e:36,s:34,g:34},csa:0,dept:'ehs',req:'CBAM 申報、客戶碳數據要求',f:'隱形冠軍型的傳產。外銷歐洲，CBAM 一來整個慌了——而全公司只有你懂那是什麼。'},
+ {id:'steel3',cap20:1,n:'螺絲扣件廠', ind:'steel',tier:'中後段',mult:.84,bar:26,burn:1.0,pre:4,esg:{e:36,s:34,g:34},csa:0,dept:'ehs',req:'CBAM 申報、客戶碳數據要求',f:'隱形冠軍型的傳產。外銷歐洲，CBAM 一來整個慌了——而全公司只有你懂那是什麼。'},
  {id:'ship3', n:'散裝航運',   ind:'ship', tier:'中後段',mult:1.00,bar:34,burn:.9,pre:5,esg:{e:46,s:48,g:50},csa:0,dept:'office',req:'IMO 碳強度指標、船隊能效',f:'載的是原物料。運價比貨櫃更看天吃飯，永續預算跟著景氣上下。'},
  {id:'text3', n:'製鞋代工廠', ind:'text', tier:'中後段',mult:.90,bar:30,burn:1.2,pre:5,esg:{e:56,s:52,g:54},csa:1,dept:'ehs',req:'品牌客戶行為準則、移工權益、化學品管理、越南／印尼廠稽核',intl:true,f:'國際運動品牌的代工廠，廠區在東南亞。客戶的稽核比政府還嚴，尤其是勞動條件那一段。'},
- {id:'food3', n:'冷凍食品廠', ind:'food', tier:'中後段',mult:.86,bar:28,burn:1.0,pre:5,esg:{e:40,s:38,g:38},csa:0,dept:'ehs',req:'冷鏈能耗、食安、包材減量',f:'冷凍櫃二十四小時不能停。省電和食安中間那條線，你要自己找。'},
+ {id:'food3', cap20:1,n:'冷凍食品廠', ind:'food', tier:'中後段',mult:.86,bar:28,burn:1.0,pre:5,esg:{e:40,s:38,g:38},csa:0,dept:'ehs',req:'冷鏈能耗、食安、包材減量',f:'冷凍櫃二十四小時不能停。省電和食安中間那條線，你要自己找。'},
  {id:'retail3',n:'電商平台',  ind:'retail',tier:'中後段',mult:1.04,bar:38,burn:1.2,pre:6,esg:{e:48,s:46,g:52},csa:0,dept:'pr',req:'物流碳排、包材減量、賣家永續規範',f:'一天幾十萬個包裹。減碳的戰場在最後一哩路和那些紙箱裡。'},
  {id:'build3',n:'公共工程統包',ind:'build',tier:'中後段',mult:1.00,bar:34,burn:1.2,pre:6,esg:{e:44,s:46,g:48},csa:1,dept:'ehs',req:'綠建築標章、工地環安、生態檢核、公共工程履約',f:'蓋捷運、蓋橋、蓋公共建築。生態檢核和工地環安是硬要求，做的是很具體的事。'},
- {id:'green3',n:'儲能系統商', ind:'green',tier:'中後段',mult:.96,bar:32,burn:1.15,pre:5,esg:{e:66,s:56,g:58},csa:0,dept:'office',req:'電池碳足跡、電網服務、消防與安全',f:'綠電的最後一塊拼圖。產業很新、規則還在寫，你等於在幫整個市場定義什麼叫永續。'},
- {id:'util3', n:'水務工程公司',ind:'util', tier:'中後段',mult:.92,bar:30,burn:1.0,pre:5,esg:{e:58,s:56,g:52},csa:0,dept:'ehs',req:'再生水、污泥處理、ISO 14064-1',f:'做再生水與污水處理。缺水的年代，這是被低估的關鍵基礎設施。'},
+ {id:'green3',cap20:1,n:'儲能系統商', ind:'green',tier:'中後段',mult:.96,bar:32,burn:1.15,pre:5,esg:{e:66,s:56,g:58},csa:0,dept:'office',req:'電池碳足跡、電網服務、消防與安全',f:'綠電的最後一塊拼圖。產業很新、規則還在寫，你等於在幫整個市場定義什麼叫永續。'},
+ {id:'util3', cap20:1,n:'水務工程公司',ind:'util', tier:'中後段',mult:.92,bar:30,burn:1.0,pre:5,esg:{e:58,s:56,g:52},csa:0,dept:'ehs',req:'再生水、污泥處理、ISO 14064-1',f:'做再生水與污水處理。缺水的年代，這是被低估的關鍵基礎設施。'},
  {id:'ngo_edu',n:'溪邊教室',    ind:'ngo', tier:'NGO',mult:.66,bar:14,burn:1.0,pre:4,esg:{e:58,s:82,g:56},csa:-1,dept:'office',req:'課後輔導、家訪、方案撰寫與核銷、社區資源串聯',f:'台東的偏鄉課輔機構，靠計畫補助和募款活著。薪水是全遊戲最低的，但你會認識一整個鎮的人——而且你做的事，隔天在球場上看得到。'},
  {id:'ngo2',  n:'在地環保團體',ind:'ngo', tier:'NGO',mult:.62,bar:20,burn:1.1,pre:5,esg:{e:70,s:78,g:64},csa:-1,dept:'office',req:'議題倡議、政策研究、社區溝通、募款',f:'薪水低到不好意思講，做的事卻常常改變政策。你會站在企業的對面——那個位置看到的東西不一樣。'},
- {id:'bcorp', n:'向光良品',   ind:'retail',tier:'中後段',mult:.78,bar:34,burn:.85,pre:6,esg:{e:66,s:80,g:70},csa:-1,dept:'gm',req:'B 型企業認證維運（BIA 重新驗證）、共益報告、供應鏈溯源',f:'B 型企業。薪水比外面低一截，但整間公司的存在就是為了做好事——永續不是部門，是商業模式本身。'},
+ {id:'bcorp', cap20:1,n:'向光良品',   ind:'retail',tier:'中後段',mult:.78,bar:34,burn:.85,pre:6,esg:{e:66,s:80,g:70},csa:-1,dept:'gm',req:'B 型企業認證維運（BIA 重新驗證）、共益報告、供應鏈溯源',f:'B 型企業。薪水比外面低一截，但整間公司的存在就是為了做好事——永續不是部門，是商業模式本身。'},
  {id:'pub3',  n:'地方政府環保局',ind:'pub',tier:'公部門',mult:.86,bar:32,burn:.95,pre:6,esg:{e:62,s:60,g:60},csa:-1,dept:'ehs',req:'地方溫室氣體管制執行方案、稽查、公民溝通',f:'第一線的稽查與地方減碳。公文很多、資源很少，但你的一個決定會影響一整個縣市。'},
  {id:'sys1',  n:'永續系統商', ind:'cons', tier:'新創',mult:1.00,bar:34,burn:1.25,pre:6,esg:{e:58,s:52,g:56},csa:0,dept:'consult',req:'碳管理系統導入、資料架構、客戶教育訓練',f:'賣的是碳管理與 ESG 資料系統。你同時要懂準則和產品——這是這幾年才長出來的職涯。'},
  {id:'carbon1',n:'碳權開發商',ind:'cons', tier:'新創',mult:.94,bar:32,burn:1.3,pre:5,esg:{e:64,s:54,g:52},csa:-1,dept:'consult',req:'方法學、外加性論證、查驗機構溝通、專案開發',f:'開發自願減量專案、跑方法學、賣額度。前沿、刺激，也非常看市場臉色。'},
@@ -609,7 +609,7 @@ const EMP = [
  {id:'sky',  n:'翱翔航空',     ind:'air',   tier:'龍頭',mult:1.10,bar:42,burn:1.05,pre:7,esg:{e:88,s:88,g:92},csa:1,dept:'office',req:'SAF 摻配、CORSIA、CDP、DJSI 成分股維持、英文精通',f:'燃油就是碳排，減碳等於省錢。但要換的是整隊飛機。'},
  {id:'lowfare',n:'小藍天航空', ind:'air',   tier:'中後段',mult:.92,bar:30,burn:1.15,pre:5,esg:{e:30,s:30,g:32},csa:0,dept:'pr',req:'CORSIA 抵換（永續預算排在最後）',f:'廉航。成本壓到極限，永續預算是最後才排到的那一項。',fortune:'travel'},
  {id:'pharma_big',n:'寶寶藥業',ind:'pharma',tier:'龍頭',mult:1.05,bar:38,burn:1.0,pre:7,esg:{e:34,s:30,g:32},csa:-1,dept:'pr',req:'品牌客戶問卷、產品碳足跡（未受評，制度從零開始）',intl:true,f:'業界數一數二的大廠，靠併購長大、步調很快。永續起步得晚，制度還在追——進去是拓荒，不是守成。'},
- {id:'pharma_sm',n:'新藥小廠', ind:'pharma',tier:'中後段',mult:.88,bar:26,burn:1.1,pre:4,esg:{e:30,s:28,g:30},csa:-1,dept:'ehs',req:'品牌客戶問卷',f:'研發燒錢、還沒獲利，但國際品牌客戶已經開始問永續問卷。'},
+ {id:'pharma_sm',cap20:1,n:'新藥小廠', ind:'pharma',tier:'中後段',mult:.88,bar:26,burn:1.1,pre:4,esg:{e:30,s:28,g:30},csa:-1,dept:'ehs',req:'品牌客戶問卷',f:'研發燒錢、還沒獲利，但國際品牌客戶已經開始問永續問卷。'},
  {id:'build',n:'老牌營造廠',   ind:'build', tier:'中後段',mult:.95,bar:30,burn:1.15,pre:5,esg:{e:26,s:24,g:26},csa:0,dept:'ehs',req:'工地環安、廢棄物、綠建築標章、承攬商管理',f:'工地、職安、廢棄物。這裡的永續是很具體的事。'},
  {id:'devbuild',n:'豪宅建商',    ind:'build', tier:'龍頭',mult:1.05,bar:36,burn:1.0,pre:6,esg:{e:24,s:22,g:24},csa:0,dept:'pr',req:'綠建築標章、低碳建材',f:'房子越賣越貴，ESG 是新的行銷語言。你要分辨哪些是真的在做。'},
  {id:'semi2', n:'晶圓小老弟',   ind:'semi', tier:'中後段',mult:1.10,bar:40,burn:1.2,pre:6,esg:{e:58,s:50,g:56},csa:1,dept:'ehs',req:'ISO 14064-1 盤查、排放熱點分析、跨廠區碳數據管理',f:'跟在兩座大山後面跑。資源少一截，但客戶的要求一項都不少。'},
@@ -623,7 +623,7 @@ const EMP = [
  {id:'pharma3',n:'學名藥老牌',  ind:'pharma',tier:'中後段',mult:.90,bar:28,burn:.95,pre:5,esg:{e:32,s:30,g:32},csa:-1,dept:'ehs',req:'品牌客戶問卷、廢水管理（你會是第一個專職的人）',f:'做藥五十年，最近才聽說 ESG。你會是第一個專職的人。'},
  {id:'air3',  n:'貨運航空',     ind:'air',  tier:'中後段',mult:1.00,bar:34,burn:1.1,pre:5,esg:{e:40,s:38,g:40},csa:0,dept:'office',req:'SAF 評估、CORSIA',f:'電商把貨機塞滿。飛得越多賺得越多，碳也排得越多。'},
  {id:'chem1', n:'塑化集團',     ind:'chem', tier:'龍頭',mult:1.08,bar:42,burn:1.05,pre:7,esg:{e:38,s:28,g:30},csa:0,dept:'ehs',req:'CBAM、循環塑膠、碳費大戶自主減量計畫、ISO 50001',f:'全台繳碳費最多的集團之一。轉型的錢有，決心看年份。'},
- {id:'elec9', n:'連接器隱形冠軍',ind:'elec',tier:'中後段',mult:.95,bar:32,burn:1.05,pre:5,esg:{e:46,s:38,g:42},csa:0,dept:'ehs',req:'品牌客戶問卷、ISO 14064-1 盤查',f:'你沒聽過它，但全球一半的手機裡有它的零件。品牌客戶的要求一層層壓下來。'},
+ {id:'elec9', cap20:1,n:'連接器隱形冠軍',ind:'elec',tier:'中後段',mult:.95,bar:32,burn:1.05,pre:5,esg:{e:46,s:38,g:42},csa:0,dept:'ehs',req:'品牌客戶問卷、ISO 14064-1 盤查',f:'你沒聽過它，但全球一半的手機裡有它的零件。品牌客戶的要求一層層壓下來。'},
  {id:'telco1',n:'大哥大電信',   ind:'telco',tier:'龍頭',mult:1.22,bar:46,burn:.95,pre:8,esg:{e:92,s:92,g:94},apex:1,csa:1,dept:'office',req:'RE100、基站節能、CDP A 級、DJSI 成分股維持、英文精通',f:'基地台是吃電怪獸，但這裡的永續做得早、做得深，評鑑年年拿獎。福利好，位子難空。'},
  {id:'telco2',n:'老電信巨人',   ind:'telco',tier:'龍頭',mult:1.15,bar:44,burn:.85,pre:8,esg:{e:92,s:92,g:96},csa:1,dept:'office',req:'RE100、綠色資料中心、TCFD、公司治理評鑑前 5%',leanTeam:0,f:'國營色彩濃，制度完整、步調慢。你會學到最扎實的治理流程，也會學到什麼叫跑公文。'},
  {id:'util1', n:'國營電力公司', ind:'util', tier:'公部門',mult:1.05,bar:42,burn:1.0,pre:8,esg:{e:48,s:56,g:52},csa:1,dept:'ehs',req:'電力排放係數、能源轉型路徑、公正轉型、公民溝通',f:'全台碳排最大的單一機構，也是能源轉型的執行者。你做的每個決定都會上新聞。'},
@@ -863,12 +863,12 @@ CARDS.push(
 {id:'h27',pool:'h',yr:[2027,2028],w:11,t:'全體上市櫃完成溫盤',
  x:'路徑圖的目標年到了。<em>會做溫盤的人，從稀缺變成基本配備</em>。你五年前引以為傲的技能，現在是入門門檻。',
  o:[{l:'往上走，做減量策略',e:{E:7,co2:2,sp:1},r:'盤查只是知道有多少，減量才是真的做事。你開始走第二段路。'},
-    {l:'往深走，去做查證',e:{D:6,G:2},r:'既然大家都要盤，那就當查的人。2029 年的確信大限正在前面等著。'},
+    {l:'往深走，去做查證',e:{D:6,G:2},r:'既然大家都要盤，那就當查的人。只是 2026 年改制之後，2029 年的確信大限只剩五百多家要趕。'},
     {l:'維持現狀',e:{sp:1,pay:-.02},r:'你還是那個很會盤查的人。只是現在，很會盤查的人有很多。'}]},
 {id:'h29',pool:'h',yr:[2029,2030],w:10,t:'確信大限',
  cond:function(s){return s.E>=25},
- x:'全體上市櫃要完成溫盤確信。查驗證機構的人力被搶到見底，<em>報價一路往上開</em>。',
- o:[{l:'跳去查驗證機構',e:{hunt:1,G:2},r:'你更新了履歷。這一年查驗證機構在搶人，開的價錢很好看。'},
+ x:'原本全體上市櫃都要在這一年完成溫盤確信。2026 年改制之後，強制要做的只剩約 560 家，<em>查驗證機構的報價沒有如預期一路往上開</em>。',
+ o:[{l:'跳去查驗證機構',e:{hunt:1,G:2},r:'你更新了履歷。只是強制確信的名單縮了，這一年查驗證機構開出來的缺比你想的少。'},
     {l:'留在企業端接招',e:{G:3,burn:10},r:'你成了那個要被查的人。準備了三個月，只為了那兩天。'}]},
 
 /* ===== 個人池擴充 ===== */
@@ -4139,11 +4139,13 @@ function apply(e, out){
   if(e.path){ S.stampPath=e.path }   // 中生代分岔（item 5）：破關後選的路，會一路影響到結局
   if(e.bond){ S.bond=(S.bond||0)+e.bond; d.push(['服務約', e.bond+' 年']) }
   if(e.hunt2esg){
-    const pool = EMP.filter(function(x){ return !x.big4 && x.ind!=='ngo' && ELITE.indexOf(x.id)<0 && x.bar<=cw()+14 });
+    /* v37：新制後第一次進永續的人，能搆到的缺變少、談到的薪水也低一點 */
+    const nb = Math.round(6 * ifrsShock(S.year));
+    const pool = EMP.filter(function(x){ return !x.big4 && x.ind!=='ngo' && ELITE.indexOf(x.id)<0 && x.bar<=cw()+14-nb });
     const emp = pool.length ? pool[Math.floor(rnd()*pool.length)] : EMP[0];
     const cy2 = S.prevJob && CARRY[S.prevJob];
     S.emp=emp; S.inESG=true; S.esgYrs=0; S.level=Math.max(0,S.level-1); S.domName=IND[emp.ind].n;
-    S.pay = Math.round(calcPay(emp,0)*(1+Math.min(.35,S.workYrs*.05))*0.94);
+    S.pay = Math.round(calcPay(emp,0)*(1+Math.min(.35,S.workYrs*.05))*0.94*(1 - 0.06*ifrsShock(S.year)));
     if(cy2 && !S.carried){
       S.carried=1; S.E+=cy2.E; S.S+=cy2.S; S.G+=cy2.G; S.D+=cy2.D;
       if(!S.traits.includes(cy2.t)) S.traits.push(cy2.t);
@@ -4501,7 +4503,7 @@ function yearEndBonus(grade){
      這就是「考績很好，但年終還是不高」的那一年——
      年終的池子是公司給的，考績只決定你在池子裡分到多少。 */
   if(S.emp && !isFreelance()){
-    const pf = indProfit(S.emp.ind, S.year);
+    const pf = empProfit(S.emp, S.year);
     if(pf >= 1.5)      reasons.push({v: 0.22, w:'公司今年賺得凶，整個獎金池被放大'});
     else if(pf >= 0.5) reasons.push({v: 0.08, w:'公司今年還過得去'});
     else if(pf <= -1.5)reasons.push({v:-0.30, w:'<strong>公司今年虧錢</strong>——獎金池先被砍，才輪到考績分配'});
@@ -4574,6 +4576,8 @@ function tryPromote(){
       pr *= m;
     }
     if(S.level>=3 && isFreelance()) pr *= 0.6;
+    /* v37：新制後的乙方，訂單變少之後先卡住的是升遷 */
+    if(isVendor(S.emp)) pr *= 1 - 0.2 * ifrsShock(S.year);
     /* 協理與永續長不是「達標就會升」——那兩個位子上通常已經有人，
        而那個人不會每年都走。條件到位只是讓你排得進候選名單。 */
     if(S.level === 2) pr *= 0.200;
@@ -5302,8 +5306,19 @@ trRegister({
 "IFRS S1／S2 導入": "IFRS S1/S2 Implementation",
 "IFRS S1／S2 導入實務": "IFRS S1/S2 Implementation Practice",
 "IFRS S1／S2 導入研習": "IFRS S1/S2 Implementation Workshop",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br><strong>想進這一行的人，門檻變高了。</strong>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br><strong>For anyone trying to get into this field, the bar is higher now.</strong>",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>你現在剛好在找工作。<strong>接下來會碰到的，是乙方遇缺不補、甲方凍結人事。</strong>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>You happen to be looking for work right now. <strong>What you'll run into: consultancies not backfilling, and companies freezing headcount.</strong>",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>整個市場原本排著的第三階段導入案，少了一千四百多家公司。<strong>接下來會看到的，是遇缺不補、擋升遷，或是裁員。</strong>走掉的人會往企業端去。": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>The phase-three adoption work the whole market had lined up just lost some 1,400 companies. <strong>What comes next: no backfilling, blocked promotions, or layoffs.</strong> The people who leave will head for the corporate side.",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>你手上排著的導入提案，很多客戶不用強制做了。<strong>這個政策對中小型顧問公司，會是很嚴重的衝擊。</strong>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>Many of the clients behind the adoption proposals you had lined up are no longer required to do it. <strong>For small and mid-sized consultancies, this policy is a serious blow.</strong>",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>你手上排著的導入提案，很多客戶不用強制做了。<strong>訂單大減之後，接下來就是遇缺不補、擋升遷。</strong>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>Many of the clients behind the adoption proposals you had lined up are no longer required to do it. <strong>With orders collapsing, what follows is no backfilling and blocked promotions.</strong>",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>強制確信的名單跟著縮小，<strong>第二、三階段的母公司個體確信也拿掉了。</strong>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>The list of companies required to get assurance shrinks with it, <strong>and parent-company assurance for phases two and three is dropped.</strong>",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>你待的單位不是上市櫃，這次調整不會直接影響你。": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>Where you work isn't a listed company, so this change doesn't affect you directly.",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>你的公司不在強制名單上了。老闆的第一個反應是<strong>凍結人事</strong>。<br>但你也不用再一直為了法遵追著揭露跑，<em>可以回頭好好回應其他利害關係人的需求了，像是專心把碳減下來，或是顧好跟社區鄰里的關係。</em>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>Your company is off the mandatory list. The boss's first move is to <strong>freeze headcount</strong>.<br>But you no longer have to keep chasing disclosure for compliance's sake. <em>You can go back to properly answering what your other stakeholders need, like focusing on actually cutting carbon, or looking after your relationship with the neighborhood around you.</em>",
+"2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>你的公司還在名單上，該做的一樣要做。<strong>只是接下來遇缺，會有很多四大或永續經驗的人來應徵。</strong>": "In September 2026, the FSC and the Ministry of Environment jointly announce: <em>mandatory adoption of the IFRS sustainability disclosure standards shrinks from 1,970 companies to about 560</em>. Companies with paid-in capital under NT$2 billion that are not on the Ministry of Environment's regulated list only need to disclose basic climate information.<br>Your company is still on the list, and the work still has to be done. <strong>It's just that from here on, every opening will draw plenty of applicants with Big Four or sustainability experience.</strong>",
+"顧問公司接不到案，縮編": "The consultancy ran out of work and downsized",
+"<strong>老闆把大家找進會議室。</strong>今年接到的導入案少了很多，公司養不起這麼多人。<br><em>你是這一波被請走的人之一。</em>": "<strong>The boss calls everyone into the meeting room.</strong> This year's adoption engagements are way down, and the firm can't carry this many people.<br><em>You are one of the people let go in this round.</em>",
 "IFRS S1／S2 正式發布": "IFRS S1/S2 Officially Released",
-"IFRS S1／S2 第三階段：其餘 1,553 家上市櫃公司全數納入。年報第四章正式成為「永續相關財務資訊專章」。揭露義務全面到位。": "IFRS S1/S2 phase three: the remaining 1,553 listed and OTC companies are all brought in. Chapter 4 of the annual report formally becomes the \"sustainability-related financial information\" section. Disclosure obligations are fully in place.",
+"IFRS S1／S2 第三階段上路，但名單在 2026 年改過：強制適用的是資本額 20 億以上、以及環境部納管要盤查查驗的公司，金融、保險、證券期貨業則不論規模照原規劃。其餘一千四百多家只要揭露氣候治理、風險管理與範疇一、二。第三階段頭兩年只做氣候，母公司個體的溫室氣體確信也不用做了。": "IFRS S1/S2 phase three begins, but the list was changed in 2026: mandatory adoption covers companies with NT$2 billion or more in capital, plus those the Ministry of Environment requires to inventory and verify; banking, insurance and securities firms stay on the original plan regardless of size. The other 1,400-odd companies only disclose climate governance, risk management and Scope 1 and 2. Phase-three companies cover climate alone for their first two years, and parent-company GHG assurance is no longer required.",
 "IFRS S2 把 ESG 資料拉到財報等級，Excel 拼裝法會撐不住——而你能建真的系統。<em>但你容易被當成 IT，被丟去做儀表板。</em>": "IFRS S2 pulls ESG data up to financial-reporting grade, and Excel held together with tape will not hold — you can build the real system. <em>But you are easily read as IT and handed the dashboards.</em>",
 "IFRS S2 要的不只是排放數字——它要你回答：<em>在 IPCC 的暖化情境下，你的廠區會發生什麼事？</em><br><br>顧問的報價單上寫著「氣候情境分析：SSP1-2.6 與 SSP5-8.5 雙情境、淹水與高溫熱危害圖層套疊」。你看著那個數字，再看看自己的團隊。": "IFRS S2 wants more than emissions numbers — it wants you to answer: <em>under the IPCC's warming scenarios, what happens to your plants?</em><br><br>The consultant's quote reads \"climate scenario analysis: dual scenarios SSP1-2.6 and SSP5-8.5, with flood and extreme-heat hazard layer overlays.\" You look at the number on the quote, then at your own team.",
 "IFRS 永續資訊跟財報同規格之後，<em>不實揭露也跟財報一樣有刑責</em>。<br><br>檢調來的時候，帶走的是三年前那份你經手的申報文件。": "Now that IFRS holds sustainability information to the same standard as financial statements, <em>false disclosure carries criminal liability just like the financials</em>.<br><br>When the prosecutors come, what they take away is the filing you handled three years ago.",
@@ -5367,7 +5382,7 @@ trRegister({
 "iPAS 淨零碳規劃管理師（初級）": "iPAS Net-Zero Carbon Planning Manager (Level 1)",
 "——這是連四大都沒幾家在做的東西": " — something barely anyone in the Big Four does",
 "★ TCFD 氣候相關財務揭露建議書發布，把氣候從 CSR 議題變成財務議題。資本額 50–100 億公司納入編製範圍。年底台灣永續指數發布。": "★ TCFD publishes its recommendations on climate-related financial disclosure, turning climate from a CSR topic into a financial one. Companies capitalized at NT$5–10 billion are brought into the reporting scope. The Taiwan Sustainability Index launches at year end.",
-"★ 全體上市櫃公司揭露 IFRS 永續資訊，含溫室氣體盤查及確信。查驗證機構人力需求高峰。三張揭露框架至此到齊：氣候看 S2、自然看 TNFD、人看 TISFD。": "★ All listed and OTC companies disclose IFRS sustainability information, including GHG inventory and assurance. Demand for verification and assurance body staff peaks. The three disclosure frameworks are now complete: S2 for climate, TNFD for nature, TISFD for people.",
+"★ 原本排定全體上市櫃在這一年揭露 IFRS 永續資訊並完成確信；2026 年的調整之後，強制做的只剩約 560 家，其餘公司的溫室氣體確信改為自願。查驗與確信的高峰沒有來。三張揭露框架至此到齊：氣候看 S2、自然看 TNFD、人看 TISFD。": "★ Every listed company was originally scheduled to disclose IFRS sustainability information and complete assurance this year; after the 2026 change, only about 560 still must, and GHG assurance is voluntary for the rest. The verification and assurance peak never arrives. The three disclosure frameworks are now complete: S2 for climate, TNFD for nature, TISFD for people.",
 "★ 碳費三項子法八月底公告、費率十月底拍板：一般費率每噸 300 元。台灣碳權交易所國內減量額度 10 月上路。年底永續經濟活動認定指引出到第二版，涵蓋的金融機構授信餘額從 28.4% 拉到 64.3%。永續經濟活動認定指引出到第二版。TCFD 任務結束，監測責任移交 ISSB——會 TCFD 的人得改口說 S2 了。九月 TISFD 正式啟動，把「不平等與人」納入財務揭露。GCSF 主軸轉向「公正、有序、公平的轉型」。當年出版報告書中 73.2% 取得第三方確信。": "★ The three carbon fee sub-regulations are announced at the end of August and the rates settled at the end of October: a general rate of NT$300 per tonne. The Taiwan Carbon Solution Exchange launches domestic offset credits in October. By year end the Sustainable Economic Activities Guidelines reach their second edition, lifting covered lending balances at financial institutions from 28.4% to 64.3%. The Sustainable Economic Activities Guidelines reach their second edition. TCFD's mandate ends and monitoring passes to the ISSB—people who knew TCFD now have to say S2 instead. TISFD formally launches in September, bringing \"inequality and people\" into financial disclosure. GCSF's theme shifts to \"A Just, Orderly and Equitable Transition.\" Of the sustainability reports published that year, 73.2% obtained third-party assurance.",
 "★ 碳費費率 1/1 生效（一般 300 元／噸，有自主減量計畫可享 50 或 100 元優惠費率）。資本額 20 億以下上市櫃納入，全體上市櫃都要編永續報告書。<br>歐盟二月拋出 <em>Omnibus 簡化草案</em>，要大砍 CSRD／CSDDD 的適用範圍——歐洲客戶問的問題，一夜之間從「你們揭露了嗎」變成「這還要不要做」。美國那邊反 ESG 聲浪同步升溫。全球企業永續論壇（GCSF）今年主軸轉向「邁向自然正向未來」。綠領職缺 29,305 個。": "★ Carbon fee rates take effect 1/1 (general rate NT$300/tonne; NT$50 or NT$100 preferential rates with an approved voluntary reduction plan). Listed and OTC companies capitalized under NT$2 billion are brought in — every listed and OTC company must now produce a sustainability report.<br>In February the EU floats its <em>Omnibus simplification proposal</em>, set to slash the scope of CSRD/CSDDD—overnight, the question from European customers goes from \"have you disclosed?\" to \"do we still have to do this?\" Anti-ESG noise in the US rises in step. The Global Corporate Sustainability Forum (GCSF) shifts this year's theme to \"Toward a Nature-Positive Future.\" 29,305 green-collar job openings.",
 "★ 總統宣示 2050 淨零。COP26 上 IFRS 基金會宣布成立 ISSB；同年 TNFD 自然相關財務揭露工作小組成立——氣候之後，下一個是自然。綠領職缺跳到 15,109 個，一年增三成六。": "★ The President declares net zero by 2050. At COP26 the IFRS Foundation announces the creation of the ISSB; the same year the Taskforce on Nature-related Financial Disclosures (TNFD) is set up—after climate, nature is next. Green-collar openings jump to 15,109, up 36% in a year.",
@@ -5376,7 +5391,7 @@ trRegister({
 "★ 金管會發布「公司治理 3.0—永續發展藍圖」，ESG 正式進入監理語彙。疫情把「韌性」與「供應鏈斷鏈」推上檯面；歐盟、日韓、中國接連宣布淨零承諾。CSR 報告書辦法修訂，氣候風險成為必要揭露。綠領職缺 11,131 個。": "★ The FSC issues \"Corporate Governance 3.0—Sustainable Development Roadmap\" and ESG formally enters the regulator's vocabulary. The pandemic pushes \"resilience\" and \"supply chain disruption\" to the front; the EU, Japan, Korea and China announce net zero pledges one after another. The CSR reporting rules are amended and climate risk becomes a required disclosure. 11,131 green-collar job openings.",
 "★ 食品、化工、金融與資本額百億以上公司強制編製 CSR 報告書。永續職缺第一次真正出現。": "★ Food, chemicals, financials and companies capitalized at NT$10 billion or more must now produce CSR reports. Sustainability job openings appear for real for the first time.",
 "★★ 準則大爆發的一年：ISSB 六月正式發布 IFRS S1／S2；TNFD 九月發布最終建議 v1.0，把 TCFD 的四支柱從氣候擴大到自然；金管會八月發布我國接軌藍圖，採直接採用。同年一月氣候變遷因應法三讀、二月公布施行（2050 淨零正式入法，碳費有了法源），八月環境部升格、十月 CBAM 進入過渡期、台灣碳權交易所成立並開國際碳權交易。GCSF 主軸「全球變遷中的加速轉型」。報告書首度破千，1,006 本。": "★★ The year the standards exploded: the ISSB formally releases IFRS S1/S2 in June; TNFD publishes final recommendations v1.0 in September, widening TCFD's four pillars from climate to nature; the FSC issues Taiwan's convergence roadmap in August, opting for direct adoption. The same year, the Climate Change Response Act clears its third reading in January and is promulgated in February (2050 net zero written into law, the carbon fee gets its legal basis); in August the Ministry of Environment is upgraded, in October CBAM enters its transition period, and the Taiwan Carbon Solution Exchange is founded and opens trading in international carbon credits. GCSF's theme: \"Accelerating Transformation in a Changing World.\" Sustainability reports top a thousand for the first time — 1,006.",
-"★★ 碳費首度開徵，240 家企業、461 座工廠五月底前繳費，首輪收了 49.7 億。IFRS S1／S2 第一階段上路：資本額百億以上 119 家（含 14 家金控、24 家本國銀行）適用，永續資訊與財報同規格。CBAM 正式徵收；台灣碳費理論上可扣抵，但歐盟尚未認可我國碳價，實際上抵不到。ETS 試行平台預計下半年上線。<br>歐盟 Omnibus <em>二月正式通過</em>：CSRD 適用家數大砍（門檻拉到員工千人＋營收 4.5 億歐元）、盡職調查只留最大型企業。美國退出巴黎協定生效、SEC 提案廢止氣候揭露規則——「漂綠」變成「漂靜」，做還是照做，只是不敢大聲說。顧問圈的關注重心換了邊：人權與勞動的討論度首度超過淨零。綠領職缺 29,733 個，技能缺口 23 萬人，但徵才明顯轉為「低招募、低解僱」。": "★★ The carbon fee is collected for the first time: 240 companies and 461 plants pay by the end of May, NT$4.97 billion in the first round. IFRS S1／S2 phase one begins: 119 companies capitalized above NT$10 billion (including 14 financial holding companies and 24 domestic banks) are covered, with sustainability information held to the same standard as the financial statements. CBAM starts charging for real; Taiwan's carbon fee is deductible in theory, but the EU has yet to recognize our carbon price, so in practice it isn't. The ETS pilot platform is expected to go live in the second half.<br>The EU Omnibus <em>formally passes in February</em>: the number of companies in CSRD scope is slashed (threshold raised to 1,000 employees ＋ €450 million revenue) and due diligence is left to the largest firms only. The US withdrawal from the Paris Agreement takes effect and the SEC proposes repealing its climate disclosure rule—\"greenwashing\" becomes \"greenhushing\": the work still gets done, just not out loud. The consulting crowd's centre of gravity switches sides — human rights and labour outpace net zero in airtime for the first time. 29,733 green-collar openings and a skills gap of 230,000 people, but hiring has clearly turned to \"low hiring, low firing.\"",
+"★★ 碳費首度開徵，240 家企業、461 座工廠五月底前繳費，首輪收了 49.7 億。IFRS S1／S2 第一階段上路：資本額百億以上 119 家（含 14 家金控、24 家本國銀行）適用，永續資訊與財報同規格。CBAM 正式徵收；台灣碳費理論上可扣抵，但歐盟尚未認可我國碳價，實際上抵不到。ETS 試行平台預計下半年上線。<br>歐盟 Omnibus <em>二月正式通過</em>：CSRD 適用家數大砍（門檻拉到員工千人＋營收 4.5 億歐元）、盡職調查只留最大型企業。美國退出巴黎協定生效、SEC 提案廢止氣候揭露規則——「漂綠」變成「漂靜」，做還是照做，只是不敢大聲說。顧問圈的關注重心換了邊：人權與勞動的討論度首度超過淨零。綠領職缺 29,733 個，技能缺口 23 萬人，但徵才明顯轉為「低招募、低解僱」。<br>九月，金管會與環境部宣布調整 IFRS 永續揭露準則的適用範圍：強制適用從 1,970 家縮到約 560 家（實收資本額 20 億以上，加上環境部納管應盤查及查驗者），占上市櫃市值逾 87%。其餘公司仍要揭露氣候治理、風險管理與範疇一、二排放，溫室氣體確信改為自願。": "★★ The carbon fee is collected for the first time: 240 companies and 461 plants pay by the end of May, NT$4.97 billion in the first round. IFRS S1／S2 phase one begins: 119 companies capitalized above NT$10 billion (including 14 financial holding companies and 24 domestic banks) are covered, with sustainability information held to the same standard as the financial statements. CBAM starts charging for real; Taiwan's carbon fee is deductible in theory, but the EU has yet to recognize our carbon price, so in practice it isn't. The ETS pilot platform is expected to go live in the second half.<br>The EU Omnibus <em>formally passes in February</em>: the number of companies in CSRD scope is slashed (threshold raised to 1,000 employees ＋ €450 million revenue) and due diligence is left to the largest firms only. The US withdrawal from the Paris Agreement takes effect and the SEC proposes repealing its climate disclosure rule—\"greenwashing\" becomes \"greenhushing\": the work still gets done, just not out loud. The consulting crowd's centre of gravity switches sides — human rights and labour outpace net zero in airtime for the first time. 29,733 green-collar openings and a skills gap of 230,000 people, but hiring has clearly turned to \"low hiring, low firing.\"<br>In September, the FSC and the Ministry of Environment announce a change to the scope of the IFRS sustainability disclosure standards: mandatory adoption shrinks from 1,970 companies to about 560 (paid-in capital of NT$2 billion or more, plus those the Ministry of Environment requires to inventory and verify their emissions), together over 87% of listed market value. The rest must still disclose climate governance, risk management and Scope 1 and 2 emissions; GHG assurance becomes voluntary.",
 "★★ 金管會發布永續發展路徑圖：2027 全體上市櫃完成溫盤、2029 完成確信。CSR 報告書正式更名永續報告書。ISSB 發布 S1／S2 徵求意見稿，TNFD beta 框架陸續問世。氣候變遷因應法草案在立法院闖關，2050 淨零入法與碳費法源就差臨門一腳。全球企業永續論壇（GCSF）主軸「邁向淨零之路」，亞太永續博覽會首度登場。綠領職缺暴增至 22,111 個（＋46%），報告書 777 本。": "★★ The FSC issues the Sustainable Development Roadmap: all listed and OTC companies complete GHG inventory by 2027 and assurance by 2029. CSR reports are formally renamed sustainability reports. The ISSB publishes the S1/S2 exposure drafts and TNFD beta frameworks roll out one after another. The Climate Change Response Act draft fights its way through the Legislative Yuan — writing 2050 net zero into law and giving the carbon fee a legal basis are one step away. The Global Corporate Sustainability Forum (GCSF) takes \"Path to Net Zero\" as its theme, and the Asia-Pacific Sustainability Expo debuts. Green-collar openings surge to 22,111 (+46%); 777 sustainability reports.",
 "⚠ 快崩了": "⚠ Near collapse",
 "⚠ 該停了：請長假把自己修好": "⚠ Time to stop: take extended leave and repair yourself",
@@ -6323,7 +6338,7 @@ trRegister({
 "你晚上開始看法規和指引。沒有人知道你在準備什麼。": "You started reading regulations and guidance at night. Nobody knew what you were preparing for.",
 "你更新了履歷。有些事一次就夠了——明年你就離開。": "You updated your resume. Some things only need to happen once — next year, you're gone.",
 "你更新了履歷。獵頭的電話比想像中快——你打定主意，明年就走。": "You updated your resume. The headhunter's call came faster than expected — you made up your mind: next year, you leave.",
-"你更新了履歷。這一年查驗證機構在搶人，開的價錢很好看。": "You updated your resume. That year, the verification bodies were fighting over people, and the offers looked very good.",
+"你更新了履歷。只是強制確信的名單縮了，這一年查驗證機構開出來的缺比你想的少。": "You updated your resume. Only, the mandatory assurance list had shrunk, and the verification bodies had fewer openings that year than you expected.",
 "你更新了履歷。這件事會跟著你一陣子——這個圈子很小。": "You updated your resume. This will follow you for a while — the circle is small.",
 "你更新了履歷，投了幾個跟永續沾邊、但不叫永續的職缺。心一橫，明年就走。": "You updated your resume and applied to a few jobs adjacent to sustainability but not named sustainability. You steeled yourself: next year, you leave.",
 "你替上榜的人鼓掌，回家的捷運上有點安靜。你算了一下自己還差幾步。": "You clapped for the people on the list. The metro ride home was a little quiet. You counted how many steps you still had to go.",
@@ -6891,7 +6906,7 @@ trRegister({
 "全部接下，硬做": "Take them all and grind",
 "全部重算，重新對外說明": "Recalculate everything, restate publicly",
 "全體上市櫃完成溫盤": "Every Listed Company Finishes Its GHG Inventory",
-"全體上市櫃要完成溫盤確信。查驗證機構的人力被搶到見底，<em>報價一路往上開</em>。": "All listed companies must complete GHG inventory assurance. Verification bodies are stripped bare of staff, and <em>the quotes climb and keep climbing</em>.",
+"原本全體上市櫃都要在這一年完成溫盤確信。2026 年改制之後，強制要做的只剩約 560 家，<em>查驗證機構的報價沒有如預期一路往上開</em>。": "Every listed company was supposed to complete GHG inventory assurance this year. After the 2026 change, only about 560 still must, and <em>verification bodies' quotes never climbed the way everyone expected</em>.",
 "全體上市櫃都要編報告書了": "Every Listed Company Must Report Now",
 "兩個月後你收到很客氣的未錄取通知。那年錄取一千四百多人，報名的人是好幾倍。<br><br>": "Two months later you received a very polite rejection. That year, just over fourteen hundred were selected; several times as many had applied.<br><br>",
 "兩個永續團隊，只留一個": "Two Sustainability Teams, One Survives",
@@ -7931,7 +7946,7 @@ trRegister({
 "招牌很亮，人脈很國際。<em>但兩百萬學費買的是機會、不是薪水——回台這個天花板打不破。</em>": "The name on the door is bright and the network is genuinely international. <em>But NT$2 million in tuition buys opportunity, not salary — back in Taiwan, that ceiling does not break.</em>",
 "拿一部分去做一直想做的那件事": "Spend part of it on the thing you always wanted to do",
 "拿了資遣費。這不是你的錯，但要花一段時間才會真的相信。": "You took the severance. It wasn't your fault. But truly believing that will take a while.",
-"拿著查證清單讓企業瑟瑟發抖的人。2029 前是賣方市場。": "The people whose verification checklist makes companies tremble. A seller's market until 2029.",
+"拿著查證清單讓企業瑟瑟發抖的人。2026 年改制之前是賣方市場。": "The people whose verification checklist makes companies tremble. It was a seller's market until the 2026 rule change.",
 "拿過獎學金": "Scholarship Winner",
 "指引來的時候只剩三個月。那三個月你沒有睡好。": "When the guidance arrived, there were only three months left. You didn't sleep well those three months.",
 "指標品牌把整個產業往上推": "A Bellwether Brand Lifts the Whole Industry",
@@ -8116,7 +8131,7 @@ trRegister({
 "新題組：你的資料中心用多少電、多少水，AI 有沒有做偏誤稽核、出事有沒有通報機制。<em>算力的碳排從範疇二裡被單獨拉出來</em>。": "New question set: how much electricity and water your data centers use, whether your AI gets bias audits, whether there's an incident reporting mechanism. <em>Compute's carbon gets pulled out of Scope 2 as its own line</em>.",
 "方法學、外加性論證、查驗機構溝通、專案開發": "Methodologies; additionality arguments; liaison with verification bodies; project development",
 "旅遊報復性反彈，班班客滿。但你記得那兩年辦公室有多安靜。": "Travel snaps back with a vengeance — every flight full. But you remember how quiet the office was those two years.",
-"既然大家都要盤，那就當查的人。2029 年的確信大限正在前面等著。": "If everyone has to do the inventory, be the one who checks it. The 2029 assurance deadline is waiting up ahead.",
+"既然大家都要盤，那就當查的人。只是 2026 年改制之後，2029 年的確信大限只剩五百多家要趕。": "If everyone has to do the inventory, be the one who checks it. Only, after the 2026 change, just five hundred-odd companies still face the 2029 assurance deadline.",
 "既然揭露鬆綁，你把資源挪去做實質減量。這是這個行業少數的好消息。": "With disclosure loosened, you moved the resources into actual reductions. One of the few pieces of good news in this line of work.",
 "日本": "Japan",
 "日本・環境學": "Japan · Environmental Studies",
@@ -8347,7 +8362,7 @@ trRegister({
 "沿用去年的數字": "Reuse last year's numbers",
 "沿用舊版，換數字就好": "Reuse last year's, swap the numbers",
 "法律": "Law",
-"法規紅利結束。報告書撰寫高度自動化。這個行業已經從「報告書產業」變成「風險治理與市場准入產業」——做的不再是揭露，是讓公司進得了別人的市場。": "The regulatory windfall is over. Report writing is highly automated. This industry has gone from a \"reporting industry\" to a \"risk governance and market access industry\" — the job is no longer disclosure, it's getting the company into someone else's market.",
+"金管會預計在這一年重新檢討小型上市櫃的接軌措施。法規紅利結束。報告書撰寫高度自動化。這個行業已經從「報告書產業」變成「風險治理與市場准入產業」——做的不再是揭露，是讓公司進得了別人的市場。": "The FSC is scheduled to review the adoption measures for small listed companies this year. The regulatory windfall is over. Report writing is highly automated. This industry has gone from a \"reporting industry\" to a \"risk governance and market access industry\" — the job is no longer disclosure, it's getting the company into someone else's market.",
 "法規變得比誰都快，而你本來就是讀條文的人。": "Regulations change faster than anything else — and reading the fine print was always your job.",
 "法遵×ESG": "Compliance × ESG",
 "法遵啟動": "Compliance Kicks In",
@@ -11196,7 +11211,7 @@ trRegister({
 "那次單獨談話之後，你的簽呈開始比較快回來": "after that one-on-one, your sign-off requests started coming back faster",
 "回信寫得很客氣。<em>你自己知道卡在哪裡</em>——他們問的那幾題，剛好是你沒真的做過的：": "The reply is politely worded. <em>You know where it stuck</em> — the questions they asked were exactly the ones you have never actually done: ",
 "案量回不去了。導入型的案子做完之後，所裡的人數就沒有再補回來過": "Deal flow never came back. Once the adoption engagements were finished, the firm's headcount was never restored",
-"所裡宣布組織調整。<em>該導入的都導入完了</em>——IFRS 那一輪把全體上市櫃跑過一遍、確信也簽完之後，那些案子不會再來第二次；剩下的是每年重複、而且機器做得動的那一半。<br>這一次不是「暫時不補人」，是<strong>真的在減人</strong>。": "The firm announces a reorganization. <em>Everything that had to be adopted has been adopted</em> — once that IFRS round had run through every listed company and the assurance had been signed off, those engagements were never coming back; what is left is the half that repeats every year and that a machine can do.<br>This time it is not \"we are pausing hiring.\" It is <strong>actually cutting people</strong>.",
+"所裡宣布組織調整。<em>該導入的都導入完了</em>——IFRS 那一輪縮到只剩五百多家要做、確信也簽完之後，那些案子不會再來第二次；剩下的是每年重複、而且機器做得動的那一半。<br>這一次不是「暫時不補人」，是<strong>真的在減人</strong>。": "The firm announces a reorganization. <em>Everything that had to be adopted has been adopted</em> — once that IFRS round, cut down to some five hundred companies, had run its course and the assurance had been signed off, those engagements were never coming back; what is left is the half that repeats every year and that a machine can do.<br>This time it is not \"we are pausing hiring.\" It is <strong>actually cutting people</strong>.",
 "<strong>這一梯走的不只你一個。</strong>同一天，你認識的四個人收到一樣的信。<br><em>沒有人做錯事。只是那些案子做完了，而且不會再有第二輪。</em>": "<strong>You are not the only one going in this round.</strong> On the same day, four people you know get the same letter.<br><em>Nobody did anything wrong. Those engagements are simply finished, and there will not be a second one.</em>",
 "導入潮結束，所裡減編": "Adoption wave ended; the firm downsized",
 "今年所裡的永續組沒有招新人。<em>以前分給新人練手的那些活</em>——抄準則、做對照表、跑初稿、把三十份問卷貼成一張表——現在一個晚上就跑完了。<br>你環顧四周才發現：<strong>你這一梯，已經是最資淺的一梯了。</strong>": "The firm's sustainability group took on no new graduates this year. <em>The work that used to go to new hires for practice</em> — copying out standards, building mapping tables, drafting first cuts, pasting thirty questionnaires into a single sheet — now runs in one evening.<br>You look around and realize: <strong>your intake is the most junior intake there is.</strong>",
@@ -11346,7 +11361,7 @@ function newGameCore(seedIn){
      soc:0, adv:0, selfBrand:0, projCount:{}, gradField:null, abroad:0, abroadYrs:0, region:'台北', csaFlip:{}, esgBoostDim:{}, intlYrs:0, skills:{}, rareSkills:0, big4Grp:'', big4GrpName:'',
      grades:[], gradeC:0, highBurnYrs:0, uniFun:'', partner:0, quota:0, endedEarly:'', scholarship:0, youthFund:0, polit:'', ccWarned:0, ccPushed:0, placeYrs:0, ballYrs:0, ngoEdu:0, indYrs:{}, apexTitle:0,
      misfitYrs:0, fitBonus:0, bonusMods:[], humYrs:0, humLow:0, titleEraUp:0, titleEraDown:0,
-     budget:55, budgetPrev:55, deal:55, layoffWarn:0, intel:{}, dealLowSeen:0, dealHighSeen:0, b4CutSeen:0, b4NoJuniorSeen:0, leadPeak:0, leaveGrade:0, leaveGradePend:0, seatSeen:0,
+     budget:55, budgetPrev:55, deal:55, layoffWarn:0, intel:{}, dealLowSeen:0, dealHighSeen:0, b4CutSeen:0, b4NoJuniorSeen:0, ifrs26Seen:0, leadPeak:0, leaveGrade:0, leaveGradePend:0, seatSeen:0,
      selfDoneYrs:0, consultYrs:0, failedIv:0, reTrack:0, reMode:'', repat:0, repatSev:0, ovsId:'', ovsPassed:0, ovsFail:0, ovsPolSeen:{}, ovsHomeYrs:0, relFrac:0, learnedThisYear:0, gradePush:0, bonusLast:0, bonusSum:0, lastSeen:{}, lastFocus:'', eraNext:undefined, eraDir:0, eraMood:0, askedFocusThisYear:0, focusOverride:'', studyCount:0, phd:0, lead:0, leadIdle:0, agency:0, retireSelf:0, retireGap:0, staleYrs:0, decayed:0, expertOf:'', windfall:0, b4Grp2:'', grpSwitches:0};
   S.startYear = ri(2010,2020);
   S.year = S.startYear;
@@ -12183,6 +12198,8 @@ function rollWindfall(){
 function yearStart(){
   if(S.age>=40) return ending();
   clampPay();                          // 年初先夾一次：不讓任何路徑把超標的數字掛在畫面上一整年
+  /* v37：2026 年底沒走到年末結算的人（育嬰、進修、離職待業），年初補看新制消息——每一局都要看到 */
+  if(S.year >= 2027 && !S.ifrs26Seen){ S.ifrs26Seen = 1; return showOutcome(ifrs26Note(), [], function(){ yearStart() }); }
   if(rollLifeShock()) return;          // 人生突然轉彎（35+ 機率升高）
   S.cardsLeft = 2;   // 一年兩張，避免單局太冗長
   S.askedFocusThisYear = 0; S.focusOverride = '';   // 調職是一年一次的事，過了就歸零
@@ -13301,7 +13318,8 @@ function yearEnd(){
     if(!S.retireSelf) S.retireGap = (S.retireGap||0) + 1;   // 沒自提就是零成長的退休準備
   }
   if(isFreelance()){                                      // 接案收入靠案源，人脈決定波動下緣
-    const swing = 0.88 + rnd()*0.38 + Math.min(.18, S.rel*.012);
+    /* v37：一千四百多家的 IFRS 輔導案變成選修；中小型顧問（Daz：衝擊會很嚴重），一人顧問由遊戲設計一併算進來 */
+    const swing = 0.88 + rnd()*0.38 + Math.min(.18, S.rel*.012) - 0.10*ifrsShock(S.year);
     S.pay = Math.round(S.pay * Math.min(1.35, Math.max(0.78, swing)));
     clampPay();   // 好年份還是比較好，但不能靠連續好年份把數字複利到天花板之外
   }
@@ -13330,6 +13348,8 @@ function yearEnd(){
   /* 帶過人這件事會被記住：之後換工作時可以拿出來談（見 leadCarryP） */
   if(S.inESG && S.emp && !isFreelance() && S.level >= 2) S.leadPeak = Math.max(S.leadPeak||0, S.level);
   const events=[];
+  /* v37：2026 年 9 月的新制，每個人都會在年底聽到 */
+  if(S.year === 2026 && !S.ifrs26Seen){ S.ifrs26Seen = 1; events.push(ifrs26Note()); }
   /* 條件都補齊了卻升不上去的人，要知道自己卡在哪裡——
      這是這個遊戲想講的那句話：天花板不是你，是組織圖。 */
   if(S.inESG && S.emp && !isFreelance() && S.level >= 2 && !S.seatSeen
@@ -13429,17 +13449,36 @@ function yearEnd(){
     if(dlt >= 18) events.push('今年的預算比去年多了一截。<em>沒有人特別通知你，但你送出去的東西開始比較快被批准。</em>');
     else if(dlt <= -18) events.push('預算表下來的時候你看了兩次。<em>比去年少了一大段，而且沒有人解釋為什麼。</em>');
   }
+  /* v37：中小型顧問公司，Daz 的判斷是這個政策對它們會有嚴重的衝擊。
+     客戶有一大半是不用再強制接軌的小型上市櫃，2027–29 年案子接不到，公司就縮編。 */
+  if(S.emp && isSmallCons(S.emp) && !isFreelance() && S.esgYrs >= 1){
+    const k = (S.year >= 2027 && S.year <= 2029) ? 1 : 0;   // 只在 2027–29
+    if(k > 0){
+      let risk = 0.10 * k;
+      if(S.level <= 1) risk += 0.04;              // 資淺的先走
+      if(S.rel >= 22) risk -= 0.04;               // 手上有自己帶來的客戶
+      if(rnd() < risk){
+        S.jobless = 1; S.quitFlag = 1; S.emp = null;
+        S.cash = Math.round(S.cash + 8);
+        S.burn = Math.min(100, S.burn + 10);
+        S.ledger.push({y:S.year, t:'顧問公司接不到案，縮編', p:'', mark:1});
+        events.push('<strong>老闆把大家找進會議室。</strong>今年接到的導入案少了很多，公司養不起這麼多人。'
+          + '<br><em>你是這一波被請走的人之一。</em>');
+      }
+    }
+  }
   /* ===== 四大：案量決定人力（v30，v31 修時間軸）=====
      事務所不編永續預算，它編的是案量。案子少了，最先被檢討的是
      產能利用率低的人——而「考績差」跟「沒案子做」通常是同一件事的兩面。
      早年（2027 以前）就算案量低，所裡也很少真的動人力，動的是「不給你案子」；
-     真正大規模減人的，是 2029 全體上市櫃確信做完之後的那幾年。 */
+     真正大規模減人的，是導入潮結束之後的那幾年。v37：2026 年新制把強制名單砍掉七成，
+     訂單從 2027 年就開始變少，所裡先遇缺不補、擋升遷，裁員提早小規模出現。 */
   if(S.emp && S.emp.big4 && !isFreelance() && S.esgYrs >= 1){
     const d = dealFlow(), cutEra = S.year >= 2030 && S.year <= 2036;
     if(cutEra && !S.b4CutSeen){
       S.b4CutSeen = 1;
       events.push('所裡宣布組織調整。<em>該導入的都導入完了</em>——'
-        + 'IFRS 那一輪把全體上市櫃跑過一遍、確信也簽完之後，那些案子不會再來第二次；'
+        + 'IFRS 那一輪縮到只剩五百多家要做、確信也簽完之後，那些案子不會再來第二次；'
         + '剩下的是每年重複、而且機器做得動的那一半。<br>'
         + '這一次不是「暫時不補人」，是<strong>真的在減人</strong>。');
     }
@@ -13451,14 +13490,17 @@ function yearEnd(){
         + '——抄準則、做對照表、跑初稿、把三十份問卷貼成一張表——現在一個晚上就跑完了。'
         + '<br>你環顧四周才發現：<strong>你這一梯，已經是最資淺的一梯了。</strong>');
     }
-    if(d < 40){
+    /* v37：新制後 2027–29 年，案量還沒掉到 40 以下，所裡就開始「優化」：
+       遇缺不補、擋升遷之後，第三步輪到資淺與考績差的人（小規模） */
+    if(d < 40 || (ifrsShock(S.year) === 1 && d < 60)){
       if(!S.dealLowSeen){
         S.dealLowSeen = 1;
         events.push('所裡的案量掉下來了。<em>你手上的案子做完之後，沒有新的接上來</em>——'
           + '而在事務所，沒有案子可以掛時數這件事，比做錯事還嚴重。');
       }
-      let risk = 0.10 + (40 - d) * 0.010;
+      let risk = d < 40 ? 0.10 + (40 - d) * 0.010 : 0.02;
       if(S.year < 2027) risk *= 0.40;             // 法規紅利期：所裡撐得住，先不動人
+      else if(S.year <= 2029) risk *= 0.55;       // v37：新制後先遇缺不補、擋升遷，裁員是第三步
       if(cutEra) risk += 0.07;                    // 導入潮結束後的結構性縮編
       if(S.gradeC >= 1) risk += 0.16;
       if(S.level <= 1) risk += 0.06;              // 資淺的先被檢討
@@ -14152,7 +14194,11 @@ function yePick(k){
 function offerPay(emp, type){
   /* 談得到多少，一半看你符不符合那張職缺說明。
      完全對盤 ×1.07，幾乎不對盤 ×0.90——這就是「你值不值這個價」。 */
-  const fitAdj = S.esgYrs>=2 ? (0.90 + jobFit(emp)*0.17) : 1;
+  let fitAdj = S.esgYrs>=2 ? (0.90 + jobFit(emp)*0.17) : 1;
+  /* v37：新制後同一個缺會收到很多四大與永續經驗的履歷，談得到的數字往下；
+     不在強制名單上的公司壓得最低，其他甲方只壓初階 */
+  const cut = ifrsExempt(emp) ? 0.10 : (!emp.big4 && emp.ind !== 'cons' && !isUnlisted(emp) && S.level <= 1 ? 0.04 : 0);
+  fitAdj *= 1 - cut * ifrsShock(S.year);
   if(type==='poach') return Math.round(S.pay*(1.08+rnd()*0.10)*fitAdj);   // 跳槽加薪 8-18%（對齊獵頭報告的 5-20%，中位 10-15%）
   return Math.round(calcPay(emp, S.level)*(1.06+rnd()*0.10)*fitAdj);
 }
@@ -14165,8 +14211,8 @@ function b4EntryBar(e){
   return Math.round((1 - b4EntryScale(S.year)) * 26);
 }
 function effBar(e){
-  if(S.esgYrs < 2) return e.bar + b4EntryBar(e);       // 剛入行的人還沒有技能可談
-  return e.bar + b4EntryBar(e) - Math.round((jobFit(e) - 0.5) * 22);
+  if(S.esgYrs < 2) return e.bar + b4EntryBar(e) + ifrsEntryBar(e);       // 剛入行的人還沒有技能可談
+  return e.bar + b4EntryBar(e) + ifrsEntryBar(e) - Math.round((jobFit(e) - 0.5) * 22);
 }
 function genOffers(type){
   const base = EMP.filter(function(e){ return !S.emp || e.id!==S.emp.id });
@@ -14177,6 +14223,9 @@ function genOffers(type){
     if(ELITE.indexOf(e.id)>=0) return (S.rel>=14 || mk(S.year)[1]>=78) && (S.esgYrs<2 || jobFit(e)>=0.34);
     return true;
   });
+  /* v37：不受法規要求的公司，人事先凍結，這幾年很少開永續的缺 */
+  const frz = ifrsShock(S.year);
+  if(frz) pool = pool.filter(function(e){ return !ifrsExempt(e) || rnd() >= 0.5 * frz });
   if(type==='poach' && S.emp){
     const same = pool.filter(function(e){ return e.ind===S.emp.ind });
     if(same.length) pool = same;
@@ -14245,7 +14294,7 @@ function intelOn(emp){
   if(!emp || emp.big4) return '';
   const need = ELITE.indexOf(emp.id) >= 0 ? 26 : 19;
   if(S.rel < need) return '';
-  const boss = bossStance(emp), cust = custPressure(emp, S.year), pf = indProfit(emp.ind, S.year);
+  const boss = bossStance(emp), cust = custPressure(emp, S.year), pf = empProfit(emp, S.year);
   const bits = [];
   bits.push(boss >= 2 ? '老闆自己在外面講永續，資源要得到'
           : boss <= 0 ? '<em>老闆把永續當成一件必須交差的事</em>，你要什麼都得吵'
@@ -14472,6 +14521,8 @@ function rehirePick(k, idx){
     S.burn = Math.max(0, S.burn - 6);
     S.year++; S.age++;
     if(S.age>=40) return ending();
+    /* v37：「再等等」直接跳年，不經過年初與年末——新制消息要在這裡補看 */
+    if(S.year >= 2027 && !S.ifrs26Seen){ S.ifrs26Seen = 1; return showOutcome(ifrs26Note(), [], function(){ rehire() }); }
     return rehire();
   }
   if(k==='give'){
@@ -14802,15 +14853,70 @@ function regPressure(y){
   if(y >= 2015) p += 1;    // 巴黎協定之後，客戶開始問
   if(y >= 2023) p += 1;    // 氣候法、CBAM 過渡期、ISSB
   if(y >= 2026) p += 1;    // 碳費開徵、IFRS S 上路、CBAM 正式收費
-  if(y >= 2029) p += 1;    // 全體上市櫃揭露與確信
+  if(y >= 2029) p += 1;    // 強制適用公司揭露與確信（v37：只剩 20 億以上＋環境部納管）
   return p;
 }
 function regPressureFor(emp, y){
   let p = regPressure(y);
   if(emp && EU_EXPOSED.indexOf(emp.ind) >= 0 && y >= 2023) p += 1;   // 塑膠、包裝、碳邊境調整機制
-  return p;
+  /* v37：不在強制名單上的公司，S1／S2 與確信都變成選修 */
+  if(ifrsExempt(emp) && y >= 2027) p -= (y >= 2029 ? 2 : 1);
+  return Math.max(0, p);
 }
 
+/* ===== v37：2026-09-23 金管會×環境部調整 IFRS 永續揭露準則的適用範圍 =====
+   強制適用由 1,970 家縮為約 560 家（實收資本額 20 億以上＋環境部納管應盤查及查驗者）。
+   其餘上市櫃仍要揭露氣候治理、風險管理、範疇一二，但不用做完整的 S1／S2，確信改為自願。
+   遊戲裡的產業效應只照 Daz 的推演：
+   事務所／顧問／永續系統商訂單變少 → 遇缺不補、擋升遷、裁員 → 人才流向甲方；
+   不受法規要求的甲方 → 人事凍結 → 一開缺就收到很多四大與永續經驗的履歷 → 薪水往下、不太找 junior；
+   影響最劇烈、但一開始還感覺不到的，是準備投入永續的新血。 */
+function ifrsShock(y){
+  if(y < 2027) return 0;                                    // 九月才宣布，衝擊從隔年開始
+  return y <= 2029 ? 1 : Math.max(0, 1 - (y - 2029) * 0.2); // 2030 0.8 → 2034 歸零
+}
+/* 資本額未達 20 億、非環境部納管、非金融業的上市櫃（公司表上標 cap20） */
+function ifrsExempt(emp){ return !!(emp && emp.cap20) }
+/* 乙方：事務所、顧問、查驗證、系統商（自己接案另外算） */
+/* 乙方只算 Daz 列的三類：會計師事務所（四大）、顧問（小而美顧問）、永續系統商 */
+function isVendor(emp){ return !!(emp && (emp.big4 || emp.id === 'bout' || emp.id === 'sys1')) }
+/* 不是台灣上市櫃的單位：NGO、公部門、學校、外商分公司、海外職位、新創的碳權開發商 */
+function isUnlisted(emp){ return !!(emp && (['NGO','公部門','公職','地方','學校','外商','海外'].indexOf(emp.tier) >= 0
+  || emp.ind === 'ngo' || emp.ind === 'pub' || emp.id === 'carbon1')) }
+/* 中小型顧問公司：Daz 的判斷是這個政策對它們會有嚴重的衝擊。
+   自己接案的人等於一人顧問公司，遊戲設計上一併算進來（這一點不是 Daz 的原話）。 */
+function isSmallCons(emp){ return !!(emp && (emp.smallCons || emp.id === 'free')) }
+/* 新制後，初階的位子最先消失：乙方遇缺不補、不受法規要求的甲方不太找 junior；
+   第一次進這行的人，要跟一整批從事務所和顧問流出來的人搶同一批缺。 */
+function ifrsEntryBar(e){
+  const k = ifrsShock(S.year);
+  if(!k || !e) return 0;
+  let b = 0;
+  if(S.level <= 1 && (isVendor(e) || ifrsExempt(e))) b += 8;
+  else if(S.level <= 1 && !e.big4 && e.ind !== 'cons' && !isUnlisted(e)) b += 3;   // 其他甲方：應徵的人變多了
+  if(S.esgYrs === 0) b += 6;                                                        // 準備投入永續的新血
+  return Math.round(b * k);
+}
+/* 2026 年底每個人都會聽到這個消息，但聽到的版本取決於你站在哪裡。觀點只用 Daz 的；查驗證與非上市的版本只寫事實。 */
+function ifrs26Note(){
+  const head = '2026 年 9 月，金管會和環境部聯合宣布：<em>IFRS 永續揭露準則的強制適用，從 1,970 家縮到約 560 家</em>。資本額 20 億以下、又不在環境部納管名單上的公司，只要揭露氣候的基本資訊。<br>';
+  if(!S.emp && S.esgYrs > 0) return head + '你現在剛好在找工作。<strong>接下來會碰到的，是乙方遇缺不補、甲方凍結人事。</strong>';
+  if(!S.emp || !S.inESG) return head + '<strong>想進這一行的人，門檻變高了。</strong>';
+  if(S.emp.big4) return head + '整個市場原本排著的第三階段導入案，少了一千四百多家公司。<strong>接下來會看到的，是遇缺不補、擋升遷，或是裁員。</strong>走掉的人會往企業端去。';
+  if(isFreelance() || isSmallCons(S.emp)) return head + '你手上排著的導入提案，很多客戶不用強制做了。<strong>這個政策對中小型顧問公司，會是很嚴重的衝擊。</strong>';
+  if(isVendor(S.emp)) return head + '你手上排著的導入提案，很多客戶不用強制做了。<strong>訂單大減之後，接下來就是遇缺不補、擋升遷。</strong>';
+  if(S.emp.id === 'cert') return head + '強制確信的名單跟著縮小，<strong>第二、三階段的母公司個體確信也拿掉了。</strong>';
+  if(isUnlisted(S.emp)) return head + '你待的單位不是上市櫃，這次調整不會直接影響你。';
+  if(ifrsExempt(S.emp)) return head + '你的公司不在強制名單上了。老闆的第一個反應是<strong>凍結人事</strong>。<br>但你也不用再一直為了法遵追著揭露跑，<em>可以回頭好好回應其他利害關係人的需求了，像是專心把碳減下來，或是顧好跟社區鄰里的關係。</em>';
+  return head + '你的公司還在名單上，該做的一樣要做。<strong>只是接下來遇缺，會有很多四大或永續經驗的人來應徵。</strong>';
+}
+
+/* v37：一千四百多家的導入案變成選修，Daz 列的三類乙方（事務所、顧問、系統商）訂單大減。
+   只套在這三類，不套整個顧問產業（查驗證、碳權開發商不算）。 */
+function empProfit(emp, y){
+  const v = indProfit(emp ? emp.ind : '', y) - (isVendor(emp) ? ifrsShock(y) * 0.9 : 0);
+  return Math.max(-2, Math.min(2, v));
+}
 /* 老闆態度與客戶壓力：公司沒特別標的話，用產業與規模推一個預設值 */
 function bossStance(emp){
   if(!emp) return 1;
@@ -14841,16 +14947,16 @@ function deptBudget(){
      公司賺不賺錢與老闆買不買單，是決定「有沒有錢」的兩件大事；
      法規與客戶決定的是「這件事要不要做」——它們讓工作存在，不讓預算變多。 */
   const market = (moodAdj(mk(S.year)[1]) - 55) / 3.4;               // 約 -12 .. +10
-  const profit = indProfit(e.ind, S.year) * 15;                     // -30 .. +30
+  const profit = empProfit(e, S.year) * 15;                     // -30 .. +30
   const boss   = (bossStance(e) - 1) * 17;                          // -17 .. +34
   const cust   = custPressure(e, S.year) * 3;                       // 0 .. +9
   const reg    = regPressureFor(e, S.year) * 2.4;                   // 0 .. +12
   const you    = Math.min(14, (S.esgLift||0) * 0.6 + S.level * 2.5);
   let v = 44 + market + profit + boss + cust + reg + you;
   /* 公司真的在虧錢的時候，永續預算是最早被拿掉的那一批 */
-  if(indProfit(e.ind, S.year) <= -1.5) v -= 8;
+  if(empProfit(e, S.year) <= -1.5) v -= 8;
   /* 法規的最低合規線：你不會沒事做，只是永遠只夠做最低限度 */
-  const starved = (indProfit(e.ind, S.year) <= -1 && bossStance(e) === 0);
+  const starved = (empProfit(e, S.year) <= -1 && bossStance(e) === 0);
   const floorReg = starved ? 8 : (regPressureFor(e, S.year) >= 3 ? 30 : 14);
   v = Math.max(floorReg, v);
   return Math.max(0, Math.min(100, Math.round(v)));
@@ -14912,7 +15018,10 @@ function budgetScale(){
 function b4Cycle(y){
   if(y <= 2021) return 0;                         // 報告書年代：案子穩定，但規模就那樣
   if(y <= 2025) return 12 + (y - 2022) * 3;       // 盤查與第一波確信
-  if(y <= 2029) return 24 + (y - 2026) * 3;       // IFRS 三階段＋全體上市櫃確信，2029 到頂
+  if(y <= 2026) return 24;                        // IFRS 第一階段上路，後面兩階段的導入案排滿
+  /* v37：2026 年 9 月強制名單從 1,970 家縮到約 560 家，第二、三階段的母公司個體確信也拿掉。
+     原本排到 2029 的高峰不會來了，案量從 2027 年就開始往下。 */
+  if(y <= 2029) return [10, 6, 3][y - 2027];
   /* 2030 起：法規紅利結束。留下來的是每年重複、而且機器做得動的那一半。
      這是一段有頭有尾的縮編期，不是永遠的低谷——結束後是一間比較小、比較資深的所。 */
   const t = y - 2029;
@@ -14925,7 +15034,7 @@ function dealFlow(){
      2010 年的永續團隊本來就小，那不代表當時的人天天在裁員邊緣。 */
   const m    = moodAdj(mk(S.year)[1]);
   const base = moodAdj(mk(Math.max(2010, S.year - 2))[1]);
-  const v = 48 + (m - base) * 0.7 + regPressure(S.year) * 2 + indProfit('cons', S.year) * 4 + b4Cycle(S.year);
+  const v = 48 + (m - base) * 0.7 + regPressure(S.year) * 2 + Math.max(-2, indProfit('cons', S.year) - ifrsShock(S.year) * 0.9) * 4 + b4Cycle(S.year);
   return Math.max(0, Math.min(100, Math.round(v)));
 }
 function dealWord(){
