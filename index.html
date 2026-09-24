@@ -18,7 +18,7 @@
 <meta property="og:title" content="永續人森模擬器｜永續職涯人生模擬器">
 <meta property="og:description" content="一款以真實統計與數據推估建構的永續職涯人生模擬器。選好 MBTI、2010–2020 之間隨機開局，從十八歲玩到四十歲，挑戰能否坐上永續長。法規時程、職缺曲線與薪資級距皆取自公開資料。by Daz">
 <meta property="og:url" content="https://daz-esg.dazyin.workers.dev/">
-<meta property="og:image" content="https://daz-esg.dazyin.workers.dev/og.png">
+<meta property="og:image" content="https://daz-esg.dazyin.workers.dev/og.png?v=20260924">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="永續人森 — 以真實數據推估的永續職涯模擬器">
@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="永續人森模擬器｜永續職涯人生模擬器">
 <meta name="twitter:description" content="一款以真實統計與數據推估建構的永續職涯人生模擬器。選好 MBTI、2010–2020 之間隨機開局，從十八歲玩到四十歲，挑戰能否坐上永續長。法規時程、職缺曲線與薪資級距皆取自公開資料。by Daz">
-<meta name="twitter:image" content="https://daz-esg.dazyin.workers.dev/og.png">
+<meta name="twitter:image" content="https://daz-esg.dazyin.workers.dev/og.png?v=20260924">
 
 <!-- Cloudflare Web Analytics（追蹤瀏覽人次；換分析帳號時改這裡的 token）-->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "edd8a2a6d908468d9c1a13422c624eed"}'></script>
@@ -310,10 +310,10 @@ const DEV_LINKEDIN = 'https://www.linkedin.com/in/dazyin/';
 /* ▲▲▲ 回饋表單設定結束 ▲▲▲ */
 
 /* ============ 版本編號（僅用於回饋表單辨識，不對玩家顯示） ============ */
-const GAME_VERSION = 'v38';
+const GAME_VERSION = 'v38.1';
 /* 建置戳記：由 build-site.py 在打包時自動覆寫，不要手改。
    GAME_VERSION 是給人看的大版本，BUILD_ID 才是能精確對回某一次部署的識別碼。 */
-const BUILD_ID = '20260924-1819+89b7d45';
+const BUILD_ID = '20260924-1937+fe1d834';
 const VERSION_LOG = [];   // 版本紀錄不再對玩家顯示
 function versionBlock(){ return '' }
 
@@ -540,6 +540,8 @@ function reqKnown(e){
   if(!e || !e.req) return false;
   return S.rel>=12 || !!S.galaSeen || (S.knownReq && S.knownReq[e.id]);
 }
+/* v38c：證交所的公司治理評鑑在 2026 年（115 年度）轉型並更名為 ESG 評鑑，職缺要求裡的舊名跟著換 */
+function reqText(e){ return (S && S.year >= 2026) ? String(e.req).replace('公司治理評鑑', 'ESG 評鑑') : e.req }
 /* 職缺卡片上的一行公司資訊：產業・層級・ESG 評分・永續隸屬・要求 */
 function empMeta(e){
   const dp = deptOf(e), esg = companyESG(e, S.year), st = csaState(e), d = esgDims(e, S.year);
@@ -554,7 +556,7 @@ function empMeta(e){
   const rf = roleFocus(e);
   s += '<br>職缺型態 <b>'+(rf.k==='all'?'全包（E／S／G 一人扛）':rf.n)+'</b>';
   if(dp) s += '　永續隸屬 '+dp.n;
-  if(e.req){ s += '　｜加入要求：' + (reqKnown(e) ? e.req : '<span style="color:var(--ink-3)">門檻不明（關係力高或參加永續尾牙可得知）</span>'); }
+  if(e.req){ s += '　｜加入要求：' + (reqKnown(e) ? reqText(e) : '<span style="color:var(--ink-3)">門檻不明（關係力高或參加永續尾牙可得知）</span>'); }
   return s;
 }
 const EMP = [
@@ -3224,7 +3226,7 @@ CARDS.push(
  cond:function(s){return s.inESG&&!s.freelance&&s.emp&&s.emp.tier==='中後段'&&s.esgYrs>=3},
  x:'薪水延遲了兩次。第三次，人資寄來的信標題是<em>「關於公司後續營運之說明」</em>。<br><br>你手上的報告書做到一半，客戶的稽核下個月要來。',
  o:[{l:'留到最後，把交接做完',e:{quit:1,cash:8,S:6,soc:2,burn:14},r:'你留到關門那天，把所有底稿整理好交給接手的人。沒有人付你這段時間的錢，但你睡得著。',trait:'留到最後一天'},
-    {l:'立刻走，先保住自己',e:{leave:1,cash:4,burn:6},r:'你當週就投了履歷。現實一點沒有錯——後面的人領不到最後兩個月的薪水。'}]},
+    {l:'立刻走，先保住自己',e:{quit:1,cash:4,burn:6},r:'你當週就投了履歷。現實一點沒有錯——後面的人領不到最後兩個月的薪水。'}]},
 {id:'tp_accused',pool:'p',w:8,t:'被檢舉了',
  cond:function(s){return s.inESG&&s.esgYrs>=4&&!s.freelance},
  x:'人資約你，說有人匿名申訴：<em>指你對隔壁部門的同事有不當言行</em>。<br><br>你想不起自己做過什麼。但在調查結束前，你被要求先停職。',
@@ -3274,7 +3276,7 @@ CARDS.push(
  cond:function(s){return s.emp&&s.emp.big4&&s.esgYrs>=7&&s.level>=2},
  x:'同期的人陸續離開了。留下來的位子越來越少，而你的名字沒有出現在今年的升遷名單上——<em>連續第二年</em>。<br><br>沒有人叫你走。這裡的做法是讓你自己覺得該走了。',
  o:[{l:'再撐一年，拚一次',e:{burn:20,G:2,relroll:1},r:'你把最後一年當作最後一年在拚。'},
-    {l:'體面地談離開，帶著人脈走',e:{leave:1,rel:3,cash:6},r:'你好好地道別、好好地交接，也好好地把每一個客戶窗口的聯絡方式留下來。<em>四大真正給你的，是這些人。</em>',trait:'體面離開'},
+    {l:'體面地談離開，帶著人脈走',e:{quit:1,rel:3,cash:6},r:'你好好地道別、好好地交接，也好好地把每一個客戶窗口的聯絡方式留下來。<em>四大真正給你的，是這些人。</em>',trait:'體面離開'},
     {l:'轉去所裡別的組',e:{sp:2,burn:8,grpswitch:1},r:'你換了一組重來。有時候問題不是你，是那個組的案源結構。'}]}
 );
 
@@ -3763,7 +3765,7 @@ CARDS.push(
  cond:function(s){return s.emp&&s.emp.id==='place'},
  x:'一年一度的續案審查到了。<br><br>簡報要交、KPI 要填：辦了幾場活動、觸及幾個青年、帶動幾筆投資。<em>你真正做的事——陪一個返鄉青年撐過第一年、把一條排水溝的問題吵到公所處理——沒有一格放得下。</em>',
  o:[{l:'把 KPI 的語言學會，讓計畫活下去',e:{placeRenew:1,burn:14,D:2},r:''},
-    {l:'見好就收，帶著地方經驗回職場',e:{leave:1,soc:2,rel:2},r:'你決定在還體面的時候交棒。工作站留給了在地的夥伴，你帶走的是別人沒有的東西：<em>你真的在第一線做過。</em>',trait:'從地方回來'}]},
+    {l:'見好就收，帶著地方經驗回職場',e:{quit:1,soc:2,rel:2},r:'你決定在還體面的時候交棒。工作站留給了在地的夥伴，你帶走的是別人沒有的東西：<em>你真的在第一線做過。</em>',trait:'從地方回來'}]},
 
 {id:'rv_life',pool:'p',w:18,t:'地方的日子',
  cond:function(s){return s.emp&&s.emp.id==='place'},
@@ -4148,6 +4150,7 @@ CARDS.push(
      mid    站穩之後：直接的回饋、COMPASS、藍卡、續簽門檻、稽核疲勞、CSRD、CBAM
      late   第三年以後：稅務優惠、永居考試、年功序列、顧問合約、時差、健保、稅務居民、家人、回台過年
      any    任何一年都合理：高才通的落差、國籍被寫錯
+     rep    v38c 可重複的日常卡（ov_r_）：第一年少見，第二年起變多，第三年以後最常見
    S.abroadYrs 在出國那一年的年末設成 0，之後每過一個年末 +1，
    所以「海外第一年」是 abroadYrs===0，「第三年以後」是 abroadYrs>=2。
    drawCard 另有保底：人在海外時，每年第一張卡只從出國卡裡抽；同一年的第二張，出國卡權重 ×OVS_BOOST。
@@ -4158,7 +4161,8 @@ const OVS_W = {
   adapt: function(s){ const y = s.abroadYrs || 0; return y === 0 ? 3 : y === 1 ? 0.6 : 0.25 },
   mid:   function(s){ const y = s.abroadYrs || 0; return y === 0 ? 0.6 : y <= 2 ? 1.6 : 1 },
   late:  function(s){ const y = s.abroadYrs || 0; return y >= 2 ? 2.5 : y === 1 ? 0.7 : 0.3 },
-  any:   function(){ return 1 }
+  any:   function(){ return 1 },
+  rep:   function(s){ const y = s.abroadYrs || 0; return y === 0 ? 0.4 : y === 1 ? 1 : 1.8 }   // v38c
 };
 /* 人在海外、目的地在清單裡（ids 給 null 表示任何目的地）、年份在區間內 */
 /* 抵達目的地的年份。S.ovsArrYr 在 ovsGo 記下；沒有這個欄位的局，用「今年 − 在海外年數」推回來（結果相同） */
@@ -4346,6 +4350,88 @@ CARDS.push(
  o:[{l:"當場禮貌更正",e:{GP:2,rel:-1,burn:4},r:"你開麥克風說了一句更正，主持人說抱歉，改了。<em>會議沉默了三秒，然後繼續。</em>"},
     {l:"會後私訊主持人",e:{GP:1,burn:2},r:"他很快回了，說是系統預設的選單。<em>下個月的會，名牌上還是一樣。</em>"},
     {l:"不處理，先把工作做完",e:{burn:-2,sp:1},r:"你把那次會議的待辦事項做完了。<em>那個標籤留在了會議紀錄裡。</em>"}]}
+);
+
+/* ----- D2. 可重複的出國卡（v38c，12 張，id 以 ov_r_ 開頭）-----
+   上面 25 張一局只會遇到一次，外派五年以上的人會把自己目的地的那幾張抽完，那一年就沒有出國卡。
+   這一組寫的是外派每一年都可能再碰到的事：續居留、過年回不回去、總部來人、同事離職、報稅、天氣、獵頭……
+   不寫任何國家專屬的制度數字，所以對所有目的地開放（語言課只給非英語系的 nl jp vn de mx）。
+   ovsRepeat:1 → eligible 放行（一局最多 OVS_REP_MAX 次），drawCard 裡隔 OVS_REP_GAP 年權重回到 ×0.6；
+   不吃 OVS_BOOST，所以每年第一張的出國卡保底裡，目的地專屬的卡仍然優先，這一組是補位用的。
+   ovsLife:1  跟永續工作無關的生活卡：人在海外但換成非永續職時也抽得到（同 LIFE_ANY）。
+   ovsOrg:1   要有雇主、主管或人資才說得通：接案時不抽（同 ORG_ONLY）。 */
+CARDS.push(
+{id:"ov_r_permit",pool:'p',w:10,ovsLife:1,ovsOrg:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"居留證又要到期了",
+ cond:function(s){return ovsIn(s,null,2010,2042)&&(s.abroadYrs||0)>=1},
+ x:"手機跳出提醒：居留證下個月到期。<br><br>續辦要雇主的在職證明，還要一張租約正本，你想不起來放在哪裡。移民局的線上預約，<em>最近的空檔排在到期日之後。</em>",
+ o:[{l:"每天早上刷預約系統，等人取消",e:{burn:8},r:"第九天早上六點，你搶到一個別人取消的時段。<em>那一週你每天都比鬧鐘早醒。</em>"},
+    {l:"付錢請代辦處理",e:{cash:-5,burn:2},r:"代辦收了一筆服務費，隔週就排到時段。<em>你到現在還不知道他是怎麼約到的。</em>"},
+    {l:"照排到的日期去，先申請臨時證明",e:{burn:4,rel:-1},r:"你拿到一張蓋了章的臨時證明。<em>那個月的海外出差，你讓同事代你去了。</em>"}]},
+{id:"ov_r_cny",pool:'p',w:10,ovsLife:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"今年要不要回去過年",
+ cond:function(s){return ovsIn(s,null,2010,2042)},
+ x:"十二月，媽媽在電話裡問你過年哪一天到。<br><br>春節前後的機票比平常貴一倍，你手上的年假只剩五天。<em>專案的期限，在年後第一週。</em>",
+ o:[{l:"買機票回去",e:{cash:-6,burn:-4},r:"你在台灣待了四天，初四清晨飛回來。<em>落地之後直接進辦公室，時差還沒調回來就在開會。</em>"},
+    {l:"今年不回去，視訊拜年",e:{burn:3,sp:1},r:"你在自己的小廚房煮了一鍋火鍋。<em>視訊裡全家人輪流對著鏡頭講話，你這邊的湯一直沒有滾。</em>"},
+    {l:"幫爸媽買機票，換他們過來",e:{cash:-9,burn:5},r:"你把臥室讓給爸媽，自己睡了兩週沙發。<em>他們最常說的一句是：「這裡東西好貴。」</em>"}]},
+{id:"ov_r_wedding",pool:'p',w:10,ovsLife:1,ovsOrg:1,ovs:"late",ovsRepeat:1,wf:OVS_W.late,t:"喜帖寄到了你的舊地址",
+ cond:function(s){return ovsIn(s,null,2010,2042)},
+ x:"大學室友要結婚了。喜帖寄到你台灣的老家，你媽拍照傳給你。<br><br>同一個週末，你已經答應主管去一場客戶的研討會。同學的群組裡有人在問：<em>「你會回來嗎？」</em>",
+ o:[{l:"請假飛回去參加婚禮",e:{cash:-7,burn:4,rel:1},r:"你坐在大學那一桌，大家問的都是你那邊的房租。<em>研討會由同事代講，客戶記住的是他的名字。</em>"},
+    {l:"託人帶紅包，錄一段祝福影片",e:{rel:-1,GP:1},r:"影片在婚宴上播了三十秒。<em>後來的大合照裡，大學那一桌少了一個位子。</em>"}]},
+{id:"ov_r_hqvisit",pool:'p',w:10,ovsOrg:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"總部的人下週到",
+ cond:function(s){return ovsIn(s,null,2010,2042)},
+ x:"總部派了兩個人來看進度，行程排了三天。<br><br>他們要看現場，也要一頓能談事情的晚餐。<em>你手上的正事，這三天都得停。</em>",
+ o:[{l:"親自全程陪同",e:{burn:10,rel:2},r:"最後一晚的晚餐，其中一人問你有沒有想過調回總部。<em>那三天沒做的事，你花了兩個週末補完。</em>"},
+    {l:"只陪重點行程，其他交給當地同事",e:{burn:4,lead:1,rel:-1},r:"當地同事帶他們看現場，講得比你還清楚。<em>總部的人回去之後，感謝信上寫的是他的名字。</em>"},
+    {l:"照實報告落後的部分",e:{burn:6,G:2,rel:-1},r:"你在簡報第二頁就放了延遲的原因。<em>他們點頭記下，回去之後把你的預算砍了一成。</em>"}]},
+{id:"ov_r_handover",pool:'p',w:10,ovsOrg:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"她下個月就走了",
+ cond:function(s){return ovsIn(s,null,2010,2042)},
+ x:"跟你同組的當地同事遞了辭呈，下個月底是最後一天。<br><br>主管問你能不能先接她的兩個案子。<em>她的交接文件只有一頁，寫滿了只有她看得懂的縮寫。</em>",
+ o:[{l:"兩個都接下來",e:{burn:12,G:1,D:1},r:"你每天多留兩個小時，一封一封翻她的舊信。<em>年底考核，主管寫你「可靠」，調薪的幅度跟去年一樣。</em>"},
+    {l:"只接一個，另一個請主管找人",e:{burn:5,D:1,rel:-1},r:"主管說好，另一個案子給了新來的同事。<em>三個月後那個案子出錯，客戶打來找的是你。</em>"},
+    {l:"請她最後一個月帶你跑客戶",e:{burn:8,rel:1,GP:1},r:"她帶你見了四個客戶，每一個都說她要走很可惜。<em>她離職之後，客戶寄信來還是先寫她的名字。</em>"}]},
+{id:"ov_r_parents",pool:'p',w:10,ovsLife:1,ovs:"late",ovsRepeat:1,wf:OVS_W.late,t:"鏡頭裡的爸媽",
+ cond:function(s){return ovsIn(s,null,2010,2042)&&(s.abroadYrs||0)>=1},
+ x:"週日晚上的例行視訊。爸爸把手機拿得很遠，媽媽說最近膝蓋不好，上樓梯要扶著。<br><br>你算了一下，<em>上次見到他們，是去年的事了。</em>",
+ o:[{l:"請人每週去家裡看看",e:{cash:-8,burn:-2},r:"阿姨幫你找了人，每週去一次，順便陪他們去市場。<em>媽媽在電話裡說不用花這個錢，下一句又問那個人姓什麼。</em>"},
+    {l:"把視訊改成每天打",e:{burn:5},r:"你每天午休打十分鐘。<em>第三個星期，媽媽開始說「今天沒什麼事啦」，然後很快掛掉。</em>"},
+    {l:"開始看台灣的職缺",e:{burn:3,rel:1},r:"你在人力銀行存了六個職缺。<em>薪水都是你現在的一半多一點，你一個都沒有投。</em>"}]},
+{id:"ov_r_tax",pool:'p',w:10,ovsLife:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"兩邊的報稅季",
+ cond:function(s){return ovsIn(s,null,2010,2042)&&(s.abroadYrs||0)>=1},
+ x:"當地的報稅截止日在下個月，台灣那邊的綜所稅也還沒報。<br><br>兩國的扣繳憑單散在不同的信箱，<em>其中一張寄到了你兩次搬家以前的地址。</em>",
+ o:[{l:"請會計師兩邊一起處理",e:{cash:-5,burn:-2},r:"會計師把兩邊的所得對起來，還找到一筆可以扣抵的稅。<em>帳單上的費用，比那筆扣抵多一點。</em>"},
+    {l:"自己花兩個週末填",e:{burn:8,G:1,cash:-2},r:"你把兩國的申報說明各讀了一遍，表格都交出去了。<em>三個月後收到補稅通知，原因是一個欄位勾錯。</em>"},
+    {l:"先報這邊，台灣明年再說",e:{burn:2,cash:-1},r:"這邊的稅準時報完了。<em>國稅局的催繳信寄到了你爸媽家。</em>"}]},
+{id:"ov_r_weather",pool:'p',w:10,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"這週的天氣警報",
+ cond:function(s){return ovsIn(s,null,2010,2042)},
+ x:"氣象單位發了最高等級的暴雨警報，接下來三天不建議外出。<br><br>辦公室改成在家上班，可是客戶的現場稽核排在後天，<em>對方說行程不改。</em>",
+ o:[{l:"照原訂行程出門",e:{burn:10,D:1,rel:1},r:"路上多花了兩個小時，你準時到了客戶那裡。<em>稽核做完了，你的鞋子三天都沒乾。</em>"},
+    {l:"跟客戶改成視訊稽核",e:{burn:3,D:1,rel:-1},r:"客戶勉強同意了，鏡頭只拍得到他們想給你看的地方。<em>報告裡有兩項，你只能寫「未能現場確認」。</em>"},
+    {l:"把這三天寫進公司的氣候風險清單",e:{burn:5,E:2},r:"你把停工和供應商延遲都列進去，附上這三天的損失估算。<em>主管說寫得很好，然後放進了明年再討論的資料夾。</em>"}]},
+{id:"ov_r_headhunt",pool:'p',w:10,ovsOrg:1,ovs:"late",ovsRepeat:1,wf:OVS_W.late,t:"台灣的獵頭打來了",
+ cond:function(s){return ovsIn(s,null,2010,2042)&&(s.abroadYrs||0)>=2},
+ x:"一個台灣的號碼，是之前幫你看過履歷的獵頭。<br><br>他說有家公司在找永續主管，要有海外經驗。<em>薪水比你現在少兩成，職稱高一階。</em>",
+ o:[{l:"約個時間視訊聊聊",e:{burn:4,rel:2},r:"你們聊了一個小時，對方很想要你。<em>你說要考慮，掛掉電話後查了一整晚台灣的房價。</em>"},
+    {l:"說現在不考慮，但保持聯絡",e:{rel:1},r:"獵頭說了解，半年後會再打來。<em>你把他的號碼存成「回台灣用」。</em>"},
+    {l:"請他開個價，拿去跟主管談",e:{pay:.02,rel:-1,burn:6},r:"主管幫你爭取到一點調薪。<em>之後每次談到續約，他都會先問你：「還在考慮回去嗎？」</em>"}]},
+{id:"ov_r_regbrief",pool:'p',w:10,ovsOrg:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"新規上路，要你去講",
+ cond:function(s){return ovsIn(s,null,2010,2042)},
+ x:"當地主管機關更新了一條永續揭露的規定。公司要派人去聽業界說明會，回來再對內報告。<br><br>主管看著你說：<em>「你最懂這個。」</em>",
+ o:[{l:"接下來，把條文讀到能回答問題",e:{burn:10,G:2,D:1,GP:1},r:"你讀了原文，也讀了三份事務所的解讀。<em>內部報告那天，法務的問題最多，你答得出一半。</em>"},
+    {l:"去聽說明會，回來轉述重點",e:{burn:4,D:1},r:"你把主辦單位的簡報重新排版，加了兩頁摘要。<em>三個月後有人問起一個細節，你翻遍筆記都找不到。</em>"},
+    {l:"推薦當地同事去，他比較熟這裡的主管機關",e:{burn:-2,rel:1,lead:1},r:"他去了，回來報告得很清楚。<em>下一次再有新規，主管直接找他。</em>"}]},
+{id:"ov_r_langclass",pool:'p',w:10,ovsOrg:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"語言課缺了三週",
+ cond:function(s){return ovsIn(s,['nl','jp','vn','de','mx'],2010,2042)},
+ x:"公司補助的語言課，你報名的時候很有決心。<br><br>最近連續三週都因為加班缺課。老師寄信問你還要不要上，<em>補助的規定是出席率不到八成要自己付學費。</em>",
+ o:[{l:"把週三晚上空出來，每週一定去",e:{burn:8,GP:1},r:"你把週三晚上的會都推掉了，有兩次是主管排的。<em>期末的時候，你能在超市跟收銀員聊兩句。</em>"},
+    {l:"退掉，自己付已經上的學費",e:{cash:-2,burn:-4},r:"你付了學費，退了課。<em>之後的會議上，你還是要等別人翻譯給你聽。</em>"},
+    {l:"改用手機程式自學",e:{burn:2},r:"你連續打卡了四十天。<em>第四十一天以後，那個程式只剩下每天的提醒通知。</em>"}]},
+{id:"ov_r_allowance",pool:'p',w:10,ovsOrg:1,ovs:"rep",ovsRepeat:1,wf:OVS_W.rep,t:"津貼方案改了",
+ cond:function(s){return ovsIn(s,null,2010,2042)&&(s.abroadYrs||0)>=1},
+ x:"人資寄來明年的海外員工津貼方案，住房補貼改成定額，<em>跟你現在的房租差了一截。</em><br><br>信的最後一句寫著：如有疑問，請於兩週內回覆。",
+ o:[{l:"搬到離公司遠一點的地方",e:{burn:8,cash:-2},r:"新家的房租剛好落在補貼的額度裡。<em>通勤多了四十分鐘，你開始在路上回信。</em>"},
+    {l:"自己吸收差額",e:{cash:-8},r:"你每個月多付一筆房租。<em>存款的曲線，從今年開始變平了。</em>"},
+    {l:"找幾個同事一起寫信反映",e:{burn:5,cash:-4,rel:-1},r:"你們寫了一封很客氣的信。人資回覆說方案不變，會把意見帶回總部。<em>那封信的副本，你的主管也收到了。</em>"}]}
 );
 
 /* ----- E. 國際倡議卡（16 張）。三張卡的 A 選項會留下「供應鏈資歷」特質，見 supplierEdge ----- */
@@ -4698,7 +4784,15 @@ function relAdd(v){
 }
 
 /* ============ 效果套用 ============ */
+/* v38.1：人在海外時，任何卡片效果把你換到別的東家（goEmp、goSector、bjoin、placemake、參政…），
+   那份工作都在台灣，所以人也回來了。比照 gohome 的收尾，不然會一邊在台灣上班一邊抽出國卡。 */
 function apply(e, out){
+  const empB = S.emp;
+  const r = applyCore(e, out);
+  if(S.abroad && S.emp && S.emp !== empB && S.emp.id !== 'abroad'){ S.ovsHomeYrs = S.abroadYrs||0; S.abroad = 0; S.ovsId = ''; }
+  return r;
+}
+function applyCore(e, out){
   const d=[];
   const add=(k,v,lab)=>{ if(!v) return; d.push([lab||k, v]); };
   if(e.E){S.E+=e.E; add('E',e.E,'環境力')}
@@ -4765,7 +4859,8 @@ function apply(e, out){
     if(!S.traits.includes('把公司推上評比')) S.traits.push('把公司推上評比');
   }
   if(e.wfhdep){ S.wfhDep=1 }
-  if(e.learn){ const r=learnSkill(e.learn); if(r) d.push([r.k.n, r.first?'學會':'Lv'+r.lv]) }
+  /* v38.1：永續金融評鑑只有金融業才有，非金融業不學 twfin（例如 gp_alliance 對年資五年以上的所有產業開放） */
+  if(e.learn && !(e.learn==='twfin' && !(S.emp && S.emp.ind==='fin'))){ const r=learnSkill(e.learn); if(r) d.push([r.k.n, r.first?'學會':'Lv'+r.lv]) }
   if(e.learnDeep){
     /* 往深處鑽：把已經會的東西再練深一層 */
     const have = Object.keys(S.skills||{}).filter(function(id){ return S.skills[id]<3 });
@@ -5045,8 +5140,10 @@ function apply(e, out){
         S.ledger.push({y:S.year,t:'辭職參選，當選地方議員',p:130,mark:1});
       } else {
         const lost = rnd()<0.5;
-        S.quitFlag=1; S.cash=Math.round(S.cash-(lost?0:0)-10); S.burn=Math.min(100,S.burn+12);
-        d.push(['落選','—'],['選舉開銷','-30 萬']);
+        S.quitFlag=1; const eCost = lost ? 30 : 10;   // 合計：保證金 20 萬被沒收＋其他開銷 10 萬；過門檻只賠其他開銷 10 萬
+        S.cash=Math.round(S.cash + (lost?0:20) - 10);   // 參選當下已先扣 20 萬保證金（見上方），這裡只補差額
+        S.burn=Math.min(100,S.burn+12);
+        d.push(['落選','—'],['選舉開銷','-'+eCost+' 萬']);
         out.extra = '你落選了。'+(lost?'得票沒有過門檻，<em>保證金被沒收</em>。':'保證金拿回來了，但其他的開銷拿不回來。')
           + '<br><br>謝票那幾天你站在路口鞠躬，有個阿姨搖下車窗說：「少年欸，你講的那些我有聽進去。」<br><br>'
           + '<em>你輸了選舉，但你把議題留在了那個選區。</em>然後，你得重新找工作。';
@@ -5632,6 +5729,82 @@ function localizeMoney(html){
 const TR_SEEN = new Uint8Array(65536);
 let TR_BG = new Set();
 function trBigrams(t){ for(let i=0;i+1<t.length;i++) TR_BG.add(t.charCodeAt(i)*65536 + t.charCodeAt(i+1)) }
+/* v38c：英文畫面的全形標點。字典與程式組字串留下的「：」「（）」「・」「　」之類，
+   在英文模式的最後一步換成英文慣用的半形，只動標籤之外的文字（split 出來的奇數段是標籤，不碰）。
+   換上去的空白先用記號 \u0001 占位，最後才決定留不留：旁邊已經有空白、後面接 ) , . : ; ! ? 或收尾引號、
+   前面是 ( [ 或開頭引號時就拿掉，所以不會多出空格。引號先記成開（\u0002）與收（\u0003）再換成 "。
+   只有真的換過標點的那一段才整理空白；段首段尾原本的空白保留（HTML 會自己摺疊），
+   相鄰兩段之間只看占位的空白要不要留，不動原文的空白。半形的「.」一律不動，NT$1.2M、3.5 不受影響。 */
+const EN_PUNCT_RE = /[　-〿・！-～]/;
+const EN_PUNCT = {
+  '：':':\u0001', '；':';\u0001', '，':',\u0001', '、':',\u0001', '。':'.\u0001',
+  '（':'\u0001(', '）':')\u0001', '／':'/', '｜':'\u0001|\u0001', '＋':'+', '－':'-',
+  '・':'\u0001·\u0001', '　':'\u0001', '「':'\u0002', '」':'\u0003', '『':'\u0002', '』':'\u0003',
+  '【':'\u0001[', '】':']\u0001', '〔':'\u0001[', '〕':']\u0001', '〖':'\u0001[', '〗':']\u0001',
+  '《':'\u0002', '》':'\u0003', '〈':'\u0002', '〉':'\u0003',
+  '～':'~', '〜':'~', '！':'!\u0001', '？':'?\u0001', '＜':'&lt;', '＞':'&gt;', '＆':'&amp;'
+};
+function enPunctChar(ch){
+  const v = EN_PUNCT[ch];
+  if(v !== undefined) return v;
+  const c = ch.charCodeAt(0);
+  if(c >= 0xFF01 && c <= 0xFF5E) return String.fromCharCode(c - 0xFEE0);   // 其他全形英數與符號：直接換半形
+  return ch;                                                             // 其餘 CJK 符號（〃〆之類）原樣留著，entest 會報出來
+}
+function enPunctSeg(s){
+  const m = /^([ \t\r\n]*)([\s\S]*?)([ \t\r\n]*)$/.exec(s);
+  let mid = m[2]
+    .replace(/(\d)：(?=\d)/g, '$1:')                          // 3：1、10：30 不加空格
+    .replace(/(\d)，(?=\d{3}(?!\d))/g, '$1,')                  // 1，000 當千分位
+    .replace(/([.!?])[。！？]/g, '$1')                            // 譯文已經以句點收尾，程式又補了一個「。」
+    .replace(/([,;:])[，、；：]/g, '$1')
+    .replace(/[。！？](?=[ \t]*[.!?])/g, '')                      // 反過來：「。」後面緊接著譯文自己的句點
+    .replace(/[，、；：](?=[ \t]*[,;:])/g, '')
+    .replace(/[　-〿・！-～]/g, enPunctChar);
+  mid = mid
+    .replace(/([^ \t\r\n\u0001(\[\u0002\/\-–—])\u0002/g, '$1\u0001\u0002')   // word「 → word "
+    .replace(/\u0003(?=[A-Za-z0-9\u0002(])/g, '\u0003\u0001')                          // 」word → " word
+    .replace(/\u0002[ \t\r\n\u0001]+/g, '\u0002')
+    .replace(/[ \t\r\n\u0001]+\u0003/g, '\u0003')
+    .replace(/[ \t\r\n\u0001]{2,}/g, function(w){ return /[ \t\r\n]/.test(w) ? ' ' : '\u0001' })
+    .replace(/([(\[])[ \t\r\n\u0001]+/g, '$1')
+    .replace(/[ \t\r\n\u0001]+([)\],.:;!?])/g, '$1');
+  if(m[1]) mid = mid.replace(/^\u0001/, '');
+  if(m[3]) mid = mid.replace(/\u0001$/, '');
+  return m[1] + mid + m[3];
+}
+function enPunct(html){
+  if(!html || !EN_PUNCT_RE.test(html)) return html;
+  const p = String(html).split(/(<[^>]*>)/);
+  const done = [];
+  let prevEnd = '';
+  for(let i = 0; i < p.length; i += 2){
+    if(p[i] && EN_PUNCT_RE.test(p[i])){
+      /* 上一段（隔著標籤）已經以 . ! ? 或 , ; : 收尾，這一段開頭的「。」「，」就是重複的 */
+      if(/[.!?]/.test(prevEnd) && /^[。！？]/.test(p[i])) p[i] = p[i].slice(1);
+      else if(/[,;:]/.test(prevEnd) && /^[，、；：]/.test(p[i])) p[i] = p[i].slice(1);
+      p[i] = enPunctSeg(p[i]); done.push(i);
+    }
+    if(p[i]) prevEnd = p[i].charAt(p[i].length - 1);
+  }
+  /* 段與段之間：占位空白碰到隔壁段的空白或標點就拿掉 */
+  for(const i of done){
+    let s = p[i];
+    if(s.charCodeAt(0) === 1){
+      let prev = '';
+      for(let j = i - 2; j >= 0; j -= 2) if(p[j]){ prev = p[j].charAt(p[j].length - 1); break }
+      if(!prev || /[ \t\r\n\u0001(\[\u0002\/]/.test(prev)) s = s.slice(1);
+    }
+    if(s.length && s.charCodeAt(s.length - 1) === 1){
+      let next = '';
+      for(let j = i + 2; j < p.length; j += 2) if(p[j]){ next = p[j].charAt(0); break }
+      if(!next || /[ \t\r\n\u0001)\],.:;!?\u0003]/.test(next)) s = s.slice(0, -1);
+    }
+    p[i] = s;
+  }
+  for(const i of done) p[i] = p[i].replace(/\u0001/g, ' ').replace(/[\u0002\u0003]/g, '"');
+  return p.join('');
+}
 function localizeHTML(html){
   if(LANG!=='en' || !html || !TR_KEYS.length) return html;
   let out = html;
@@ -5648,7 +5821,7 @@ function localizeHTML(html){
       trBigrams(v);
     }
   }
-  return localizeMoney(out);
+  return enPunct(localizeMoney(out));   // v38c：最後把全形標點換成半形
 }
 
 /* ===TR_DATA_START=== */
@@ -8979,7 +9152,7 @@ trRegister({
 "歐盟綠色政綱與永續分類法（Taxonomy）成形，淨零碳資產聯盟成立，投資人開始用 Climate Action 100+ 向企業施壓。「企業存在的目的是什麼」被重新拿出來問。綠領職缺破萬，每月 10,538 個。": "The European Green Deal and the EU Taxonomy take shape, the Net-Zero Asset Owner Alliance is founded, and investors start using Climate Action 100+ to press companies. \"What is a company for\" gets asked all over again. Green-collar jobs break 10,000 — 10,538 a month.",
 "正式提出申請": "Formally Apply",
 "此瀏覽器不支援，改用結果文字": "Not supported in this browser — use the result text instead",
-"歲。<em>你比同期的人晚了很久，但你會的東西他們一輩子不會有。</em>": ". <em>You are a long way behind the people who started when you did, but you know things they will never have.</em>",
+" 歲。<em>你比同期的人晚了很久，但你會的東西他們一輩子不會有。</em>": ". <em>You are a long way behind the people who started when you did, but you know things they will never have.</em>",
 "歲提早離開了職場。</strong>不是因為財富自由，是因為身體不讓你繼續。": ", you left the workforce early.</strong> Not because you'd reached financial freedom — because your body wouldn't let you keep going.",
 "歲被自己教出來的東西取代。</strong>": ", you were replaced by the very thing you had taught.</strong>",
 "歲那年離開了原本的軌道。有時候人生的轉折跟你的努力沒有關係。": ", you left the track you had been on. Sometimes life's turning points have nothing to do with your effort.",
@@ -12719,6 +12892,114 @@ trRegister({
 "計畫過了，優惠費率拿到了。<em>代價是每年都要交進度，差一點就會被取消。</em>": "The plan is approved and you get the lower rate. <em>The price is a progress report every year, and falling short even slightly means losing it.</em>",
 "把碳費轉嫁到報價": "Pass the fee on in your prices",
 "業務把報價調了三個百分點。<em>兩家客戶說要重新比價。</em>": "Sales raises prices by three per cent. <em>Two customers say they will put the business out to tender again.</em>",
+"居留證又要到期了": "Your residence permit is expiring again",
+"手機跳出提醒：居留證下個月到期。<br><br>續辦要雇主的在職證明，還要一張租約正本，你想不起來放在哪裡。移民局的線上預約，<em>最近的空檔排在到期日之後。</em>": "A reminder pops up on your phone: your residence permit expires next month.<br><br>Renewal needs a letter from your employer and the original of your lease, and you cannot remember where you put it. On the immigration office's online booking system, <em>the earliest slot is after the expiry date.</em>",
+"每天早上刷預約系統，等人取消": "Refresh the booking system every morning and wait for a cancellation",
+"第九天早上六點，你搶到一個別人取消的時段。<em>那一週你每天都比鬧鐘早醒。</em>": "At six in the morning on day nine, you grab a slot someone else has cancelled. <em>All that week you wake up before your alarm.</em>",
+"付錢請代辦處理": "Pay an agent to handle it",
+"代辦收了一筆服務費，隔週就排到時段。<em>你到現在還不知道他是怎麼約到的。</em>": "The agent charges a service fee and has you booked in the following week. <em>You still don't know how he got the slot.</em>",
+"照排到的日期去，先申請臨時證明": "Go on the date you got and apply for a temporary certificate",
+"你拿到一張蓋了章的臨時證明。<em>那個月的海外出差，你讓同事代你去了。</em>": "You get a stamped temporary certificate. <em>That month's overseas trip, you send a colleague in your place.</em>",
+"今年要不要回去過年": "Going home for New Year this time?",
+"十二月，媽媽在電話裡問你過年哪一天到。<br><br>春節前後的機票比平常貴一倍，你手上的年假只剩五天。<em>專案的期限，在年後第一週。</em>": "In December your mother asks on the phone what day you'll arrive for Lunar New Year.<br><br>Flights around the holiday cost twice the usual fare, and you have five days of leave left. <em>Your project is due in the first week after the holiday.</em>",
+"買機票回去": "Book the flight home",
+"你在台灣待了四天，初四清晨飛回來。<em>落地之後直接進辦公室，時差還沒調回來就在開會。</em>": "You spend four days in Taiwan and fly back at dawn on the fourth day of the new year. <em>You go straight from the airport to the office and sit in meetings before the jet lag has worn off.</em>",
+"今年不回去，視訊拜年": "Skip it this year and send greetings by video",
+"你在自己的小廚房煮了一鍋火鍋。<em>視訊裡全家人輪流對著鏡頭講話，你這邊的湯一直沒有滾。</em>": "You make a hotpot in your small kitchen. <em>On the video call the family takes turns in front of the camera, and your broth never quite comes to the boil.</em>",
+"幫爸媽買機票，換他們過來": "Buy your parents tickets and have them come to you",
+"你把臥室讓給爸媽，自己睡了兩週沙發。<em>他們最常說的一句是：「這裡東西好貴。」</em>": "You give your parents the bedroom and sleep on the sofa for two weeks. <em>What they say most often is: \"Everything here is so expensive.\"</em>",
+"喜帖寄到了你的舊地址": "The wedding invitation went to your old address",
+"大學室友要結婚了。喜帖寄到你台灣的老家，你媽拍照傳給你。<br><br>同一個週末，你已經答應主管去一場客戶的研討會。同學的群組裡有人在問：<em>「你會回來嗎？」</em>": "Your university roommate is getting married. The invitation arrives at your family home in Taiwan, and your mother sends you a photo of it.<br><br>That same weekend, you have already told your manager you'll attend a client's seminar. Someone in the class group chat asks: <em>\"Are you coming back?\"</em>",
+"請假飛回去參加婚禮": "Take leave and fly back for the wedding",
+"你坐在大學那一桌，大家問的都是你那邊的房租。<em>研討會由同事代講，客戶記住的是他的名字。</em>": "You sit at the university table, and everyone asks about the rent where you live. <em>A colleague gives your talk at the seminar, and the client remembers his name.</em>",
+"託人帶紅包，錄一段祝福影片": "Send a red envelope with a friend and record a video message",
+"影片在婚宴上播了三十秒。<em>後來的大合照裡，大學那一桌少了一個位子。</em>": "The video plays for thirty seconds at the banquet. <em>In the group photo afterwards, the university table has one empty seat.</em>",
+"總部的人下週到": "Head office arrives next week",
+"總部派了兩個人來看進度，行程排了三天。<br><br>他們要看現場，也要一頓能談事情的晚餐。<em>你手上的正事，這三天都得停。</em>": "Head office is sending two people to check on progress, with three days on the schedule.<br><br>They want to see the site, and they want a dinner where business can be discussed. <em>Your real work stops for those three days.</em>",
+"親自全程陪同": "Escort them yourself the whole time",
+"最後一晚的晚餐，其中一人問你有沒有想過調回總部。<em>那三天沒做的事，你花了兩個週末補完。</em>": "At dinner on the last night, one of them asks whether you've thought about a move to head office. <em>The work you missed in those three days takes two weekends to catch up on.</em>",
+"只陪重點行程，其他交給當地同事": "Join the key sessions and hand the rest to local colleagues",
+"當地同事帶他們看現場，講得比你還清楚。<em>總部的人回去之後，感謝信上寫的是他的名字。</em>": "A local colleague shows them the site and explains it better than you would have. <em>When head office sends its thank-you email, his is the name in it.</em>",
+"照實報告落後的部分": "Report honestly on what is behind schedule",
+"你在簡報第二頁就放了延遲的原因。<em>他們點頭記下，回去之後把你的預算砍了一成。</em>": "You put the reasons for the delay on slide two. <em>They nod and take notes, and when they get back they cut your budget by a tenth.</em>",
+"她下個月就走了": "She leaves next month",
+"跟你同組的當地同事遞了辭呈，下個月底是最後一天。<br><br>主管問你能不能先接她的兩個案子。<em>她的交接文件只有一頁，寫滿了只有她看得懂的縮寫。</em>": "A local colleague on your team has handed in her notice; her last day is at the end of next month.<br><br>Your manager asks if you can take over her two projects for now. <em>Her handover document is one page long, full of abbreviations only she understands.</em>",
+"兩個都接下來": "Take on both",
+"你每天多留兩個小時，一封一封翻她的舊信。<em>年底考核，主管寫你「可靠」，調薪的幅度跟去年一樣。</em>": "You stay two extra hours a day, going through her old emails one by one. <em>At the year-end review your manager calls you \"dependable\", and your raise is the same as last year's.</em>",
+"只接一個，另一個請主管找人": "Take one and ask your manager to find someone for the other",
+"主管說好，另一個案子給了新來的同事。<em>三個月後那個案子出錯，客戶打來找的是你。</em>": "Your manager agrees, and the other project goes to a new hire. <em>Three months later it goes wrong, and the client calls you.</em>",
+"請她最後一個月帶你跑客戶": "Ask her to take you round the clients in her last month",
+"她帶你見了四個客戶，每一個都說她要走很可惜。<em>她離職之後，客戶寄信來還是先寫她的名字。</em>": "She introduces you to four clients, and each one says it's a shame she's leaving. <em>After she's gone, clients still put her name first when they email.</em>",
+"鏡頭裡的爸媽": "Your parents on the screen",
+"週日晚上的例行視訊。爸爸把手機拿得很遠，媽媽說最近膝蓋不好，上樓梯要扶著。<br><br>你算了一下，<em>上次見到他們，是去年的事了。</em>": "The regular Sunday-night video call. Your father holds the phone at arm's length; your mother says her knees have been bad lately and she needs the handrail on the stairs.<br><br>You work it out: <em>the last time you saw them in person was last year.</em>",
+"請人每週去家裡看看": "Pay someone to look in on them every week",
+"阿姨幫你找了人，每週去一次，順便陪他們去市場。<em>媽媽在電話裡說不用花這個錢，下一句又問那個人姓什麼。</em>": "Your aunt finds someone who visits once a week and goes to the market with them. <em>Your mother says on the phone there's no need to spend the money, then asks what the helper's surname is.</em>",
+"把視訊改成每天打": "Make the video call a daily thing",
+"你每天午休打十分鐘。<em>第三個星期，媽媽開始說「今天沒什麼事啦」，然後很快掛掉。</em>": "You call for ten minutes every lunch break. <em>By the third week your mother starts saying \"nothing much today\" and hanging up quickly.</em>",
+"開始看台灣的職缺": "Start looking at jobs back in Taiwan",
+"你在人力銀行存了六個職缺。<em>薪水都是你現在的一半多一點，你一個都沒有投。</em>": "You save six job ads on a recruitment site. <em>Each pays a little over half of what you earn now, and you don't apply for any of them.</em>",
+"兩邊的報稅季": "Tax season, twice over",
+"當地的報稅截止日在下個月，台灣那邊的綜所稅也還沒報。<br><br>兩國的扣繳憑單散在不同的信箱，<em>其中一張寄到了你兩次搬家以前的地址。</em>": "The local tax deadline is next month, and you haven't filed your Taiwan income tax either.<br><br>Your withholding statements from the two countries are scattered across different mailboxes, <em>and one of them went to the address you had two moves ago.</em>",
+"請會計師兩邊一起處理": "Get an accountant to handle both",
+"會計師把兩邊的所得對起來，還找到一筆可以扣抵的稅。<em>帳單上的費用，比那筆扣抵多一點。</em>": "The accountant reconciles your income in both countries and finds a tax credit you can claim. <em>The fee on the invoice is a little more than the credit.</em>",
+"自己花兩個週末填": "Spend two weekends filling them in yourself",
+"你把兩國的申報說明各讀了一遍，表格都交出去了。<em>三個月後收到補稅通知，原因是一個欄位勾錯。</em>": "You read both countries' filing guides and submit every form. <em>Three months later a bill for extra tax arrives: you ticked the wrong box.</em>",
+"先報這邊，台灣明年再說": "File here first and deal with Taiwan next year",
+"這邊的稅準時報完了。<em>國稅局的催繳信寄到了你爸媽家。</em>": "Your local return goes in on time. <em>The Taiwan tax office's reminder letter arrives at your parents' house.</em>",
+"這週的天氣警報": "This week's weather warning",
+"氣象單位發了最高等級的暴雨警報，接下來三天不建議外出。<br><br>辦公室改成在家上班，可是客戶的現場稽核排在後天，<em>對方說行程不改。</em>": "The weather service has issued its highest-level rainstorm warning and advises staying indoors for the next three days.<br><br>The office switches to working from home, but a client's on-site audit is set for the day after tomorrow, <em>and they say the schedule stands.</em>",
+"照原訂行程出門": "Go as planned",
+"路上多花了兩個小時，你準時到了客戶那裡。<em>稽核做完了，你的鞋子三天都沒乾。</em>": "The journey takes two hours longer, and you reach the client on time. <em>The audit gets done, and your shoes take three days to dry.</em>",
+"跟客戶改成視訊稽核": "Move the audit to video with the client",
+"客戶勉強同意了，鏡頭只拍得到他們想給你看的地方。<em>報告裡有兩項，你只能寫「未能現場確認」。</em>": "The client reluctantly agrees, and the camera only shows what they want you to see. <em>For two items in the report, all you can write is \"not verified on site\".</em>",
+"把這三天寫進公司的氣候風險清單": "Write these three days into the company's climate risk register",
+"你把停工和供應商延遲都列進去，附上這三天的損失估算。<em>主管說寫得很好，然後放進了明年再討論的資料夾。</em>": "You list the shutdown and the supplier delays, with an estimate of what the three days cost. <em>Your manager says it's well written, then files it in the folder for next year.</em>",
+"台灣的獵頭打來了": "A Taiwan headhunter calls",
+"一個台灣的號碼，是之前幫你看過履歷的獵頭。<br><br>他說有家公司在找永續主管，要有海外經驗。<em>薪水比你現在少兩成，職稱高一階。</em>": "A Taiwan number: the headhunter who once looked at your CV.<br><br>He says a company is looking for a head of sustainability with overseas experience. <em>The pay is a fifth less than you earn now, and the title is one level up.</em>",
+"約個時間視訊聊聊": "Set up a video call to talk",
+"你們聊了一個小時，對方很想要你。<em>你說要考慮，掛掉電話後查了一整晚台灣的房價。</em>": "You talk for an hour, and they clearly want you. <em>You say you'll think about it, then spend the whole evening looking up house prices in Taiwan.</em>",
+"說現在不考慮，但保持聯絡": "Say not now, but keep in touch",
+"獵頭說了解，半年後會再打來。<em>你把他的號碼存成「回台灣用」。</em>": "The headhunter says he understands and will call again in six months. <em>You save his number as \"for going home\".</em>",
+"請他開個價，拿去跟主管談": "Get a figure from him and take it to your manager",
+"主管幫你爭取到一點調薪。<em>之後每次談到續約，他都會先問你：「還在考慮回去嗎？」</em>": "Your manager gets you a small raise. <em>After that, every time your contract comes up, he first asks: \"Still thinking of going back?\"</em>",
+"新規上路，要你去講": "A new rule, and you're presenting it",
+"當地主管機關更新了一條永續揭露的規定。公司要派人去聽業界說明會，回來再對內報告。<br><br>主管看著你說：<em>「你最懂這個。」</em>": "The local regulator has updated one of its sustainability disclosure rules. The company needs someone to attend the industry briefing and report back internally.<br><br>Your manager looks at you: <em>\"You know this best.\"</em>",
+"接下來，把條文讀到能回答問題": "Take it on and read the text until you can answer questions",
+"你讀了原文，也讀了三份事務所的解讀。<em>內部報告那天，法務的問題最多，你答得出一半。</em>": "You read the original text and three firms' commentaries on it. <em>At the internal briefing Legal asks the most questions, and you can answer about half.</em>",
+"去聽說明會，回來轉述重點": "Attend the briefing and pass on the main points",
+"你把主辦單位的簡報重新排版，加了兩頁摘要。<em>三個月後有人問起一個細節，你翻遍筆記都找不到。</em>": "You reformat the organisers' slides and add a two-page summary. <em>Three months later someone asks about a detail, and it's nowhere in your notes.</em>",
+"推薦當地同事去，他比較熟這裡的主管機關": "Recommend a local colleague who knows the regulator better",
+"他去了，回來報告得很清楚。<em>下一次再有新規，主管直接找他。</em>": "He goes and reports back clearly. <em>The next time a rule changes, your manager goes straight to him.</em>",
+"語言課缺了三週": "Three weeks of missed language classes",
+"公司補助的語言課，你報名的時候很有決心。<br><br>最近連續三週都因為加班缺課。老師寄信問你還要不要上，<em>補助的規定是出席率不到八成要自己付學費。</em>": "When you signed up for the company-funded language course, you meant it.<br><br>Overtime has made you miss three weeks in a row. The teacher emails to ask if you're continuing; <em>under the subsidy rules, attendance below 80% means you pay the fees yourself.</em>",
+"把週三晚上空出來，每週一定去": "Clear Wednesday evenings and go every week",
+"你把週三晚上的會都推掉了，有兩次是主管排的。<em>期末的時候，你能在超市跟收銀員聊兩句。</em>": "You push back every Wednesday-evening meeting, two of them called by your manager. <em>By the end of term you can chat with the supermarket cashier for a minute.</em>",
+"退掉，自己付已經上的學費": "Drop out and pay for the classes you've had",
+"你付了學費，退了課。<em>之後的會議上，你還是要等別人翻譯給你聽。</em>": "You pay the fees and withdraw. <em>In meetings, you still wait for someone to translate for you.</em>",
+"改用手機程式自學": "Switch to teaching yourself with a phone app",
+"你連續打卡了四十天。<em>第四十一天以後，那個程式只剩下每天的提醒通知。</em>": "You keep up a forty-day streak. <em>From day forty-one, all that's left of the app is a daily reminder.</em>",
+"津貼方案改了": "The allowance package has changed",
+"人資寄來明年的海外員工津貼方案，住房補貼改成定額，<em>跟你現在的房租差了一截。</em><br><br>信的最後一句寫著：如有疑問，請於兩週內回覆。": "HR sends next year's allowance package for overseas staff. The housing allowance becomes a flat amount, <em>well short of the rent you pay now.</em><br><br>The last line of the email reads: if you have any questions, please reply within two weeks.",
+"搬到離公司遠一點的地方": "Move somewhere further from the office",
+"新家的房租剛好落在補貼的額度裡。<em>通勤多了四十分鐘，你開始在路上回信。</em>": "The rent at the new place fits just inside the allowance. <em>Your commute grows by forty minutes, and you start answering emails on the way in.</em>",
+"自己吸收差額": "Absorb the difference yourself",
+"你每個月多付一筆房租。<em>存款的曲線，從今年開始變平了。</em>": "You pay extra rent every month. <em>From this year, your savings curve flattens out.</em>",
+"找幾個同事一起寫信反映": "Get a few colleagues to write in together",
+"你們寫了一封很客氣的信。人資回覆說方案不變，會把意見帶回總部。<em>那封信的副本，你的主管也收到了。</em>": "You write a very polite letter together. HR replies that the package stands and they will pass the feedback on to head office. <em>Your manager received a copy of the letter.</em>",
+"公司治理評鑑要公布了": "The Corporate Governance Evaluation results are coming out",
+"證交所的公司治理評鑑結果快公布了。上市櫃公司依得分分級公布，<em>前段班的名單，董事長每年都會拿來跟同業比</em>。<br><br>評鑑裡跟永續有關的那些題目，今年歸你。": "The stock exchange's Corporate Governance Evaluation results are about to be published. Listed companies come out in score bands, <em>and every year the chairman holds the top-band list up against your peers</em>.<br><br>This year, the sustainability-related questions in the evaluation are yours.",
+"<br><br>這也是最後一屆公司治理評鑑。今年起它改名叫 ESG 評鑑，環境面和社會面的題目會變多，永續部門要從頭填到尾。": "<br><br>This is also the last Corporate Governance Evaluation. From this year it is renamed the ESG Evaluation, with more environmental and social questions, and the sustainability team fills it in from start to finish.",
+"ESG 評鑑要公布了": "The ESG Evaluation results are coming out",
+"公司治理評鑑在 2026 年改成了 ESG 評鑑。以前主要是公司治理主管在填，<em>現在環境面和社會面的題目，落到了永續部門手上</em>。<br><br>結果一樣分級公布，同業一樣會拿名單來比。": "In 2026 the Corporate Governance Evaluation became the ESG Evaluation. It used to be filled in mostly by the corporate governance officer; <em>now the environmental and social questions land on the sustainability team</em>.<br><br>Results still come out in bands, and peers still compare the lists.",
+"RE100、綠色資料中心、TCFD、ESG 評鑑前 5%": "RE100; green data centers; TCFD; top 5% in the ESG Evaluation",
+"逐題對照指標，把缺的揭露補齊": "Check every indicator and fill in the missing disclosures",
+"你一題一題對，發現有幾項去年就做了，只是沒寫進年報。<em>補完之後級距往前一格，你少了一整個月的週末。</em>": "Going question by question, you find several things you already did last year but never put in the annual report. <em>Once they're added you move up a band, and you lose a whole month of weekends.</em>",
+"只補最容易拿分的那幾題": "Only fix the questions that are easiest to score",
+"你補了幾題改一下網站就能拿分的。<em>級距沒動，董事長在會議上問了一句：「同業怎麼做到的？」</em>": "You fix a few that only need a website update. <em>The band doesn't move, and in a meeting the chairman asks: \"How did our peers manage it?\"</em>",
+"把新增的題目一題一題做實": "Make each new question real, one by one",
+"人權盡職調查那一題，你們原本只有一頁聲明。<em>你花了半年跟人資和採購把流程做出來，級距往前了一格。</em>": "For the human rights due diligence question, all you had was a one-page statement. <em>You spend six months building the process with HR and procurement, and move up a band.</em>",
+"先用報告書裡現成的段落交代": "Answer with passages already in the sustainability report",
+"你把報告書寫過的段落一段段貼進佐證欄。<em>分數過得去，但有三題的佐證，跟公司實際在做的事對不起來。</em>": "You paste paragraphs from the report into the evidence fields one by one. <em>The score is passable, but for three questions the evidence doesn't match what the company actually does.</em>",
 });
 /* ===TR_DATA_END=== */
 function screenIntro(){
@@ -13734,6 +14015,9 @@ const DISABLED_CARDS={x_deck:1,q_fin_eval:1,m_greenwash:1,n_scope:1,p_s3:1};
    只會發生一次的（最後一座燃煤機組、永續長頭銜被拆、新規上路……）不在名單上，一局仍然只遇到一次。 */
 const FUTURE_GAP = 6;
 const FUTURE_AGAIN = ['fu_heat_stop','fu_coastflood','fu_insure','fu_water','fu_heatisland','fu_migration','fu_youth_suit','fu_carbonfee_up','fu_grid_cap'];
+/* v38c：可重複的出國卡（ov_r_）一局最多出現 OVS_REP_MAX 次；上次之後滿 OVS_REP_GAP 年，權重回到 ×0.6（drawCard） */
+const OVS_REP_GAP = 2, OVS_REP_MAX = 3;
+function ovsRepAgain(c){ return !!(c.ovsRepeat && (S.used[c.id] || 0) < OVS_REP_MAX) }
 function futureAgain(c){
   return !!(c.future && FUTURE_AGAIN.indexOf(c.id) >= 0 && S.lastSeen && S.lastSeen[c.id] !== undefined && S.year - S.lastSeen[c.id] >= FUTURE_GAP);
 }
@@ -13742,13 +14026,13 @@ function eligible(c){
   if(S.yearUsed[c.id]) return false;          // 本年度已抽過
   /* 你根本沒在做永續，就不該抽到「查證老師來了」這種卡。
      非永續職只會遇到：本業卡(nonEsg)、與工作無關的人生卡(LIFE_ANY)。 */
-  if(!S.inESG && !c.nonEsg && LIFE_ANY.indexOf(c.id) < 0) return false;
-  if(isFreelance() && ORG_ONLY.indexOf(c.id)>=0) return false;   // 接案沒有同事與主管
+  if(!S.inESG && !c.nonEsg && !c.ovsLife && LIFE_ANY.indexOf(c.id) < 0) return false;   // v38c：ovsLife 見 D2 組
+  if(isFreelance() && (ORG_ONLY.indexOf(c.id)>=0 || c.ovsOrg)) return false;   // 接案沒有同事與主管（v38c：加上 ovsOrg）
   if(!isFreelance() && c.freeOnly) return false;                 // 接案專屬事件
   if(c.selfOnly && !S.selfBrand) return false;                   // 創作者專屬事件（item 7）
   if(c.yr && !c.yr.includes(S.year)) return false;
   if(!c.yr && c.pool==='h') return false;
-  if(S.used[c.id] && !c.rep && !futureAgain(c)) return false;
+  if(S.used[c.id] && !c.rep && !futureAgain(c) && !ovsRepAgain(c)) return false;
   if(c.cond){ try{ if(!c.cond(S)) return false }catch(e){ return false } }
   return true;
 }
@@ -13843,7 +14127,7 @@ function drawCard(){
     /* v38b：舊卡的降權改成逐年加深（2032 ×0.85 → 2041 ×0.58，最低 ×0.55），future 卡的占比才會一路往上。
        另外 fu_water、fu_heatisland、fu_biocredit 的年份上限由 2040 延到 2042，2041 年手上可抽的 future 卡才不會突然變少。 */
     else if(S.year >= 2032 && !c.yr && !c.chain && !c.forced && !c.ifrs38 && !c.ovs && !c.init) w *= Math.max(0.55, 0.85 - 0.03 * (S.year - 2032));
-    if(S.abroad && c.ovs) w *= OVS_BOOST;   // v38b：海外期間出國卡占多數
+    if(S.abroad && c.ovs && !c.ovsRepeat) w *= OVS_BOOST;   // v38b：海外期間出國卡占多數（v38c：可重複的 ov_r_ 不加乘，只當補位）
     /* ===== 支線（v29）=====
        綠電這種要跨好幾年的線，如果只靠一般權重抽，實測只有 3.7% 的玩家碰得到，
        而且幾乎沒有人走得完——等於這條線白寫了。
@@ -13859,6 +14143,7 @@ function drawCard(){
     if(last !== undefined && c.chain !== 're'){
       const gap = S.year - last;
       if(c.future) w *= (gap >= FUTURE_GAP ? 0.5 : 0.02);   // v38b：future 卡隔六年可以再遇到一次，權重先減半
+      else if(c.ovsRepeat) w *= (gap >= OVS_REP_GAP ? 0.6 : 0.02);   // v38c：可重複的出國卡隔兩年回到 ×0.6（同一年由 yearUsed 擋掉）
       else if(gap < 10) w *= (gap <= 3 ? 0.02 : gap <= 6 ? 0.06 : 0.15);
       else w *= 0.55;
     }
@@ -14175,6 +14460,9 @@ function fortunePick(leave){
 
 /* ===== 時間壓在哪 → 對應類別的隨機情境（使用者需求：全力推動 vs 偷懶交差）=====
    選了某個專業方向，就從那個類別抽一張當年的實際任務，做不同投入程度的抉擇。 */
+/* v38c：公司治理評鑑／ESG 評鑑焦點卡的對象：在永續職、上市櫃（isUnlisted 為否）、不是金融業（金融業走永續金融評鑑），
+   也不是四大、顧問公司或接案（ind==='cons' 或 big4，受評的是客戶，不是自己） */
+function cgEvalOK(s){ return !!(s.inESG && s.emp && s.emp.ind !== 'fin' && s.emp.ind !== 'cons' && !s.emp.big4 && !isUnlisted(s.emp) && !isFreelance()) }
 const FOCUS_CARDS = {
  E:[
   {t:'冷媒與鍋爐的數字對不起來',x:'盤查到一半，你發現冷媒填充紀錄和鍋爐燃料用量兜不攏，<em>差了大概百分之五</em>。',
@@ -14279,9 +14567,21 @@ const FOCUS_CARDS = {
   {t:'漂綠風險，每個數字都要交代基期',x:'內稽進來了，會計師開始查你的永續數字。<em>成長了百分之十？基期是什麼？怎麼算的？</em>',
    o:[{l:'替每個對外數字建立完整軌跡',e:{G:6,D:3,burn:11},r:'你替每個數字都留了計算底稿與出處。三年後有人來查舊帳，你三分鐘就調得出來。',trait:'留得住底稿'},
       {l:'先把今年的交出去',e:{G:2,co2:-1,gwrisk:1},r:'今年過關了。明年換人接手時，那些數字沒人說得清楚怎麼來的。'}]},
-  {t:'永續金融評鑑要公布了',cond:s=>s.year>=2023,x:'金管會的評鑑結果快公布，<em>同業都在比排名，你們去年落在中段</em>。',
+  {t:'永續金融評鑑要公布了',cond:s=>s.year>=2023&&s.emp&&s.emp.ind==='fin',x:'金管會的評鑑結果快公布，<em>同業都在比排名，你們去年落在中段</em>。',
    o:[{l:'照指標逐項補強',e:{G:6,D:4,esg:3,burn:12},r:'你把每一個扣分項拆開處理。名次上去了，你也把整套治理架構補完了。',trait:'評鑑打底'},
       {l:'挑分數最好拉的補',e:{G:2,D:2,esg:1,co2:-1},r:'名次進步了幾名。真正難的那幾項還留在原地。'}]},
+  /* v38c：非金融業的上市櫃公司，對應的是證交所的公司治理評鑑：103 年度（2014）第一屆，結果在隔年四月底前分級公布。
+     115 年度（2026）起轉型並更名為 ESG 評鑑，四大構面改成 E、S、G 三大構面（證交所公司治理中心「ESG評鑑簡介」、
+     證交所 114/10/31 新聞稿〈115年度（第一屆）ESG評鑑指標〉；整理在 research/tw_cg_esg_eval.md）。
+     遊戲裡的年份是「結果公布的那一年」：2015–2026 公布的是公司治理評鑑（2026 年公布最後一屆，文案補一句改名），
+     2027 起公布的是 ESG 評鑑。四大、顧問、接案、非上市櫃（isUnlisted）不抽。 */
+  {t:'公司治理評鑑要公布了',cond:s=>s.year>=2015&&s.year<=2026&&cgEvalOK(s),
+   get x(){ return '證交所的公司治理評鑑結果快公布了。上市櫃公司依得分分級公布，<em>前段班的名單，董事長每年都會拿來跟同業比</em>。<br><br>評鑑裡跟永續有關的那些題目，今年歸你。' + (S && S.year===2026 ? '<br><br>這也是最後一屆公司治理評鑑。今年起它改名叫 ESG 評鑑，環境面和社會面的題目會變多，永續部門要從頭填到尾。' : '') },
+   o:[{l:'逐題對照指標，把缺的揭露補齊',e:{G:6,D:4,esg:3,burn:12},r:'你一題一題對，發現有幾項去年就做了，只是沒寫進年報。<em>補完之後級距往前一格，你少了一整個月的週末。</em>'},
+      {l:'只補最容易拿分的那幾題',e:{G:2,D:2,esg:1,co2:-1},r:'你補了幾題改一下網站就能拿分的。<em>級距沒動，董事長在會議上問了一句：「同業怎麼做到的？」</em>'}]},
+  {t:'ESG 評鑑要公布了',cond:s=>s.year>=2027&&cgEvalOK(s),x:'公司治理評鑑在 2026 年改成了 ESG 評鑑。以前主要是公司治理主管在填，<em>現在環境面和社會面的題目，落到了永續部門手上</em>。<br><br>結果一樣分級公布，同業一樣會拿名單來比。',
+   o:[{l:'把新增的題目一題一題做實',e:{E:2,S:2,G:5,D:4,esg:3,burn:14},r:'人權盡職調查那一題，你們原本只有一頁聲明。<em>你花了半年跟人資和採購把流程做出來，級距往前了一格。</em>'},
+      {l:'先用報告書裡現成的段落交代',e:{G:2,D:3,esg:1,co2:-1},r:'你把報告書寫過的段落一段段貼進佐證欄。<em>分數過得去，但有三題的佐證，跟公司實際在做的事對不起來。</em>'}]},
   {t:'我們得獎了，但環團點名了我們',cond:function(s){return s.year>=2026},
    x:'公司拿了永續獎，紅布條掛在大廳。<br><br>'
     +'同一個月，環團發布追蹤報告：<em>四大獎項的得獎製造業者中，近半數有環境或勞動法規違規紀錄</em>，其中有得獎企業當年還發生過死亡職災。<br><br>'
@@ -16087,6 +16387,9 @@ function rehire(){
 }
 function rehirePick(k, idx){
   const m = mk(S.year)[1];
+  /* v38.1：在海外丟了工作、選「馬上找」接到的是台灣的缺（或自己接案），人就回台灣了。
+     原本 S.abroad 沒歸零，會一邊在台灣上班、一邊抽到出國卡。比照 gohome 的收尾。 */
+  if(k!=='wait' && S.abroad){ S.ovsHomeYrs = S.abroadYrs||0; S.abroad=0; S.ovsId=''; }
   if(k==='wait'){
     S.jobless++;
     S.cash = Math.round(S.cash - S.pay*0.22);
@@ -16973,14 +17276,14 @@ function submitFeedback(el){
   const t = (document.getElementById('fbText')||{}).value || '';
   const mail = (document.getElementById('fbMail')||{}).value || '';
   if(FEEDBACK_FORM.CONFIGURED){
-    if(el){ el.disabled=true; el.textContent='送出中…'; }
+    if(el){ el.disabled=true; el.textContent=localizeHTML('送出中…'); }
     // 結果已在結局自動記錄；這裡只在「有寫東西」時補送一列含回饋
     const p = (t||mail) ? recordResult(true) : Promise.resolve();
-    p.then(function(){ if(el) el.textContent='已送出，謝謝你！🌱'; });
+    p.then(function(){ if(el) el.textContent=localizeHTML('已送出，謝謝你！🌱'); });
   } else {
     const txt = resultSummary() + '\n\n回饋：' + t + (mail?('\nEmail：'+mail):'');
     if(navigator.clipboard) navigator.clipboard.writeText(txt);
-    if(el) el.textContent='已複製回饋，貼給開發者即可';
+    if(el) el.textContent=localizeHTML('已複製回饋，貼給開發者即可');
   }
 }
 /* 產生一張結果圖，複製到剪貼簿（item 13） */
@@ -16988,15 +17291,16 @@ function copyResultImg(el){
   try{
     const W=1080, H=1350, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
     const x=cv.getContext('2d');
+    const L=function(s){ return LANG==='en' ? localizeHTML(String(s)) : s };   // v38c：分享圖在英文模式也翻、也換半形標點
     const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches;
     const bg=dark?'#15232A':'#FBFCFC', ink=dark?'#E3EAEA':'#15252B', sub=dark?'#A2B2B6':'#4B5D64', acc=dark?'#D6A342':'#8F6410', line=dark?'#293941':'#D1D9DA';
     x.fillStyle=bg; x.fillRect(0,0,W,H);
     x.fillStyle=acc; x.fillRect(70,70,86,44); x.fillStyle=bg; x.font='700 26px sans-serif'; x.textBaseline='middle'; x.fillText('Daz',86,93);
-    x.fillStyle=ink; x.font='700 46px "Noto Serif TC",serif'; x.textBaseline='alphabetic'; x.fillText('永續人森模擬器',180,105);
-    x.fillStyle=sub; x.font='400 24px sans-serif'; x.fillText(playerRef()+(S.mbti?'　'+S.mbti:'')+'　'+S.startYear+' 入學 → '+S.year+'（四十歲）',72,170);
+    x.fillStyle=ink; x.font='700 46px "Noto Serif TC",serif'; x.textBaseline='alphabetic'; x.fillText(L('永續人森模擬器'),180,105);
+    x.fillStyle=sub; x.font='400 24px sans-serif'; x.fillText(L(playerRef()+(S.mbti?'　'+S.mbti:'')+'　'+S.startYear+' 入學 → '+S.year+'（四十歲）'),72,170);
     x.strokeStyle=ink; x.lineWidth=3; x.beginPath(); x.moveTo(72,195); x.lineTo(W-72,195); x.stroke();
     x.fillStyle=goalMet()?acc:sub; x.font='700 40px "Noto Serif TC",serif';
-    x.fillText(S.goal.n+'　'+(goalMet()?'達成':'未達成'),72,265);
+    x.fillText(L(S.goal.n+'　'+(goalMet()?'達成':'未達成')),72,265);
     // 大數字
     const cells=[['年薪',S.pay+' 萬'],['職位',S.inESG?LEVELS[S.level].t:'非永續職'],['永續年資',S.esgYrs+' 年'],
       ['綜合戰力',String(cw())],['實質減碳',String(S.co2)],['存款',S.cash+' 萬']];
@@ -17005,47 +17309,48 @@ function copyResultImg(el){
       const col=i%3, row=Math.floor(i/3);
       const px=72+col*cwid, py=cy+row*150;
       x.strokeStyle=line; x.lineWidth=1; x.strokeRect(px,py,cwid-14,132);
-      x.fillStyle=sub; x.font='400 20px sans-serif'; x.fillText(c[0],px+18,py+42);
-      x.fillStyle=ink; x.font='700 40px "Noto Serif TC",serif'; x.fillText(c[1],px+18,py+96);
+      x.fillStyle=sub; x.font='400 20px sans-serif'; x.fillText(L(c[0]),px+18,py+42);
+      x.fillStyle=ink; x.font='700 40px "Noto Serif TC",serif'; x.fillText(L(c[1]),px+18,py+96);
     });
     // 能力條
-    let by=660; x.fillStyle=sub; x.font='400 22px sans-serif'; x.fillText('能力分布',72,by);
+    let by=660; x.fillStyle=sub; x.font='400 22px sans-serif'; x.fillText(L('能力分布'),72,by);
     const bars=[['環境 E',S.E],['社會 S',S.S],['治理 G',S.G],['揭露 D',S.D]];
     bars.forEach(function(b,i){
       const py=by+34+i*54;
-      x.fillStyle=sub; x.font='400 22px sans-serif'; x.fillText(b[0],72,py+22);
+      x.fillStyle=sub; x.font='400 22px sans-serif'; x.fillText(L(b[0]),72,py+22);
       x.fillStyle=line; x.fillRect(230,py,W-320,26);
       x.fillStyle=acc; x.fillRect(230,py,(W-320)*Math.min(1,b[1]/60),26);
       x.fillStyle=ink; x.font='600 22px sans-serif'; x.fillText(String(b[1]),W-78,py+22);
     });
     // 特質
-    let ty=940; x.fillStyle=sub; x.font='400 22px sans-serif'; x.fillText('你成為了什麼樣的人',72,ty);
+    let ty=940; x.fillStyle=sub; x.font='400 22px sans-serif'; x.fillText(L('你成為了什麼樣的人'),72,ty);
     x.font='400 24px sans-serif'; let tx=72; ty+=44;
     (S.traits.slice(0,14)).forEach(function(t){
+      t=L(t);
       const w=x.measureText(t).width+34;
       if(tx+w>W-72){ tx=72; ty+=52 }
       x.strokeStyle=acc; x.strokeRect(tx,ty-26,w,38); x.fillStyle=acc; x.fillText(t,tx+17,ty);
       tx+=w+12;
     });
     x.fillStyle=sub; x.font='400 20px sans-serif';
-    x.fillText('SEED '+S.seed.toString(36).toUpperCase()+'　・　daz-esg.dazyin.workers.dev　・　linkedin.com/in/dazyin',72,H-52);
+    x.fillText(L('SEED '+S.seed.toString(36).toUpperCase()+'　・　daz-esg.dazyin.workers.dev　・　linkedin.com/in/dazyin'),72,H-52);
     cv.toBlob(function(blob){
       if(navigator.clipboard && window.ClipboardItem){
         navigator.clipboard.write([new ClipboardItem({'image/png':blob})]).then(function(){
-          if(el) el.textContent='已複製結果圖';
+          if(el) el.textContent=localizeHTML('已複製結果圖');
         }).catch(function(){ imgFallback(cv, el) });
       } else { imgFallback(cv, el) }
     },'image/png');
-  }catch(e){ if(el) el.textContent='此瀏覽器不支援，改用結果文字'; }
+  }catch(e){ if(el) el.textContent=localizeHTML('此瀏覽器不支援，改用結果文字'); }
 }
 function imgFallback(cv, el){
   // 不能寫剪貼簿時，開新分頁讓玩家自己長按／右鍵存圖
-  try{ const w=window.open(); if(w){ w.document.write('<img src="'+cv.toDataURL('image/png')+'" style="max-width:100%">'); } if(el) el.textContent='已開圖，長按或右鍵存圖'; }
-  catch(e){ if(el) el.textContent='請改用「複製結果文字」'; }
+  try{ const w=window.open(); if(w){ w.document.write('<img src="'+cv.toDataURL('image/png')+'" style="max-width:100%">'); } if(el) el.textContent=localizeHTML('已開圖，長按或右鍵存圖'); }
+  catch(e){ if(el) el.textContent=localizeHTML('請改用「複製結果文字」'); }
 }
 function copySeed(el){
   if(navigator.clipboard) navigator.clipboard.writeText(resultSummary());
-  if(el) el.textContent='已複製結果文字';
+  if(el) el.textContent=localizeHTML('已複製結果文字');
 }
 
 function askRestart(){
@@ -17055,10 +17360,10 @@ function askRestart(){
   const d=document.createElement('div');
   d.id='rsConfirm';
   d.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:99;padding:20px';
-  d.innerHTML='<div class="panel panel-pad" style="max-width:380px"><h3 style="font-family:\'Noto Serif TC\',serif;font-size:19px;margin:0 0 10px">要重新開始嗎？</h3>'
+  d.innerHTML=localizeHTML('<div class="panel panel-pad" style="max-width:380px"><h3 style="font-family:\'Noto Serif TC\',serif;font-size:19px;margin:0 0 10px">要重新開始嗎？</h3>'
     +'<p class="note" style="margin:0 0 16px">目前這局會消失，換一個開局年份、一所新的學校、一組新的運氣。</p>'
     +'<div style="display:flex;gap:9px"><button class="btn" onclick="doRestart()">重新開始</button>'
-    +'<button class="btn ghost" onclick="closeRestart()">繼續這局</button></div></div>';
+    +'<button class="btn ghost" onclick="closeRestart()">繼續這局</button></div></div>');   // v38c：英文模式也要翻
   d.addEventListener('click',function(ev){ if(ev.target===d) closeRestart() });
   document.body.appendChild(d);
 }
